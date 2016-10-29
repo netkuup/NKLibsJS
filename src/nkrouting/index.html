@@ -1,0 +1,100 @@
+<script src="./jquery.js"></script>
+<script src="./nkrouting.js"></script>
+
+<div id="theDiv1" style="background-color: blue; height: 100px; overflow: hidden;">Content div 1</div>
+<div id="theDiv2">Content div 2</div>
+
+<div id="filters">The filters</div>
+<div id="view">The view</div>
+
+<script type="text/javascript">
+
+var test1Controller = {};
+test1Controller.init = function() {
+    console.log("test1Controller init");
+}
+test1Controller.enter = function() {
+    console.log("test1Controller enter");
+}
+test1Controller.leave = function() {
+    console.log("test1Controller leave");
+}
+var test2Controller = {};
+test2Controller.init = function() {
+    console.log("test2Controller init");
+}
+test2Controller.enter = function() {
+    console.log("test2Controller enter");
+}
+test2Controller.leave = function() {
+    console.log("test2Controller leave");
+}
+var test3Controller = {};
+test3Controller.init = function() {
+    console.log("test3Controller init");
+}
+test3Controller.enter = function() {
+    console.log("test3Controller enter");
+}
+test3Controller.leave = function() {
+    console.log("test3Controller leave");
+}
+var test3Controller = {};
+test3Controller.init = function() {
+    console.log("test3Controller init");
+}
+test3Controller.enter = function() {
+    console.log("test3Controller enter");
+}
+test3Controller.leave = function() {
+    console.log("test3Controller leave");
+}
+
+var edificiosController = "";
+
+// Performs a GET
+var routes1 = {
+    router_name: "gestion_tabs",
+    container: "#theDiv1",
+    sections: {
+        conjunto: { get: "http://localhost/routing/test.html", ctrl: "test1Controller" },
+        edificios: { get: "http://localhost/routing/test2.html", ctrl: "test2Controller" },
+        mapa: { get: "gestion/mapa", ctrl: "mapaController" },
+        error: { get: "gestion/error" }
+    }
+};
+
+// Hides all divs in show extept the actual section show.
+var routes2 = {
+    router_name: "right_column",
+    default_section: "filters",
+    sections: {
+        filters: { show: "#filters", ctrl: "test3Controller" },
+        view: { show: "#view" },
+    }
+};
+
+// With container specified, removes all content of the divs in shows and copies the value of
+// the selected section inside the container div.
+var routes3 = {
+    router_name: "right_column",
+    container: "#theDiv1",
+    default_section: "filters",
+    sections: {
+        filters: { show: "#filters", ctrl: "test3Controller" },
+        view: { show: "#view" },
+    }
+};
+
+
+nkrouting.set_routes( routes1 );
+nkrouting.set_routes( routes2 );
+
+
+</script>
+
+<a href="#" onclick="nkrouting.go('gestion_tabs', 'conjunto')">Test1<a>
+<a href="#" onclick="nkrouting.go('gestion_tabs', 'edificios')">Test2<a>
+
+<a href="#" onclick="nkrouting.go('right_column', 'filters')">Test3<a>
+<a href="#" onclick="nkrouting.go('right_column', 'view')">Test4<a>
