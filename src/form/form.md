@@ -1,7 +1,7 @@
 # NKForm
 
 
-getFields( form_selector )
+getFields()
 ----------------------------------------------------------------------------
 List all form inputs and their values.
 
@@ -37,14 +37,24 @@ JS
         my_description="Hello Scott",  
         my_eye_color="brown"
      }
-     
+
+**Params:**
+
+getFields( form_selector, json_output )
+
+| param | Values | Mandatory | Description |
+|:---|:---|:---|:---|
+| form_selector | '#myForm', '.myForm', 'input[name=myForm]', etc. | Yes | The form id, class or name in JQuery format. |
+| json_output | true, false | No | If true returns the outout in json format, if not as JS Object. |
+
+
 **Config:**
 
 | Variable | Default | Values | Description |
 |:---|:---|:---|:---|
 | NKForm.errors.duplicated_fields | true | true, false | Throw error if form have a duplicated input field name.
 
-setFields( form_selector, fields_data )
+setFields()
 ----------------------------------------------------------------------------
 Initialize form fields.
 
@@ -57,8 +67,25 @@ JS
      }
      
      NKForm.setFields( '#my_form', field_data );
-     
-     
+
+**Params:**
+
+setFields( form_selector, form_data, json_output )
+
+| param | Values | Mandatory | Description |
+|:---|:---|:---|:---|
+| form_selector | '#myForm', '.myForm', 'input[name=myForm]', etc. | Yes | The form id, class or name in JQuery format. |
+| form_data | Object or JSON string | Yes | The form data to fill. 
+| json_output | true, false | No | True if form_data is JSON, false if it's an Object. |
+
+
+**Config:**
+
+| Variable | Default | Values | Description |
+|:---|:---|:---|:---|
+| NKForm.errors.invalid_json | true | true, false | Throw error if json_output is true and form_data is not a valid json.
+
+
 Preserve fields after page reload.
 ----------------------------------------------------------------------------
 HTML
@@ -84,12 +111,12 @@ HTML
 JS
 
     // Get the field data from session storage.
-    NKForm.setFields('#my_form', sessionStorage.getItem('stored_fields') );
+    NKForm.setFields('#my_form', sessionStorage.getItem('stored_fields'), true );
 
     function reloadPage() {
         // Store data to session storage.
-        sessionStorage.setItem('stored_fields', NKForm.getFields('#my_form') );
+        sessionStorage.setItem('stored_fields', NKForm.getFields('#my_form', true) );
         location.reload();
     }
 
-Note: You can use localStorage instead of sessionStorage
+Note: You can use localStorage instead of sessionStorage.

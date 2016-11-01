@@ -17,10 +17,10 @@
 
 <script>
 
-    NKForm.setFields('#my_form', sessionStorage.getItem('stored_fields') );
+    NKForm.setFields('#my_form', sessionStorage.getItem('stored_fields'), true );
 
     function reloadPage() {
-        sessionStorage.setItem('stored_fields', NKForm.getFields('#my_form') );
+        sessionStorage.setItem('stored_fields', NKForm.getFields('#my_form', true) );
         location.reload();
     }
 
