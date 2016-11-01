@@ -1,0 +1,17 @@
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../form.js" ></script>
+
+<form id="my_form">
+    Name: <input type="text" name="my_name" value="Scott"><br>
+    Description: <textarea name="my_description" >Hello Scott</textarea><br>
+    Eye color:
+    <select name="my_eye_color">
+        <option value="brown">Brown</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+    </select>
+</form>
+
+<script>
+    console.log( NKForm.getFields('#my_form') );
+</script>
