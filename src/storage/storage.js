@@ -4,13 +4,12 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before storage.js";
 }
 
-NKStorage.p = {};
-NKStorage.np = {};
+NKStorage.p = null;
+NKStorage.np = null;
 
 
 NKStorage.save = function( force ) {
     if ( force === true ) {
-        console.log("Entra");
         localStorage.setItem( 'NKStorage', JSON.stringify(NKStorage.p) );
         sessionStorage.setItem( 'NKStorage', JSON.stringify(NKStorage.np) );
         NKStorage.saveOnLeave = false;
@@ -29,7 +28,7 @@ NKStorage.start = function() {
 
     if ( !NK.isset(NKStorage.p) ) {
         localStorage.setItem( 'NKStorage', JSON.stringify('{}') );
-        NKStorage.p = {};
+        NKStorage.p = JSON.parse('{}');
     }
 
     try {
@@ -38,7 +37,7 @@ NKStorage.start = function() {
 
     if ( !NK.isset(NKStorage.np) ) {
         sessionStorage.setItem( 'NKStorage', JSON.stringify('{}') );
-        NKStorage.np = {};
+        NKStorage.np = JSON.parse('{}');
     }
 
     NKStorage.loaded = true;
@@ -48,6 +47,5 @@ NKStorage.start = function() {
 window.onbeforeunload = function (e) {
     if ( NKStorage.saveOnLeave == true) {
         NKStorage.save( true );
-        console.log("NKStorage Save");
     }
 };
