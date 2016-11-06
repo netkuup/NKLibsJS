@@ -11,3 +11,12 @@ NK.empty = function(variable) {
     if ( variable.length == 0 ) return true;
     return false;
 };
+
+NK.autoload = function( modules ) {
+
+    for( var i = 0; i < modules.length; i++ ) {
+        if ( typeof modules[i].start !== 'undefined' ) {
+            modules[i].start();
+        }
+    }
+};

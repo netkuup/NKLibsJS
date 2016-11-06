@@ -1,7 +1,7 @@
 # NKForm
 
 
-getFields()
+NKForm.getFields()
 ----------------------------------------------------------------------------
 List all form inputs and their values.
 
@@ -40,7 +40,7 @@ JS
 
 **Params:**
 
-getFields( form_selector, json_output )
+NKForm.getFields( form_selector, json_output )
 
 | param | Values | Mandatory | Description |
 |:---|:---|:---|:---|
@@ -54,7 +54,7 @@ getFields( form_selector, json_output )
 |:---|:---|:---|:---|
 | NKForm.errors.duplicated_fields | true | true, false | Throw error if form have a duplicated input field name.
 
-setFields()
+NKForm.setFields()
 ----------------------------------------------------------------------------
 Initialize form fields.
 
@@ -70,7 +70,7 @@ JS
 
 **Params:**
 
-setFields( form_selector, form_data, json_output )
+NKForm.setFields( form_selector, form_data, json_output )
 
 | param | Values | Mandatory | Description |
 |:---|:---|:---|:---|
@@ -119,4 +119,4 @@ JS
         location.reload();
     }
 
-Note: You can use localStorage instead of sessionStorage.
+Note: You can use localStorage, sessionStorage or NKStorage.
