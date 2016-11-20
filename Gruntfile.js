@@ -1,24 +1,33 @@
 module.exports = function(grunt) {
 
-    // Project configuration.
     grunt.initConfig({
         uglify: {
             my_target: {
                 files: {
-                    'nklibsjs.min.js':
+                    'nklibsjss.min.js':
                         [
                             'src/base/base.js',
                             'src/**/*.js'
                         ]
                 }
             }
+        },
+        cssmin: {
+            my_target: {
+                files: {
+                    'nklibsjss.min.css':
+                        [
+                            'src/**/*.css'
+                        ]
+                }
+            }
         }
     });
 
-    // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-    // Default task(s).
-    grunt.registerTask('default', ['uglify']);
+
+    grunt.registerTask('default', ['uglify', 'cssmin']);
 
 };
