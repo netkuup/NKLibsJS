@@ -44,8 +44,12 @@ NKStorage.start = function() {
 };
 
 // On page leave
+NKStorage.oldLeaveHandler = window.onbeforeunload;
 window.onbeforeunload = function (e) {
+    if (NKStorage.oldLeaveHandler) NKStorage.oldLeaveHandler(e);
+
     if ( NKStorage.saveOnLeave == true) {
         NKStorage.save( true );
     }
 };
+

@@ -1,0 +1,10 @@
+{
+  "//": "Run 'npm install' and then 'grunt'",
+  "name": "NKLibsJS",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-cssmin": "*"
+  }
+}
