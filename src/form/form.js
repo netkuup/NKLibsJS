@@ -17,12 +17,25 @@ NKForm.getFields = function( form_selector, json ) {
     $( form_selector + ' :input' ).each(function() {
         if ( NK.empty(this.name) ) return;
 
-        if ( NKForm.errors.duplicated_fields && NK.isset(values[this.name]) ) {
-            throw( 'NKForm.getFields: Duplicated input field with name (' + this.name + ')' );
+        if ( this.name.slice(-2) === "[]" ) {
+            var field_name = this.name.substr(0, this.name.length-2);
+
+            if ( !NK.isset(values[field_name]) ) values[field_name] = [];
+
+            values[field_name].push($(this).val());
+
+        } else {
+
+            if ( NKForm.errors.duplicated_fields && NK.isset(values[this.name]) ) {
+                throw( 'NKForm.getFields: Duplicated input field with name (' + this.name + ')' );
+            }
+
+            values[this.name] = $(this).val();
         }
 
-        values[this.name] = $(this).val();
     });
+
+    console.log(values);
 
     if ( json === true ) return JSON.stringify(values);
     return values;
