@@ -9,7 +9,9 @@ NKForm.errors = {
     invalid_json: true
 };
 
-
+// TODO change to getInputs
+// TODO Works with textarea's ? Are not inputs..
+// TODO Best if elements have class NKField
 NKForm.getFields = function( form_selector, json ) {
 
     var values = {};
@@ -35,13 +37,10 @@ NKForm.getFields = function( form_selector, json ) {
 
     });
 
-    console.log(values);
-
     if ( json === true ) return JSON.stringify(values);
     return values;
 
 };
-
 
 NKForm.setFields = function( form_selector, field_data, json ) {
     if ( NK.empty(field_data) ) return;
@@ -62,3 +61,24 @@ NKForm.setFields = function( form_selector, field_data, json ) {
     });
 
 };
+
+
+NKForm.send = function( form_selector, url, callback ) {
+
+    $.post(
+        url,
+        NKForm.getFields(form_selector),
+        function( data, status ) {
+
+            if( NK.isset(callback) ) {
+                callback( data, status );
+            } else {
+                location.reload();
+            }
+
+        }
+    );
+
+};
+
+
