@@ -7,6 +7,9 @@ if ( typeof NK === 'undefined' ) {
 
 NKLoader.setSelector = function( loader_selector, error_selector ) {
 
+    $(loader_selector).css('display', 'none');
+    $(error_selector).css('display', 'none');
+
     window.setInterval(function(){
         if ($.active > 0) {
             $(loader_selector).css('display', 'block');
