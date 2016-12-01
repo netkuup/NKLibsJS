@@ -23,7 +23,28 @@ When click on element with '.NKDel_btn', the first parent with '.NKDel_dst' will
     <div class="NKDel_dst NKBStick">
         This site uses cookies. <a class="NKDel_btn NKLink">Close</a>
     </div>
-    
+
+NKToggle
+----------------------------------------------------------------------------
+When click on element with '.NKToggle_btn', the nearest element with '.NKToggle_dst' will be toggled.
+
+    <div>
+        <div class="NKToggle_dst">
+            Hello world.
+        </div>
+        <a class="NKToggle_btn NKLink">Toggle</a>
+    </div>
+
+If we use '.NKReact' after 'NKToggle_btn', the text 'Foo' will be automatically changed to 'Show' or 'Hide'.
+
+    <div>
+        <div class="NKToggle_dst">
+            Hello world.
+        </div>
+        <a class="NKToggle_btn NKReact NKLink">Foo</a>
+    </div>
+
+
 NKTemplate
 ----------------------------------------------------------------------------
 * When click '<i>.NKTemplate_btn.T1</i>' the element '<i>.NKTemplate_src.T1</i>' will be copied and appended to '<i>.NKTemplate_dst.T1</i>'

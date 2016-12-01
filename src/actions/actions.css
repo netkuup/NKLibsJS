@@ -1,3 +1,7 @@
 .NKTemplate_src {
     display: none;
 }
+
+.NKHidden {
+    display: none;
+}
