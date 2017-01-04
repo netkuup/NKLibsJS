@@ -120,3 +120,24 @@ JS
     }
 
 Note: You can use localStorage, sessionStorage or NKStorage.
+
+NKForm.fileChooser()
+----------------------------------------------------------------------------
+Opens a file chooser.
+
+JS
+    
+    function showFile( filePath ) {
+        console.log("Selected file path: ", filePath);
+    }
+    
+    NKForm.fileChooser( showFile, ".gif,.jpg,.jpeg,.png,.doc,.docx" );
+
+**Params:**
+
+NKForm.fileChooser( callback, extension_list )
+
+| param | Values | Mandatory | Description |
+|:---|:---|:---|:---|
+| callback | Function | Yes | Function called when a file is selected. |
+| extension_list | String | No | The allowed file extensions. Example: ".gif,.jpg,.jpeg,.png,.doc,.docx"

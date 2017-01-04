@@ -82,3 +82,13 @@ NKForm.send = function( form_selector, url, callback ) {
 };
 
 
+// ExtensionList = accept=".gif,.jpg,.jpeg,.png,.doc,.docx";
+NKForm.fileChooser = function( callback, extension_list ) {
+    extension_list = extension_list || "";
+    $('body').append('<input type="file" id="tmpfile" accept="'+extension_list+'">');
+    var element = document.getElementById("tmpfile");
+    element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
+    $('#tmpfile').trigger('click');
+    element.parentNode.removeChild(element);
+};
+
