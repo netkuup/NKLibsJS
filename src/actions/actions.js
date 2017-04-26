@@ -1,7 +1,7 @@
 var NKActions = {};
 
 if ( typeof NK === 'undefined' ) {
-    throw "You must include base.js before storage.js";
+    throw "You must include base.js before actions.js";
 }
 
 
@@ -27,17 +27,30 @@ NKActions.refresh = function() {
     });
 
     // TODO In test phase.
+    function reactLabel( orig, dst ) {
+        var labelName = $(orig).html();
+        if ( labelName.toLowerCase().startsWith("hide") || labelName.toLowerCase().startsWith("show") ) {
+            labelName = labelName.substring(4);
+        }
+        if ( labelName.length > 0 && !labelName.startsWith(" ") ) labelName = " " + labelName;
+
+        if ( dst.is(':visible') ) {
+            $(orig).html("Hide" + labelName);
+        } else {
+            $(orig).html("Show" + labelName);
+        }
+        console.log("entra");
+    }
+
     $('.NKToggle_btn').off().on('click', function(){
         var e = $(this).siblings('.NKToggle_dst');
         e.toggle();
-        if ( $(this).hasClass('NKReact') ) {
-            e.is(':visible') ? $(this).html("Hide") : $(this).html("Show");
-        }
+        if ( $(this).hasClass('NKReact') ) reactLabel(this, e);
     });
 
     $('.NKToggle_btn.NKReact').each(function() {
         var e = $(this).siblings('.NKToggle_dst');
-        e.is(':visible') ? $(this).html("Hide") : $(this).html("Show");
+        reactLabel(this, e);
     });
 
     $('.NKTemplate_btn').off().on('click', function(){
