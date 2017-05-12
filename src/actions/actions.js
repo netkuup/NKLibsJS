@@ -15,6 +15,7 @@ NKActions.start = function( ) {
     NKActions.loaded = true;
 };
 
+// TODO Allow auto-refresh when DOM changes.
 
 NKActions.refresh = function() {
 
@@ -26,7 +27,6 @@ NKActions.refresh = function() {
         $(this).closest('.NKDel_dst').remove();
     });
 
-    // TODO In test phase.
     function reactLabel( orig, dst ) {
         var labelName = $(orig).html();
         if ( labelName.toLowerCase().startsWith("hide") || labelName.toLowerCase().startsWith("show") ) {
