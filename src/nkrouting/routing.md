@@ -1,6 +1,6 @@
 # NKRouting
 
-[See the ./examples directory](./Examples)
+[See the ./examples directory](./examples)
 
 Router type 1
 ----------------------------------------------------------------------------

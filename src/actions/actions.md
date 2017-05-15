@@ -7,11 +7,15 @@ To use any function of this document, you **must** call this funtion **once**.
 
     NKActions.start();
 
+If the HTML document content changes dinamically (Javascript, etc.) you must set 'reactable = true' so that the library will automatically detect the changes and work with the new content.
+
+    NKActions.start(true);
+
 NKHide
 ----------------------------------------------------------------------------
 When click on element with '.NKHide_btn', the first parent with '.NKHide_dst' will be hidden.
 
-    <div class="NKHide_dst NKBStick">
+    <div class="NKHide_dst NKStickBO">
         This site uses cookies. <a class="NKHide_btn NKLink">Close</a>
     </div>
 
@@ -20,7 +24,7 @@ NKDel
 ----------------------------------------------------------------------------
 When click on element with '.NKDel_btn', the first parent with '.NKDel_dst' will be deleted.
 
-    <div class="NKDel_dst NKBStick">
+    <div class="NKDel_dst NKStickBO">
         This site uses cookies. <a class="NKDel_btn NKLink">Close</a>
     </div>
 
@@ -47,6 +51,7 @@ If we use '.NKReact' after 'NKToggle_btn', the text 'Foo' will be automatically 
 
 NKTemplate
 ----------------------------------------------------------------------------
+* __Note:__ This method will be deprecated or improved in the near future. I do not recommend using it.
 * When click '<i>.NKTemplate_btn.T1</i>' the element '<i>.NKTemplate_src.T1</i>' will be copied and appended to '<i>.NKTemplate_dst.T1</i>'
 * The next class of '<i>NKTemplate_</i>', in this case '<i>T1</i>' is a template name of your choice.
 

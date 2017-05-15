@@ -1,12 +1,9 @@
-var NKRouting = new NK_routing();
+var NKRouting = {
+    routes: []
+};
 
-// TODO Use same structure.
 
-function NK_routing() {
-    this.routes = [];
-}
-
-NK_routing.prototype.get_url = function() {
+NKRouting.get_url = function() {
     return [
         window.location.protocol + "//",
         window.location.host,
@@ -16,10 +13,10 @@ NK_routing.prototype.get_url = function() {
     ];
 };
 
-NK_routing.prototype.set_routes = function( routes ) {
+NKRouting.set_routes = function( routes ) {
     NKRouting.routes[ routes.router_name ] = routes;
 
-    if ( isset(routes.default_section) ) {
+    if ( NK.isset(routes.default_section) ) {
         $(document).ready(function(){
             NKRouting.go( routes.router_name, routes.default_section );
         });
@@ -27,25 +24,25 @@ NK_routing.prototype.set_routes = function( routes ) {
 };
 
 
-NK_routing.prototype.go = function( router_name, section ) {
+NKRouting.go = function( router_name, section ) {
 
-    if ( !isset(NKRouting.routes[router_name]) ) {
+    if ( !NK.isset(NKRouting.routes[router_name]) ) {
         console.error( "Routes for", router_name, "not set.");
         return;
     }
 
     var ruta = NKRouting.routes[router_name].sections[section];
 
-    if ( !isset(ruta) ) {
+    if ( !NK.isset(ruta) ) {
         console.error( "Routes for", router_name, "->", section, "not set.");
         return;
     }
 
     
-    if ( isset(ruta.get) ) {
+    if ( NK.isset(ruta.get) ) {
         NKRouting._perform_get( router_name, section );
 
-    } else if ( isset(ruta.show) ) {
+    } else if ( NK.isset(ruta.show) ) {
         NKRouting._perform_show( router_name, section );
 
     }
@@ -56,12 +53,12 @@ NK_routing.prototype.go = function( router_name, section ) {
 };
 
 
-NK_routing.prototype._perform_show = function( router_name, section ) {
+NKRouting._perform_show = function( router_name, section ) {
 
     var container = NKRouting.routes[router_name].container;
     var sections = NKRouting.routes[router_name].sections;
 
-    if ( !isset(container) ) {
+    if ( !NK.isset(container) ) {
         for ( var auxSection in sections ) {
             $(sections[auxSection].show).hide();
         }
@@ -69,7 +66,7 @@ NK_routing.prototype._perform_show = function( router_name, section ) {
         $(sections[section].show).show();
     } else {
         
-        if ( !isset(sections[section].content) ) {
+        if ( !NK.isset(sections[section].content) ) {
             for ( var auxSection in sections ) {
                 sections[auxSection].content = $(sections[auxSection].show).html();
                 $(sections[auxSection].show).html("");
@@ -86,13 +83,13 @@ NK_routing.prototype._perform_show = function( router_name, section ) {
 };
 
 
-NK_routing.prototype._perform_get = function( router_name, section ) {
+NKRouting._perform_get = function( router_name, section ) {
 
     var sectionObj = NKRouting.routes[router_name].sections[section];
 
-    if ( isset(sectionObj.loading) ) return;
+    if ( NK.isset(sectionObj.loading) ) return;
 
-    if ( !isset(sectionObj.content) ) {
+    if ( !NK.isset(sectionObj.content) ) {
         sectionObj.loading = true;
 
         $.ajax({
@@ -115,7 +112,7 @@ NK_routing.prototype._perform_get = function( router_name, section ) {
 
 
 
-NK_routing.prototype._replace_content = function( router_name, section ) {
+NKRouting._replace_content = function( router_name, section ) {
 
     var container = NKRouting.routes[router_name].container;
     var content = NKRouting.routes[router_name].sections[section].content;
@@ -126,15 +123,15 @@ NK_routing.prototype._replace_content = function( router_name, section ) {
 };
 
 
-NK_routing.prototype._run_controller = function( router_name, section ) {
+NKRouting._run_controller = function( router_name, section ) {
     var router = NKRouting.routes[router_name];
     var ruta = NKRouting.routes[router_name].sections[section];
     var controller_init = ruta.ctrl + ".init";
     var controller_enter = ruta.ctrl + ".enter";
 
-    if ( isset(router.last_section) ) {
+    if ( NK.isset(router.last_section) ) {
         var last_controller = NKRouting.routes[router_name].sections[router.last_section].ctrl;
-        if ( isset(last_controller) ) {
+        if ( NK.isset(last_controller) ) {
             if ( eval('typeof ' + last_controller + ".leave") === 'function' ) {
                 eval( last_controller + ".leave()" );
             }
@@ -142,9 +139,9 @@ NK_routing.prototype._run_controller = function( router_name, section ) {
     }
     router.last_section = section;
 
-    if ( !isset(ruta.ctrl) ) return;
+    if ( !NK.isset(ruta.ctrl) ) return;
 
-    var first_time = !isset( ruta.loaded );
+    var first_time = !NK.isset( ruta.loaded );
     ruta.loaded = true;
 
     if ( first_time ) {
@@ -160,8 +157,3 @@ NK_routing.prototype._run_controller = function( router_name, section ) {
 };
 
 
-
-
-function isset( variable ) {
-    return (typeof variable !== 'undefined');
-}

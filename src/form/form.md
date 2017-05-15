@@ -1,5 +1,5 @@
 # NKForm
-[See the ./examples directory](./Examples)
+[See the ./examples directory](./examples)
 
 NKForm.getFields()
 ----------------------------------------------------------------------------

@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <title>NKRouting example</title>
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="../../base/base.js"></script>
     <script src="../nkrouting.js"></script>
 </head>
 
 <body>
 
-<div id="theDiv1" style=" border: 1px solid black;">
-    Sections container.
+<div style="border: 1px solid black;">
+
+    <div id="theDiv1"> Sections container. </div>
+
 </div>
-<div id="theDiv2" style=" border: 1px solid black;">
-    Section 1
-</div>
-<div id="theDiv3" style=" border: 1px solid black;">
-    Section 2
-</div>
+
+<div id="theDiv2"> Section 1 </div>
+<div id="theDiv3"> Section 2 </div>
+
 
 <a href="#" onclick="NKRouting.go('myThirdRuter', 'sectionOne')">Show section one</a>
 <a href="#" onclick="NKRouting.go('myThirdRuter', 'sectionTwo')">Show section two</a>

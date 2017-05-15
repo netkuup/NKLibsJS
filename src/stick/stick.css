@@ -1,6 +1,11 @@
 .NKStickBO {
     position: fixed;
     bottom: 0px;
+    width: 100%;
 }
 
-/* TODO Implement */
+.NKStickTO {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+}

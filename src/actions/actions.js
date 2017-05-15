@@ -5,19 +5,20 @@ if ( typeof NK === 'undefined' ) {
 }
 
 
-NKActions.start = function( ) {
+NKActions.start = function( reactable ) {
     if ( NK.isset(NKActions.loaded) && NKActions.loaded === true ) return;
 
-    window.onload = function () {
-        NKActions.refresh();
-    };
+    window.addEventListener('load', NKActions.reload );
+
+    if ( reactable === true ) {
+        NK.core.reloadOnDomChange( NKActions );
+    }
     
     NKActions.loaded = true;
 };
 
-// TODO Allow auto-refresh when DOM changes.
 
-NKActions.refresh = function() {
+NKActions.reload = function() {
 
     $('.NKHide_btn').off().on('click', function(){
         $(this).closest('.NKHide_dst').hide();

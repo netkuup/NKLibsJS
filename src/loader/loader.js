@@ -4,7 +4,6 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before loader.js";
 }
 
-// TODO Documentation & examples
 
 NKLoader.setSelector = function( loader_selector, error_selector ) {
 
