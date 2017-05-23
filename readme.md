@@ -30,6 +30,5 @@ Daily use JavaScript function set.
 1. Make the corresponding changes in .js files.
 2. Create the minified files with the following commands:
 
-
-    # npm install
-    # grunt
+        # npm install
+        # grunt
