@@ -37,6 +37,7 @@ Shared JavaScript code for all the examples:
 NKRouter - Hiding system
 ----------------------------------------------------------------------------
 Hides all divs extept the active section.
+[Example](./examples/Example_2.html)
 
 HTML
 
@@ -73,6 +74,7 @@ JS
 NKRouter - Get system
 ----------------------------------------------------------------------------
 Performs a GET
+[Example](./examples/Example_1.html)
 
 HTML
 
@@ -102,6 +104,7 @@ NKRouter - DOM system
 ----------------------------------------------------------------------------
 Removes the contents of all divs and saves it to a DOM variable.
 The stored html will be copied to the active secction.
+[Example](./examples/Example_3.html)
 
 HTML
 
