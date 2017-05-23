@@ -1,0 +1,52 @@
+.NKTemplate_src {
+    display: none;
+}
+
+.NKHidden {
+    display: none;
+}
+.NKLink {
+    color: #0000EE;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.NKUrl {
+    color: #0000EE;
+    cursor: pointer;
+}
+
+.NKUnlink {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.NKUnselectable {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently not supported by any browser */
+    cursor: default;
+}
+
+.NKBtn {
+    cursor: pointer;
+}
+
+.NKWFSize {
+    width: 100%;
+}
+.NKStickBO {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+.NKStickTO {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+}

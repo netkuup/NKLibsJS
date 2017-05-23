@@ -5,6 +5,8 @@
   "devDependencies": {
     "grunt": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-contrib-cssmin": "*"
+    "grunt-contrib-cssmin": "*",
+    "grunt-concat-css": "*",
+    "grunt-contrib-concat": "*"
   }
 }

@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         uglify: {
             my_target: {
                 files: {
-                    'nklibsjss.min.js':
+                    'nklibsjs.min.js':
                         [
                             'src/base/base.js',
                             'src/**/*.js'
@@ -15,19 +15,39 @@ module.exports = function(grunt) {
         cssmin: {
             my_target: {
                 files: {
-                    'nklibsjss.min.css':
+                    'nklibsjs.min.css':
                         [
                             'src/**/*.css'
                         ]
                 }
             }
+        },
+        concat: {
+            options: {
+                separator: ';'
+            },
+            dist: {
+                src: ['src/base/base.js', 'src/**/*.js'],
+                dest: 'nklibsjs.js'
+            }
+        },
+        concat_css: {
+            options: {
+                // Task-specific options go here. 
+            },
+            all: {
+                src: ['src/**/*.css'],
+                dest: 'nklibsjs.css'
+            }
         }
+
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-
-
-    grunt.registerTask('default', ['uglify', 'cssmin']);
+    grunt.loadNpmTasks('grunt-concat-css');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    
+    grunt.registerTask('default', ['uglify', 'cssmin', 'concat_css', 'concat']);
 
 };
