@@ -141,3 +141,6 @@ NKForm.fileChooser( callback, extension_list )
 |:---|:---|:---|:---|
 | callback | Function | Yes | Function called when a file is selected. |
 | extension_list | String | No | The allowed file extensions. Example: ".gif,.jpg,.jpeg,.png,.doc,.docx"
+
+
+[<< Index](../../../../)

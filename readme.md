@@ -11,6 +11,7 @@ Daily use JavaScript function set.
 ## Index
 * [NKBase](./src/base/base.md)
 * [NKActions](./src/actions/actions.md)
+* [NKPosition](./src/position/position.md)
 * [NKForm](./src/form/form.md)
 * [NKCast](./src/cast/cast.md)
 * [NKStick](./src/stick/stick.md)

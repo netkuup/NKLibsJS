@@ -126,15 +126,20 @@ if ( typeof NK === 'undefined' ) {
 
 NKCast.intByteArray = {
     // [65, 66] => "AB" (Utf 8 or 16)
-    toUtf16String: function( data ) {
+    toUtf8String: function( data ) {
         var result = '';
         for ( var i = 0; i < data.length; i++ ) {
             if ( data[i] < 0 || data[i] > 255 ) {
-                console.error("Error NKCast.intByteArray.toUtf16String(): ("+data[i]+") Out of range [0..255]");
+                console.error("Error NKCast.intByteArray.toUtf8String(): ("+data[i]+") Out of range [0..255]");
             }
             result += String.fromCharCode( data[i] );
         }
         return result;
+    },
+
+    toUtf16String: function( data ) {
+        // The input is 8 bit.
+        return NKCast.intByteArray.toUtf8String( data );
     },
     
     // [65, 66] => "0x41 0x42" | "41 42" | "4142" ...
@@ -325,7 +330,68 @@ NKLoader.setSelector = function( loader_selector, error_selector ) {
 
 
 
-;var NKRouting = {
+;var NKPosition = {};
+
+if ( typeof NK === 'undefined' ) {
+    throw "You must include base.js before position.js";
+}
+
+
+NKPosition.start = function() {
+    if ( NK.isset(NKPosition.loaded) && NKPosition.loaded === true ) return;
+    NKPosition.loaded = true;
+
+    NKPosition.mouse = [0,0];
+
+    window.addEventListener('mousemove', function (event) {
+        NKPosition.mouse = [event.clientX, event.clientY];
+    }, true);
+
+};
+
+
+NKPosition.getMouse = function( absolute ) {
+    if ( absolute === true ) return NKPosition.mouse;
+    return [ NKPosition.mouse[0] + window.scrollX, NKPosition.mouse[1] + window.scrollY ];
+};
+
+NKPosition.getMouseX = function() {
+    if ( absolute === true ) return NKPosition.mouse[0];
+    return NKPosition.mouse[0] + window.scrollX;
+};
+
+NKPosition.getMouseY = function() {
+    if ( absolute === true ) return NKPosition.mouse[1];
+    return NKPosition.mouse[1] + window.scrollY;
+};
+
+NKPosition.getScroll = function() {
+    return [window.scrollX, window.scrollY];
+};
+
+NKPosition.getScrollX = function() {
+    return window.scrollX;
+};
+
+NKPosition.getScrollY = function() {
+    return window.scrollY;
+};
+;
+// -------------------------------------------------------------------------
+// String
+// -------------------------------------------------------------------------
+
+// Escape html characters.
+String.prototype.escape = function() {
+    var tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return this.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+};;var NKRouting = {
     routes: []
 };
 
@@ -484,22 +550,7 @@ NKRouting._run_controller = function( router_name, section ) {
 };
 
 
-;
-// -------------------------------------------------------------------------
-// String
-// -------------------------------------------------------------------------
-
-// Escape html characters.
-String.prototype.escape = function() {
-    var tagsToReplace = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;'
-    };
-    return this.replace(/[&<>]/g, function(tag) {
-        return tagsToReplace[tag] || tag;
-    });
-};;var NKStick = {};
+;var NKStick = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before stick.js";

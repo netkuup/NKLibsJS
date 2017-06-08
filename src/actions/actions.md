@@ -78,3 +78,5 @@ Example 2:
     <a class="NKTemplate_btn list2">Add element to list 2</a>
     
 Note: 'NKTemplate_btn [template_name]' only can contain one template name.
+
+[<< Index](../../../../)
