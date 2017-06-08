@@ -8,6 +8,10 @@ Returns false if any of these conditions are met:
 - variable == null
 
 
+        var foo = "bar";
+        if ( NK.isset(foo) ) console.log( "Is set" );
+
+
 NK.empty( variable )
 ----------------------------------------------------------------------------
 Returns false if any of these conditions are met:

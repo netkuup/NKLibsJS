@@ -1,12 +1,17 @@
 # NKStorage
 An easy way to **store and retrieve local data** from the browser session. (localStorage/sessionStorage)
 
+- __Persistent storage__: Persists until explicitly deleted.
+- __Non persistent storage__: Closing the browser window clears the storage.
+
 
 Initialization
 ----------------------------------------------------------------------------
 To use NKStorage, you **must** call this funtion **once** at the beginning.
 
     NKStorage.start();
+
+Note: Multiple calls to this function have no effect.
 
 Read data
 ----------------------------------------------------------------------------
@@ -50,7 +55,7 @@ About NKStorage.save()
 ----------------------------------------------------------------------------
 This function will save 'NKStorage.p' to localStorage and 'NKStorage.np' to sessionStorage **WHEN THE USER LEAVES** the current page, tab, etc. 
 
-    NKStorage.save(); //It can be called multiple times and only runs once.
+    NKStorage.save(); //It can be called multiple times and only runs once when user leaves current page.
 
 If you want to force save the data **WHEN THE FUNCTION IS CALLED** use:
 
@@ -62,5 +67,5 @@ NKStorage.save( force )
 
 | param | Values | Mandatory | Description |
 |:---|:---|:---|:---|
-| force | true/*false* | No | If false saves the data when the user leaves the page. Default: false. |
+| force | true/**false** | No | If false saves the data when the user leaves the page. |
 

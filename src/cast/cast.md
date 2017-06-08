@@ -5,9 +5,11 @@ NKCast.intByteArray
 ----------------------------------------------------------------------------
 A __intByte__ Its a 8 bit integer [0..255].
 
-- __Utf16String__: NKCast.intByteArray.toUtf16String( data )
+- __Utf8String / Utf16String__: NKCast.intByteArray.toUtf8String( data ) / .toUtf16String( data )
 
         [65, 66] => "AB" (Utf 8 or 16)
+
+    **Note:** Utf16String and Utf8String are the same functions since the input is an intByteArray.
 
 - __HexString__: NKCast.intByteArray.toHexString( data, startWith0x, addSpaces )
 

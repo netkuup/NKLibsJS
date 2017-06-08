@@ -6,15 +6,20 @@ if ( typeof NK === 'undefined' ) {
 
 NKCast.intByteArray = {
     // [65, 66] => "AB" (Utf 8 or 16)
-    toUtf16String: function( data ) {
+    toUtf8String: function( data ) {
         var result = '';
         for ( var i = 0; i < data.length; i++ ) {
             if ( data[i] < 0 || data[i] > 255 ) {
-                console.error("Error NKCast.intByteArray.toUtf16String(): ("+data[i]+") Out of range [0..255]");
+                console.error("Error NKCast.intByteArray.toUtf8String(): ("+data[i]+") Out of range [0..255]");
             }
             result += String.fromCharCode( data[i] );
         }
         return result;
+    },
+
+    toUtf16String: function( data ) {
+        // The input is 8 bit.
+        return NKCast.intByteArray.toUtf8String( data );
     },
     
     // [65, 66] => "0x41 0x42" | "41 42" | "4142" ...
