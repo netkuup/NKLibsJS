@@ -31,7 +31,7 @@ Makes a text look like a link.
 - Underline
 
 
-    <div class="NKLink">It looks like a link</div>
+        <div class="NKLink">It looks like a link</div>
 
 .NKUrl
 ----------------------------------------------------------------------------

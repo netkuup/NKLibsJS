@@ -1,0 +1,28 @@
+.NKPopup_dst {
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    padding: 3px 5px 5px 5px;
+    border-radius: 2px;
+    max-width: 500px;
+}
+
+.NKPopup_src {
+    cursor: pointer;
+}
+
+.NKPopup_arrow_fill {
+    position: absolute;
+    left: 50%;
+    border: 0px solid transparent;
+    border-width: 20px 10px 0px 10px; /* Height Width/2 0 Width/2*/
+
+}
+
+.NKPopup_arrow_stroke {
+    position: absolute;
+    left: 50%;
+    border: 0px solid transparent;
+    border-width: 20px 10px 0px 10px; /* Height Width/2 0 Width/2*/
+
+}

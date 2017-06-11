@@ -26,21 +26,32 @@ NK.core.reloadOnDomChange = function( module ) {
 
         MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
+        NK.core.MutationObserverOffset = 1;
+
         NK.core.MutationObserver = new MutationObserver(function(mutations, observer) {
+            if ( NK.core.MutationObserverOffset > 0 ) {
+                NK.core.MutationObserverOffset--;
+                return;
+            }
 
             for( var i = 0; i < NK.core.reactableModules.length; i++ ) {
                 if ( typeof NK.core.reactableModules[i].reload !== 'undefined' ) {
                     NK.core.reactableModules[i].reload();
                 }
             }
-            
+
         });
 
-        NK.core.MutationObserver.observe( document, {subtree: true} );
+        NK.core.MutationObserver.observe( document, {subtree: true, childList: true} );
 
     }
 
 };
+
+NK.core.ignoreMutations = function( numMutations ) {
+    if ( NK.isset(NK.core.MutationObserver) ) NK.core.MutationObserverOffset += numMutations;
+};
+
 
 
 /*

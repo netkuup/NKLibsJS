@@ -12,6 +12,7 @@ Daily use JavaScript function set.
 * [NKBase](./src/base/base.md)
 * [NKActions](./src/actions/actions.md)
 * [NKPosition](./src/position/position.md)
+* [NKPopup](./src/popup/popup.md)
 * [NKForm](./src/form/form.md)
 * [NKCast](./src/cast/cast.md)
 * [NKStick](./src/stick/stick.md)
