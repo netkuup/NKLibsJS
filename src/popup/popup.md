@@ -1,7 +1,12 @@
 # NKPopup
 Easy popup creation
 
+Demo & Examples
+----------------------------------------------------------------------------
 [See the ./examples directory](./examples)
+
+[Live demo](https://codepen.io/Netkuup/pen/WOGgbp)
+
 
 Initialization
 ----------------------------------------------------------------------------

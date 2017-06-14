@@ -1,6 +1,10 @@
 # NKActions
 A set of helpers for basic user actions.
 
+Demo
+----------------------------------------------------------------------------
+[Live demo](https://codepen.io/Netkuup/pen/PjGdbG)
+
 Initialization
 ----------------------------------------------------------------------------
 To use any function of this document, you **must** call this funtion **once**.
@@ -19,6 +23,7 @@ When click on element with '.NKHide_btn', the first parent with '.NKHide_dst' wi
         This site uses cookies. <a class="NKHide_btn NKLink">Close</a>
     </div>
 
+[Live demo](https://codepen.io/Netkuup/pen/PjGdbG)
 
 NKDel
 ----------------------------------------------------------------------------
@@ -39,6 +44,8 @@ When click on element with '.NKToggle_btn', the nearest element with '.NKToggle_
         <a class="NKToggle_btn NKLink">Toggle</a>
     </div>
 
+[Live demo](https://codepen.io/Netkuup/pen/PjGdbG)
+
 If we use '.NKReact' after 'NKToggle_btn', the text 'Foo' will be automatically changed to 'Show' or 'Hide'.
 
     <div>
@@ -48,6 +55,7 @@ If we use '.NKReact' after 'NKToggle_btn', the text 'Foo' will be automatically 
         <a class="NKToggle_btn NKReact NKLink">Foo</a>
     </div>
 
+[Live demo](https://codepen.io/Netkuup/pen/PjGdbG)
 
 NKTemplate
 ----------------------------------------------------------------------------

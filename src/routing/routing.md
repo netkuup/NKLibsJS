@@ -39,6 +39,8 @@ NKRouter - Hiding system
 Hides all divs extept the active section.
 [Example](./examples/Example_2.html)
 
+[Live demo](https://codepen.io/Netkuup/pen/yXaRar)
+
 HTML
 
     <div id="theDiv1" style=" border: 1px solid black;">
@@ -105,6 +107,8 @@ NKRouter - DOM system
 Removes the contents of all divs and saves it to a DOM variable.
 The stored html will be copied to the active secction.
 [Example](./examples/Example_3.html)
+
+[Live demo](https://codepen.io/Netkuup/pen/MojPpN)
 
 HTML
 

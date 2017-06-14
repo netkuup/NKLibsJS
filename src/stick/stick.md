@@ -19,6 +19,9 @@ When page content is large you must make stroll to see. When the content is shor
 
         </html>
 
+[Live demo 1](https://codepen.io/Netkuup/pen/wezYPY) -
+[Live demo 2](https://codepen.io/Netkuup/pen/OgRBzw)
+
 .NKStickBO (Bottom Overlapped)
 ----------------------------------------------------------------------------
 Always visible on bottom, above the web content.
@@ -27,6 +30,7 @@ Always visible on bottom, above the web content.
         This site uses cookies.
     </div>
 
+[Live demo](https://codepen.io/Netkuup/pen/XgjxZX)
 
 .NKStickBD (Bottom Dynamic)
 ----------------------------------------------------------------------------
@@ -34,7 +38,7 @@ The element can be anywhere on the page, on scroll never will be hided.
 
     <div class="NKStickBD">I never hide</div>
 
-
+[Live demo](https://codepen.io/Netkuup/pen/eRdPGm)
 
 
 .NKStickTN (Top Normal)
@@ -58,5 +62,6 @@ The element can be anywhere on the page, on scroll never will be hided.
 
     <div class="NKStickTD">I never hide</div>
 
+[Live demo](https://codepen.io/Netkuup/pen/GEjYQd)
 
 [<< Index](../../../../)

@@ -23,6 +23,10 @@ Returns false if any of these conditions are met:
 # Base CSS
 A set of basic styles
 
+Demo
+----------------------------------------------------------------------------
+[Live demo](https://codepen.io/Netkuup/pen/RgGewV)
+
 .NKLink
 ----------------------------------------------------------------------------
 Makes a text look like a link.
