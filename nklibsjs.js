@@ -53,6 +53,7 @@ NK.core.ignoreMutations = function( numMutations ) {
 };
 
 
+window.addEventListener("load", function () { window.loaded = true; });
 
 /*
 NK.autoload = function( modules ) {
@@ -74,6 +75,7 @@ NKActions.start = function( reactable ) {
     if ( NK.isset(NKActions.loaded) && NKActions.loaded === true ) return;
 
     window.addEventListener('load', NKActions.reload );
+    if ( window.loaded === true ) NKActions.reload();
 
     if ( reactable === true ) {
         NK.core.reloadOnDomChange( NKActions );
@@ -205,6 +207,57 @@ NKCast.utf8String = {
     }
 };
 
+;var NKDrag = {};
+
+//if ( typeof NK === 'undefined' ) {
+//    throw "You must include base.js before drag.js";
+//}
+
+NKDrag.selection = { element: null };
+
+NKDrag.start = function( reactable ) {
+    if ( NK.isset(NKDrag.loaded) && NKDrag.loaded === true ) return;
+    NKDrag.loaded = true;
+
+    if ( typeof NKPosition === 'undefined' ) {
+        throw "You must include position.js before drag.js";
+        return;
+    }
+    NKPosition.start();
+
+    window.addEventListener('load', NKDrag.reload );
+    if ( window.loaded === true ) NKDrag.reload();
+
+    if ( reactable === true ) {
+        NK.core.reloadOnDomChange( NKDrag );
+    }
+
+    $(document).on('mousemove', function() {
+        if ( NKDrag.selection.element != null ) {
+            NKDrag.selection.element.offset({
+                left: NKPosition.getMouseX() - NKDrag.selection.offset[0],
+                top: NKPosition.getMouseY() - NKDrag.selection.offset[1]
+            });
+        }
+    });
+};
+
+NKDrag.reload = function() {
+
+    $('.NKDrag_src').on('mousedown', function() {
+        NKDrag.selection.element = $(this).closest('.NKDrag_dst');
+        NKDrag.selection.offset = NKPosition.getMouse();
+
+        var pos = NKDrag.selection.element.offset();
+        NKDrag.selection.offset[0] -= pos.left;
+        NKDrag.selection.offset[1] -= pos.top;
+    });
+
+    $('.NKDrag_src').on('mouseup', function() {
+        NKDrag.selection.element = null;
+    });
+
+};
 ;var NKForm = {};
 
 if ( typeof NK === 'undefined' ) {
@@ -292,10 +345,18 @@ NKForm.send = function( form_selector, url, callback ) {
 // ExtensionList = accept=".gif,.jpg,.jpeg,.png,.doc,.docx";
 NKForm.fileChooser = function( callback, extension_list ) {
     extension_list = extension_list || "";
-    $('body').append('<input type="file" id="tmpfile" accept="'+extension_list+'">');
-    var element = document.getElementById("tmpfile");
+    $('body').append('<input type="file" id="NKtmpfile" accept="'+extension_list+'">');
+    var element = document.getElementById("NKtmpfile");
     element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
-    $('#tmpfile').trigger('click');
+    $('#NKtmpfile').trigger('click');
+    element.parentNode.removeChild(element);
+};
+
+NKForm.dirChooser = function( callback ) {
+    $('body').append('<input type="file" id="NKtmpfile" webkitdirectory directory multiple/>');
+    var element = document.getElementById("NKtmpfile");
+    element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
+    $('#NKtmpfile').trigger('click');
     element.parentNode.removeChild(element);
 };
 
@@ -364,6 +425,7 @@ NKPopup.start = function( reactable ) {
     NKPosition.start();
 
     window.addEventListener('load', NKPopup.reload );
+    if ( window.loaded === true ) NKPopup.reload();
 
     if ( reactable === true ) {
         NK.core.reloadOnDomChange( NKPopup );
@@ -599,16 +661,19 @@ NKPosition.start = function() {
 
 
 NKPosition.getMouse = function( absolute ) {
+    absolute = absolute || false;
     if ( absolute === true ) return NKPosition.mouse;
     return [ NKPosition.mouse[0] + window.scrollX, NKPosition.mouse[1] + window.scrollY ];
 };
 
-NKPosition.getMouseX = function() {
+NKPosition.getMouseX = function( absolute ) {
+    absolute = absolute || false;
     if ( absolute === true ) return NKPosition.mouse[0];
     return NKPosition.mouse[0] + window.scrollX;
 };
 
-NKPosition.getMouseY = function() {
+NKPosition.getMouseY = function( absolute ) {
+    absolute = absolute || false;
     if ( absolute === true ) return NKPosition.mouse[1];
     return NKPosition.mouse[1] + window.scrollY;
 };

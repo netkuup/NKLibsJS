@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKDrag example.</title>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../../nklibsjs.js" ></script>
+        <link rel="stylesheet" type="text/css" href="../../../nklibsjs.css"/>
+    </head>
+
+    <body>
+
+
+        <div id="my_window" class="NKDrag_dst">
+            <div id="my_window_header" class="NKDrag_src NKUnselectable">
+                Drag me
+            </div>
+            <div id="my_window_content">
+                Window content<br>
+                Window content
+            </div>
+        </div>
+
+        <script>
+            NKDrag.start();
+        </script>
+
+        <style>
+            #my_window {
+                border: 1px solid black;
+            }
+            #my_window_header {
+                background-color: blue;
+                color: white;
+            }
+        </style>
+
+
+
+    </body>
+
+</html>
+
+
+

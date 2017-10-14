@@ -53,6 +53,7 @@ NK.core.ignoreMutations = function( numMutations ) {
 };
 
 
+window.addEventListener("load", function () { window.loaded = true; });
 
 /*
 NK.autoload = function( modules ) {

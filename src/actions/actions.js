@@ -9,6 +9,7 @@ NKActions.start = function( reactable ) {
     if ( NK.isset(NKActions.loaded) && NKActions.loaded === true ) return;
 
     window.addEventListener('load', NKActions.reload );
+    if ( window.loaded === true ) NKActions.reload();
 
     if ( reactable === true ) {
         NK.core.reloadOnDomChange( NKActions );

@@ -19,16 +19,19 @@ NKPosition.start = function() {
 
 
 NKPosition.getMouse = function( absolute ) {
+    absolute = absolute || false;
     if ( absolute === true ) return NKPosition.mouse;
     return [ NKPosition.mouse[0] + window.scrollX, NKPosition.mouse[1] + window.scrollY ];
 };
 
-NKPosition.getMouseX = function() {
+NKPosition.getMouseX = function( absolute ) {
+    absolute = absolute || false;
     if ( absolute === true ) return NKPosition.mouse[0];
     return NKPosition.mouse[0] + window.scrollX;
 };
 
-NKPosition.getMouseY = function() {
+NKPosition.getMouseY = function( absolute ) {
+    absolute = absolute || false;
     if ( absolute === true ) return NKPosition.mouse[1];
     return NKPosition.mouse[1] + window.scrollY;
 };

@@ -1,0 +1,6 @@
+.NKDrag_dst {
+    position: absolute;
+}
+.NKDrag_src {
+    cursor: move;
+}

@@ -39,6 +39,12 @@
 .NKWFSize {
     width: 100%;
 }
+.NKDrag_dst {
+    position: absolute;
+}
+.NKDrag_src {
+    cursor: move;
+}
 .NKPopup_dst {
     position: absolute;
     border: 1px solid black;

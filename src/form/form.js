@@ -85,10 +85,18 @@ NKForm.send = function( form_selector, url, callback ) {
 // ExtensionList = accept=".gif,.jpg,.jpeg,.png,.doc,.docx";
 NKForm.fileChooser = function( callback, extension_list ) {
     extension_list = extension_list || "";
-    $('body').append('<input type="file" id="tmpfile" accept="'+extension_list+'">');
-    var element = document.getElementById("tmpfile");
+    $('body').append('<input type="file" id="NKtmpfile" accept="'+extension_list+'">');
+    var element = document.getElementById("NKtmpfile");
     element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
-    $('#tmpfile').trigger('click');
+    $('#NKtmpfile').trigger('click');
+    element.parentNode.removeChild(element);
+};
+
+NKForm.dirChooser = function( callback ) {
+    $('body').append('<input type="file" id="NKtmpfile" webkitdirectory directory multiple/>');
+    var element = document.getElementById("NKtmpfile");
+    element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
+    $('#NKtmpfile').trigger('click');
     element.parentNode.removeChild(element);
 };
 

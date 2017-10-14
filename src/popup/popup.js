@@ -21,6 +21,7 @@ NKPopup.start = function( reactable ) {
     NKPosition.start();
 
     window.addEventListener('load', NKPopup.reload );
+    if ( window.loaded === true ) NKPopup.reload();
 
     if ( reactable === true ) {
         NK.core.reloadOnDomChange( NKPopup );

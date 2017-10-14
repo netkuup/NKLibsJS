@@ -16,6 +16,7 @@ Daily use JavaScript function set.
 * [NKForm](./src/form/form.md)
 * [NKCast](./src/cast/cast.md)
 * [NKStick](./src/stick/stick.md)
+* [NKDrag](./src/dragdrop/drag.md)
 * [NKLoader](./src/loader/loader.md)
 * [NKStorage](./src/storage/storage.md)
 * [NKRouting](./src/routing/routing.md)
@@ -30,7 +31,7 @@ Daily use JavaScript function set.
 ## Build sources
 
 1. Make the corresponding changes in .js files.
-2. Create the minified files with the following commands:
+2. Create the minified files using the following commands:
 
         # npm install
         # grunt
