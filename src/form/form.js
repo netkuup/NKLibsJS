@@ -32,7 +32,14 @@ NKForm.getFields = function( form_selector, json ) {
                 throw( 'NKForm.getFields: Duplicated input field with name (' + this.name + ')' );
             }
 
-            values[this.name] = $(this).val();
+            var type = $(this).attr('type');
+
+            if ( type === 'checkbox' ) {
+                values[this.name] = $(this).prop('checked');
+            } else {
+                values[this.name] = $(this).val();
+            }
+
         }
 
     });
@@ -55,8 +62,15 @@ NKForm.setFields = function( form_selector, field_data, json ) {
     }
 
     $( form_selector + ' :input' ).each(function() {
-        if ( !NK.empty(field_data[this.name]) )
+        if ( NK.empty(field_data[this.name]) ) return;
+
+        var type = $(this).attr('type');
+
+        if ( type === 'checkbox' ) {
+            $(this).prop('checked', (/^(true|1)$/i).test(field_data[this.name]));
+        } else {
             $(this).val( field_data[this.name] );
+        }
 
     });
 
