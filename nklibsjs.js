@@ -336,6 +336,21 @@ NKForm.setFields = function( form_selector, field_data, json ) {
 
 };
 
+NKForm.clearFields = function( form_selector ) {
+
+    $( form_selector + ' :input' ).each(function() {
+        var type = $(this).attr('type');
+
+        if ( type === 'checkbox' ) {
+            $(this).prop('checked', false);
+        } else {
+            $(this).val("");
+        }
+
+    });
+
+};
+
 
 NKForm.send = function( form_selector, url, callback ) {
 
