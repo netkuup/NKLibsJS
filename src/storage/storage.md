@@ -4,6 +4,10 @@ An easy way to **store and retrieve local data** from the browser session. (loca
 - __Persistent storage__: Persists until explicitly deleted.
 - __Non persistent storage__: Closing the browser window clears the storage.
 
+Demo & Examples
+----------------------------------------------------------------------------
+[See the ./examples directory](./examples)
+
 
 Initialization
 ----------------------------------------------------------------------------

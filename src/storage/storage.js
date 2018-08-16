@@ -27,7 +27,7 @@ NKStorage.start = function() {
     } catch (e) {}
 
     if ( !NK.isset(NKStorage.p) ) {
-        localStorage.setItem( 'NKStorage', JSON.stringify('{}') );
+        localStorage.setItem( 'NKStorage', JSON.stringify({}) );
         NKStorage.p = JSON.parse('{}');
     }
 
@@ -36,11 +36,18 @@ NKStorage.start = function() {
     } catch (e) {}
 
     if ( !NK.isset(NKStorage.np) ) {
-        sessionStorage.setItem( 'NKStorage', JSON.stringify('{}') );
+        sessionStorage.setItem( 'NKStorage', JSON.stringify({}) );
         NKStorage.np = JSON.parse('{}');
     }
 
     NKStorage.loaded = true;
+};
+
+NKStorage.clear = function() {
+    localStorage.setItem( 'NKStorage', JSON.stringify({}) );
+    NKStorage.p = JSON.parse('{}');
+    sessionStorage.setItem( 'NKStorage', JSON.stringify({}) );
+    NKStorage.np = JSON.parse('{}');
 };
 
 // On page leave
@@ -48,7 +55,7 @@ NKStorage.oldLeaveHandler = window.onbeforeunload;
 window.onbeforeunload = function (e) {
     if (NKStorage.oldLeaveHandler) NKStorage.oldLeaveHandler(e);
 
-    if ( NKStorage.saveOnLeave == true) {
+    if ( NKStorage.saveOnLeave === true) {
         NKStorage.save( true );
     }
 };

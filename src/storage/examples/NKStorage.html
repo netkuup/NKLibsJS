@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Get form fields example.</title>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../base/base.js" ></script>
+        <link rel="stylesheet" type="text/css" href="../../base/base.css"/>
+        <script type="text/javascript" src="../storage.js" ></script>
+    </head>
+
+    <body>
+
+        <div id="my_div" contenteditable>Modify this text and reload the page, the new text will persist.</div>
+
+        <br /><br />
+
+        <div id="reset_btn" class="NKLink">Reset text</div>
+
+
+        <script>
+
+            NKStorage.start();
+
+            $('#my_div').text( NKStorage.p.div_content );
+
+            $('#my_div').keyup( function(e) {
+                NKStorage.p.div_content = $(this).text();
+                NKStorage.save();
+            });
+
+            $('#reset_btn').on('click', function() {
+                NKStorage.clear();
+                location.reload();
+            });
+
+        </script>
+
+
+
+    </body>
+
+</html>
+
+
+
