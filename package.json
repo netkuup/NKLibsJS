@@ -2,7 +2,7 @@
   "//": "Run 'npm install' and then 'grunt'",
   "name": "NKLibsJS",
   "version": "0.1.0",
-  "repositpory": "https://github.com/netkuup/NKLibsJS.git",
+  "repository": "https://github.com/netkuup/NKLibsJS.git",
   "devDependencies": {
     "grunt": "^1.2.1",
     "grunt-concat-css": "^0.3.2",

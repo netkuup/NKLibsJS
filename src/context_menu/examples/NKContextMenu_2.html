@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Context menu example</title>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../base/base.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../base/base.css"/>
+        <script type="text/javascript" src="../context_menu.js"></script>
+        <link rel="stylesheet" type="text/css" href="../context_menu.css"/>
+        <script type="text/javascript" src="../../position/position.js"></script>
+    </head>
+
+    <body>
+
+        Right click anywhere <br /><br />
+
+        <div id="NKContextMenu">
+            <div class="NKItem" data-id="1">
+                <div class="NKIcon"></div>
+                <div class="NKTitle">Delete</div>
+            </div>
+            <div class="NKItem NKArrow" data-id="2">
+                <div class="NKIcon"></div>
+                <div class="NKTitle">New</div>
+
+                <div class="NKSubmenu" data-id="3">
+                    <div class="NKItem" data-id="4">
+                        <div class="NKIcon"></div>
+                        <div class="NKTitle">File</div>
+                    </div>
+                    <div class="NKItem" data-id="5">
+                        <div class="NKIcon"></div>
+                        <div class="NKTitle">Folder</div>
+                    </div>
+                </div>
+            </div>
+            <div class="NKDivider"></div>
+            <div class="NKItem" data-id="6">
+                <div class="NKIcon"></div>
+                <div class="NKTitle">Update</div>
+            </div>
+        </div>
+
+    </body>
+
+
+    <script>
+
+        NKContextMenu.start();
+
+        NKContextMenu.addEventListener('onOpen', function( data ) {
+            console.log( "Open context menu", data );
+
+        });
+
+        NKContextMenu.addEventListener('onClose', function( data ) {
+            console.log( "Close context menu", data );
+        });
+
+
+    </script>
+
+
+</html>
+
+
+

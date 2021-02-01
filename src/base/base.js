@@ -12,6 +12,37 @@ NK.empty = function(variable) {
     return false;
 };
 
+function NKEventListener() {
+    this.events = {};
+
+    this.addEventListener = function ( name, func ) {
+        if ( !NK.isset(this.events[name]) ) this.events[name] = [];
+
+        this.events[name].push( func );
+    }
+
+    this.removeEventListener = function ( name, func ) {
+        for ( var i = 0; i < this.events[name].length; i++ ) {
+            var ev = this.events[name][i];
+
+            if ( ev === func ) {
+                this.events[name].splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    this.dispatchEvent = function ( name, data ) {
+        if ( !NK.isset(this.events[name]) ) return;
+
+        for ( var i = 0; i < this.events[name].length; i++ ) {
+            var ev = this.events[name][i];
+            ev( data );
+        }
+
+    }
+}
+
 
 NK.core = {};
 
