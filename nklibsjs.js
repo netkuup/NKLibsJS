@@ -270,16 +270,25 @@ NKContextMenu.start = function() {
 
     $('#NKContextMenu').hide();
 
+    var lastTarget = null;
+
     document.addEventListener('contextmenu', function (e){
         var target = e.target;
+        lastTarget = target;
 
         NKContextMenu.dispatchEvent('onOpen', {target: target});
 
-        $('#NKContextMenu').show();
-        $('#NKContextMenu .NKSubmenu').hide();
-        $("#NKContextMenu").css('left', NKPosition.getMouseX());
-        $("#NKContextMenu").css('top', NKPosition.getMouseY());
-        e.preventDefault();
+        if ( $('#NKContextMenu').children().length === 0 ) {
+            $('#NKContextMenu').hide();
+
+        } else {
+            $('#NKContextMenu').show();
+            $('#NKContextMenu .NKSubmenu').hide();
+            $("#NKContextMenu").css('left', NKPosition.getMouseX());
+            $("#NKContextMenu").css('top', NKPosition.getMouseY());
+            e.preventDefault();
+        }
+
     });
 
     document.addEventListener('mouseup', function (e){
@@ -290,11 +299,12 @@ NKContextMenu.start = function() {
             NKContextMenu.dispatchEvent('onClose', {
                 id: target.getAttribute('data-id'),
                 text: $(target).children('.NKTitle').text(),
-                target: target
+                target: lastTarget,
+                button: target
             });
 
         } else {
-            NKContextMenu.dispatchEvent('onClose', {id: null, target: null});
+            NKContextMenu.dispatchEvent('onClose', {id: null, target: lastTarget, button: null});
 
         }
 
@@ -364,7 +374,7 @@ NKContextMenu.setContent = function( content ) {
         return item_list;
     }
 
-    newContent = fillData( content );
+    if ( !NK.empty(content) ) newContent = fillData( content );
 
     var wrapper = $("#NKContextMenu");
     wrapper.empty();
