@@ -292,6 +292,7 @@ NKContextMenu.start = function() {
     });
 
     document.addEventListener('mouseup', function (e){
+        if ( e.button === 2 ) return; //Right click
         if ( !$('#NKContextMenu').is(":visible") ) return;
         var target = e.target;
 
