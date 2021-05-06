@@ -21,6 +21,7 @@ Daily use JavaScript function set.
 * [NKLoader](./src/loader/loader.md)
 * [NKStorage](./src/storage/storage.md)
 * [NKRouting](./src/routing/routing.md)
+* [NKModal](./src/modal/modal.md)
 
 
 ## Recommended external libraries

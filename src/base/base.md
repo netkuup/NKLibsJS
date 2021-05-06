@@ -20,7 +20,7 @@ Returns false if any of these conditions are met:
 - variable.length == 0 (Works with strings and arrays)
 
 
-# Base CSS
+# NKBase CSS
 A set of basic styles
 
 Demo
@@ -63,5 +63,13 @@ Make an element look like a button.
 ----------------------------------------------------------------------------
 Element width full size.
 - Width: 100%
+
+# NKBase Icons
+
+.NKCloseIcon
+----------------------------------------------------------------------------
+Close icon floated right
+
+    <i class="NKCloseIcon"></i>
 
 [<< Index](../../../../)

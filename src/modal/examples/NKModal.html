@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Modal example</title>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../base/base.css"/>
+    <script type="text/javascript" src="../modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="../modal.css"/>
+</head>
+
+<body>
+
+    <button onclick="openModal()">Open Modal</button>
+
+    <div id="my_content" hidden>
+        The content <br />
+        The content <br />
+        The content <br />
+        The content <br />
+        The content <br />
+    </div>
+
+    <script>
+        function openModal() {
+            NKModal.show('my_content');
+        }
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+

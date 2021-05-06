@@ -32,3 +32,23 @@
 .NKWFSize {
     width: 100%;
 }
+
+.NKCloseIcon {
+    color: #aaaaaa;
+    float: right;
+    margin: -12px -5px 0px 0px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.NKCloseIcon:before {
+    content: "×";
+}
+
+.NKCloseIcon:hover,
+.NKCloseIcon:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
