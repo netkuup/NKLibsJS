@@ -663,16 +663,16 @@ NKModal.show = function ( div_id ) {
 
     if ( modal_content.length === 0 ) {
         let close_icon = NKModal.config.add_close_icon ? '<i class="NKCloseIcon"></i>' : '';
-        let new_html = '<div class="NKModal">' +
+        let new_html = '<div class="NKModal ' + div_id + '">' +
             '            <div class="NKContent">' +
             '                ' + close_icon +
-            '                <div id="' + div_id + '"></div>' +
-            '                    ' + $( id ).html() +
-            '                </div>' +
             '            </div>' +
             '        </div>';
 
-        $( id ).replaceWith( new_html );
+        $( id ).after( new_html );
+        $( id ).appendTo( ".NKModal." + div_id + " .NKContent" );
+        $( id ).show();
+
         NKModal.reload();
     }
 
