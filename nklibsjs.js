@@ -1222,9 +1222,24 @@ NKStick.reload = function() {
     $('.NKStickTD').removeClass('NKStickTO');
 
     $.each( $('.NKStickTD'), function( key, value ) {
-        if ( scroll_top > $(this).offset().top ) {
-            $('.NKStickTD').addClass('NKStickTO');
+
+        if ( $(this).css('position') === "fixed" ) {
+            var top = parseInt($(this).css('top'));
+
+            if ( scroll_top < top ) {
+                $(this).css('margin-top', -scroll_top );
+            } else {
+                $(this).css('margin-top', -top );
+            }
+
+        } else {
+            if ( scroll_top > $(this).offset().top ) {
+                $('.NKStickTD').addClass('NKStickTO');
+            }
+
         }
+
+
     });
 
 
