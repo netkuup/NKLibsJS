@@ -11,8 +11,7 @@ NKDrag.start = function( reactable ) {
     NKDrag.loaded = true;
 
     if ( typeof NKPosition === 'undefined' ) {
-        throw "You must include position.js before drag.js";
-        return;
+        throw "You must include position.js";
     }
     NKPosition.start();
 

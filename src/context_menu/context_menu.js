@@ -14,7 +14,7 @@ NKContextMenu.start = function() {
     NKContextMenu.loaded = true;
 
     if ( typeof NKPosition === 'undefined' ) {
-        throw "You must include position.js before popup.js";
+        throw "You must include position.js";
     }
     NKPosition.start();
 

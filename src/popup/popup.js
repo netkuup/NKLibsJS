@@ -15,8 +15,7 @@ NKPopup.start = function( reactable ) {
     NKPopup.loaded = true;
 
     if ( typeof NKPosition === 'undefined' ) {
-        throw "You must include position.js before popup.js";
-        return;
+        throw "You must include position.js";
     }
     NKPosition.start();
 

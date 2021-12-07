@@ -169,6 +169,61 @@
     border-width: 20px 10px 0px 10px; /* Height Width/2 0 Width/2*/
 
 }
+#NKContextMenu {
+    position: absolute;
+    border: 1px solid #CCCCCC;
+    background-color: #F0F0F0;
+    min-width: 250px;
+    box-shadow: 2px 2px #888888;
+}
+#NKContextMenu .NKItem {
+    cursor: pointer;
+    padding: 3px 30px 3px 5px;
+    white-space: nowrap;
+}
+
+#NKContextMenu .NKTitle {
+    display: inline-block;
+    pointer-events: none; /* Detecta el click en el div de debajo */
+}
+
+#NKContextMenu .NKIcon {
+    display: inline-block;
+    pointer-events: none;
+}
+
+#NKContextMenu .NKItem:hover {
+    background-color: #91C9F7;
+}
+
+#NKContextMenu .NKDivider {
+    background-color: #D7D7D7;
+    height: 1px;
+    width: 96%;
+    margin: 0 auto;
+}
+
+#NKContextMenu .NKSubmenu {
+    position: absolute;
+    background-color: #F0F0F0;
+    border: 1px solid #CCCCCC;
+    margin-top: -15px;
+    box-shadow: 2px 2px #888888;
+}
+
+
+#NKContextMenu .NKArrow::before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    right: 12px;
+    margin-top: 4px;
+    transform: rotate(45deg);
+    box-shadow: 3px -3px 0px #888888;
+    pointer-events: none;
+}
 .NKStickBO {
     position: fixed;
     bottom: 0px;
