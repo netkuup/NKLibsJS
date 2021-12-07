@@ -58,6 +58,11 @@ function NKEventListener() {
 }
 
 
+if ( !NK.isset(() => $) ) {
+    throw "Error, you must include jquery before using NKLibsJS";
+}
+
+
 NK.core = {};
 
 NK.core.reloadOnDomChange = function( module ) {
