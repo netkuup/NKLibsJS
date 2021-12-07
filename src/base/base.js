@@ -17,9 +17,14 @@ NK.isset = function( variable ) {
 NK.empty = function(variable) {
     if ( !NK.isset(variable) ) return true;
     if ( typeof variable === 'function' ) variable = variable();
-    if ( variable.length == 0 ) return true;
+    if ( variable.length === 0 ) return true;
     return false;
 };
+
+NK.backtrace = function ( msg = "" ) {
+    let backtrace = new Error().stack.split("\n").slice(2).join("\n");
+    console.log("Backtrace: " + msg + "\n" + backtrace);
+}
 
 function NKEventListener() {
     this.events = {};

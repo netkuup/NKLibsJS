@@ -26,6 +26,12 @@ Returns false if any of these conditions are met:
 - variable.length == 0 (Works with strings and arrays)
 
 
+NK.backtrace( message )
+----------------------------------------------------------------------------
+Prints the current backtrace to the console. An optional message can be indicated.
+
+
+
 # NKBase CSS
 A set of basic styles
 
