@@ -28,6 +28,7 @@ NKResize.start = function( reactable ) {
 
         $(this).children('div').each(function ( j ) {
             $(this).attr('nk-i', j);
+            $(this).css( 'overflow', 'hidden' );
             var size = $(this).attr('nk-width');
             size = NK.empty(size) ? "auto" : size;
             sizes.push( size );
@@ -42,6 +43,7 @@ NKResize.start = function( reactable ) {
 
         $(this).children('div').each(function ( j ) {
             $(this).attr('nk-i', j);
+            $(this).css( 'overflow', 'hidden' );
             var size = $(this).attr('nk-height');
             size = NK.empty(size) ? "auto" : size;
             sizes.push( size );
