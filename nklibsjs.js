@@ -1063,6 +1063,7 @@ NKResize.start = function( reactable ) {
 
         $(this).css( 'display', 'grid' );
         $(this).css( 'grid-template-columns', sizes.join(" ") );
+        $(this).css( 'overflow', 'hidden' );
     });
 
     $( ".NKDrag_rows" ).each(function( i ) {
@@ -1078,6 +1079,7 @@ NKResize.start = function( reactable ) {
 
         $(this).css( 'display', 'grid' );
         $(this).css( 'grid-template-rows', sizes.join(" ") );
+        $(this).css( 'overflow', 'hidden' );
     });
 
     window.addEventListener('load', NKResize.reload );
