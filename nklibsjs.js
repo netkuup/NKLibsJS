@@ -1050,6 +1050,22 @@ NKResize.start = function( reactable ) {
     }
     NKPosition.start();
 
+    window.addEventListener('load', NKResize.reload );
+    if ( window.loaded === true ) NKResize.reload();
+
+    if ( reactable === true ) {
+        NK.core.reloadOnDomChange( NKResize );
+    }
+
+};
+
+NKResize.reload = function() {
+    var self = this;
+    $('.NKDrag_colums').off();
+    $('.NKDrag_rows').off();
+    $('.NKDrag_colums div').off();
+    $('.NKDrag_rows div').off();
+
     $( ".NKDrag_colums" ).each(function( i ) {
         var sizes = [];
 
@@ -1081,19 +1097,6 @@ NKResize.start = function( reactable ) {
         $(this).css( 'grid-template-rows', sizes.join(" ") );
         $(this).css( 'overflow', 'hidden' );
     });
-
-    window.addEventListener('load', NKResize.reload );
-    if ( window.loaded === true ) NKResize.reload();
-
-    if ( reactable === true ) {
-        NK.core.reloadOnDomChange( NKResize );
-    }
-
-};
-
-NKResize.reload = function() {
-    var self = this;
-    $('.NKDrag_colums').off();
 
     NKResize.resizing_vertical_element = null;
     NKResize.resizing_horizontal_element = null;
