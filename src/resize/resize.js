@@ -100,7 +100,7 @@ NKResize.reload = function() {
             }
         }
 
-        return new_columns.join(" ");
+        return new_columns;
     }
 
 
@@ -137,8 +137,13 @@ NKResize.reload = function() {
                 var parent = $(r_v_e).parent();
                 var border_right = parseInt($(r_v_e).css("border-right-width").slice(0, -2));
                 var new_width = NKResize.start_size[0] + (mouse_pos[0] - NKResize.start_pos[0]) + border_right;
+                var new_sizes = calculateSizes(parent, $(r_v_e), new_width, true);
 
-                parent.css('grid-template-columns', calculateSizes(parent, $(r_v_e), new_width, true));
+                parent.css('grid-template-columns', new_sizes.join(" "));
+                parent.children('div').each(function ( i ) {
+                    $(this).attr('nk-width', new_sizes[i]);
+                });
+
 
                 $(this).css('cursor', NKResize.config.column_resize_cursor);
 
@@ -146,8 +151,12 @@ NKResize.reload = function() {
                 var parent = $(r_h_e).parent();
                 var border_bottom = parseInt($(r_h_e).css("border-bottom-width").slice(0, -2));
                 var new_height = NKResize.start_size[1] + (mouse_pos[1] - NKResize.start_pos[1]) + border_bottom;
+                var new_sizes = calculateSizes(parent, $(r_h_e), new_height, false);
 
-                parent.css('grid-template-rows', calculateSizes(parent, $(r_h_e), new_height, false));
+                parent.css('grid-template-rows', new_sizes.join(" "));
+                parent.children('div').each(function ( i ) {
+                    $(this).attr('nk-height', new_sizes[i]);
+                });
 
                 $(this).css('cursor', NKResize.config.row_resize_cursor);
 
