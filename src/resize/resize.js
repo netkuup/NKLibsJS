@@ -36,8 +36,8 @@ NKResize.reload = function() {
     var self = this;
     $('.NKDrag_colums').off();
     $('.NKDrag_rows').off();
-    $('.NKDrag_colums div').off();
-    $('.NKDrag_rows div').off();
+    $('.NKDrag_colums').children('div').off();
+    $('.NKDrag_rows').children('div').off();
 
     $( ".NKDrag_colums" ).each(function( i ) {
         var sizes = [];
@@ -129,6 +129,9 @@ NKResize.reload = function() {
                 NKResize.start_size = div_size;
             }
 
+            // Disable iframe interactions while dragging
+            $("iframe").addClass( "NKResize_disable_temp" );
+
         } else if ( action === 'mousemove' ) {
             var r_v_e = NKResize.resizing_vertical_element;
             var r_h_e = NKResize.resizing_horizontal_element;
@@ -204,6 +207,7 @@ NKResize.reload = function() {
             NKResize.resizing_vertical_element = null;
             NKResize.resizing_horizontal_element = null;
             $(this).css('cursor', '');
+            $("iframe").removeClass( "NKResize_disable_temp" );
         }
 
        // console.log("diff_pos", diff_pos);
