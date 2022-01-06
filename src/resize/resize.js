@@ -219,11 +219,11 @@ NKResize.reload = function() {
         $(this).css('cursor', '');
     });
 
-    $('.NKDrag_colums div')
+    $('.NKDrag_colums').children('div')
         .on('mousemove', onMouse)
         .on('mousedown', onMouse)
         .on('mouseup', onMouse);
-    $('.NKDrag_rows div')
+    $('.NKDrag_rows').children('div')
         .on('mousemove', onMouse)
         .on('mousedown', onMouse)
         .on('mouseup', onMouse);
