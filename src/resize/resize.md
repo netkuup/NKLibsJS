@@ -19,7 +19,7 @@ Example columns
 ----------------------------------------------------------------------------
 
 
-    <div class="NKDrag_colums" style="height: 200px;">
+    <div class="NKDrag_columns" style="height: 200px;">
         <div nk-width="300px" style="background-color: green; border-right: 11px solid black;">
             Zone 1
         </div>

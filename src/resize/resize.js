@@ -34,12 +34,12 @@ NKResize.start = function( reactable ) {
 
 NKResize.reload = function() {
     var self = this;
-    $('.NKDrag_colums').off();
+    $('.NKDrag_columns').off();
     $('.NKDrag_rows').off();
-    $('.NKDrag_colums').children('div').off();
+    $('.NKDrag_columns').children('div').off();
     $('.NKDrag_rows').children('div').off();
 
-    $( ".NKDrag_colums" ).each(function( i ) {
+    $( ".NKDrag_columns" ).each(function( i ) {
         var sizes = [];
 
         $(this).children('div').each(function ( j ) {
@@ -121,16 +121,16 @@ NKResize.reload = function() {
                 NKResize.start_columns = $(this).parent().css('grid-template-columns').split(" ");
                 NKResize.start_pos = mouse_pos;
                 NKResize.start_size = div_size;
+                $('.NKDrag_columns').children('div').children().addClass( "NKResize_disable_temp" );
             }
             if ( in_horizontal_border && !is_last_child ) {
                 NKResize.resizing_horizontal_element = this;
                 NKResize.start_rows = $(this).parent().css('grid-template-rows').split(" ");
                 NKResize.start_pos = mouse_pos;
                 NKResize.start_size = div_size;
+                $('.NKDrag_rows').children('div').children().addClass( "NKResize_disable_temp" );
             }
 
-            // Disable iframe interactions while dragging
-            $("iframe").addClass( "NKResize_disable_temp" );
 
         } else if ( action === 'mousemove' ) {
             var r_v_e = NKResize.resizing_vertical_element;
@@ -164,10 +164,10 @@ NKResize.reload = function() {
                 $(this).css('cursor', NKResize.config.row_resize_cursor);
 
             } else {
-                if ( in_vertical_border && !is_last_child ) {
+                if ( in_vertical_border && !is_last_child && $(this).parent().hasClass('NKDrag_columns') ) {
                     $(this).css('cursor', NKResize.config.column_resize_cursor);
 
-                } else  if ( in_horizontal_border && !is_last_child ) {
+                } else  if ( in_horizontal_border && !is_last_child && $(this).parent().hasClass('NKDrag_rows') ) {
                     $(this).css('cursor', NKResize.config.row_resize_cursor);
 
                 } else {
@@ -191,6 +191,7 @@ NKResize.reload = function() {
                     e: $(r_v_e)[0],
                     parent: $(r_v_e).parent()[0]
                 });
+                $('.NKDrag_columns').children('div').children().removeClass( "NKResize_disable_temp" );
             }
             if ( r_h_e !== null ) {
                 var sizes = $(r_h_e).parent().css('grid-template-rows').split(" ");
@@ -202,19 +203,20 @@ NKResize.reload = function() {
                     e: $(r_h_e)[0],
                     parent: $(r_h_e).parent()[0]
                 });
+                $('.NKDrag_rows').children('div').children().removeClass( "NKResize_disable_temp" );
             }
 
             NKResize.resizing_vertical_element = null;
             NKResize.resizing_horizontal_element = null;
             $(this).css('cursor', '');
-            $("iframe").removeClass( "NKResize_disable_temp" );
+
         }
 
        // console.log("diff_pos", diff_pos);
        // console.log("div_size", div_size);
     }
 
-    $('.NKDrag_colums').on('mouseleave', function (){
+    $('.NKDrag_columns').on('mouseleave', function (){
         NKResize.resizing_vertical_element = null;
         $(this).css('cursor', '');
     });
@@ -223,7 +225,7 @@ NKResize.reload = function() {
         $(this).css('cursor', '');
     });
 
-    $('.NKDrag_colums').children('div')
+    $('.NKDrag_columns').children('div')
         .on('mousemove', onMouse)
         .on('mousedown', onMouse)
         .on('mouseup', onMouse);
