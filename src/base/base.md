@@ -25,6 +25,13 @@ Returns false if any of these conditions are met:
 - variable == null
 - variable.length == 0 (Works with strings and arrays)
 
+NK.clone( object )
+----------------------------------------------------------------------------
+Clone an object. The new object has a new reference.
+
+    var array_a = [{name: "James"}, {name: "Mary"}];
+
+    var array_b = NK.clone(array_a);
 
 NK.backtrace( message )
 ----------------------------------------------------------------------------

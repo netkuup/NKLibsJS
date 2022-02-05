@@ -21,6 +21,10 @@ NK.empty = function(variable) {
     return false;
 };
 
+NK.clone = function ( obj ) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 NK.backtrace = function ( msg = "" ) {
     let backtrace = new Error().stack.split("\n").slice(2).join("\n");
     console.log("Backtrace: " + msg + "\n" + backtrace);
