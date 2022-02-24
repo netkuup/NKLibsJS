@@ -430,6 +430,9 @@ NKContextMenu.refresh = function() {
 //    throw "You must include base.js before drag.js";
 //}
 
+var event_listener = new NKEventListener();
+NKDrag = { ...event_listener };
+
 NKDrag.selection = { element: null };
 
 NKDrag.start = function( reactable ) {
@@ -450,12 +453,15 @@ NKDrag.start = function( reactable ) {
 
     $(document).on('mousemove', function() {
         if ( NKDrag.selection.element != null ) {
-            NKDrag.selection.element.offset({
-                left: NKPosition.getMouseX() - NKDrag.selection.offset[0],
-                top: NKPosition.getMouseY() - NKDrag.selection.offset[1]
-            });
-            $('.NKDrag_sync_x').offset({
-                left: NKPosition.getMouseX() - NKDrag.selection.offset[0]
+            var left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
+            var top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
+
+            NKDrag.selection.element.offset({left: left, top: top});
+
+            NKDrag.dispatchEvent('onDrag', {
+                e: NKDrag.selection.element,
+                left: left,
+                top: top
             });
         }
     });

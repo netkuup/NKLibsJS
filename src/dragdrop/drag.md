@@ -31,3 +31,11 @@ If the HTML document content changes dinamically (Creates new divs with NKDrag c
             <div class="NKDrag_src">Draggable window title</div>
             <div>Window content<br>Window content</div>
         </div>
+
+        <script>
+            NKDrag.start();
+        
+            NKDrag.addEventListener('onDrag', function( data ) {
+                console.log( "Dragged", data );
+            });
+        </script>
