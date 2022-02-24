@@ -454,6 +454,9 @@ NKDrag.start = function( reactable ) {
                 left: NKPosition.getMouseX() - NKDrag.selection.offset[0],
                 top: NKPosition.getMouseY() - NKDrag.selection.offset[1]
             });
+            $('.NKDrag_sync_x').offset({
+                left: NKPosition.getMouseX() - NKDrag.selection.offset[0]
+            });
         }
     });
 };
