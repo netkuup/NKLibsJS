@@ -459,9 +459,9 @@ NKDrag.start = function( reactable ) {
             NKDrag.selection.element.offset({left: left, top: top});
 
             NKDrag.dispatchEvent('onDrag', {
-                e: NKDrag.selection.element,
-                left: left,
-                top: top
+                e: NKDrag.selection.element[0],
+                offset: {left: left, top: top},
+                position: NKDrag.selection.element.position()
             });
         }
     });
