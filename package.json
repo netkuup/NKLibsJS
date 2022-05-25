@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "repository": "https://github.com/netkuup/NKLibsJS.git",
   "devDependencies": {
-    "grunt": "^1.4.1",
+    "grunt": "^1.5.3",
     "grunt-concat-css": "^0.3.2",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^3.0.0",
