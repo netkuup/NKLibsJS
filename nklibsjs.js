@@ -1515,6 +1515,9 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before storage.js";
 }
 
+var event_listener = new NKEventListener();
+NKStorage = { ...event_listener };
+
 NKStorage.p = null;
 NKStorage.np = null;
 
@@ -1530,7 +1533,9 @@ NKStorage.save = function( force ) {
 };
 
 
-NKStorage.start = function() {
+NKStorage.start = function( save_on_leave = true ) {
+    NKStorage.saveOnLeave = save_on_leave;
+
     if ( NK.isset(NKStorage.loaded) && NKStorage.loaded === true ) return;
 
     try {
@@ -1560,6 +1565,20 @@ NKStorage.clear = function() {
     sessionStorage.setItem( 'NKStorage', JSON.stringify({}) );
     NKStorage.np = JSON.parse('{}');
 };
+
+NKStorage.broadcast = function ( path ) {
+    var path_parts = path.split(".");
+    var path_aux = [];
+    for ( var i in path_parts ) {
+        path_aux.push( path_parts[i] );
+        NKStorage.dispatchEvent( path_aux.join(".") );
+    }
+}
+
+NKStorage.listen = function ( path, cbk ) {
+    NKStorage.addEventListener( path, cbk );
+}
+
 
 // On page leave
 NKStorage.oldLeaveHandler = window.onbeforeunload;

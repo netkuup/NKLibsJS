@@ -49,6 +49,25 @@ You can write non persistent data like:
     NKStorage.save();
 
 
+Detect data changes
+----------------------------------------------------------------------------
+    NKStorage.listen('NKStorage.p.profile', function( path ) {
+        console.log( "Changes detected.", path ); //This function will be called
+    });
+    NKStorage.listen('NKStorage.p.profile.name', function( path ) {
+        console.log( "Changes detected.", path ); //This function will be called
+    });
+    NKStorage.listen('NKStorage.p.profile.surname', function( path ) {
+        console.log( "Changes detected.", path ); //This function will NOT be called
+    });
+
+    NKStorage.p.profile.name = "James";
+    NKStorage.save();
+    NKStorage.broadcast( 'NKStorage.p.profile.name' ); //This function is the only one that calls NKStorage.listen, regardless of the data that is modified
+
+Note: NKStorage.broadcast and NKStorage.listen can be used independently of NKStorage.save and others.
+
+
 About NKStorage.start()
 ----------------------------------------------------------------------------
 This function will set 'NKStorage.p' and 'NKStorage.np' with the values stored on localStorage/sessionStorage.
