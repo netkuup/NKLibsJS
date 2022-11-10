@@ -78,10 +78,13 @@ Make an element unselectable.
 Make an element look like a button.
 - Hand cursor
 
-.NKWFSize
+
+.NKHideScroll
 ----------------------------------------------------------------------------
-Element width full size.
-- Width: 100%
+Make the scrollbar invisible but usable
+
+- Invisible scroll
+
 
 # NKBase Icons
 

@@ -33,6 +33,10 @@
     width: 100%;
 }
 
+.NKHideScroll::-webkit-scrollbar {
+    display: none;
+}
+
 .NKCloseIcon {
     color: #aaaaaa;
     float: right;
