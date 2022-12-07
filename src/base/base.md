@@ -38,9 +38,19 @@ NK.set( variable_path, value )
 ----------------------------------------------------------------------------
 Initialize an undefined nested variable
 
-    NK.set( "my.variable.a.b.c", 123 );
-    // Same as "my.variable.a.b.c = 123", but it creates the variable if not exist.
+    NK.set( "my.var.a.b.c", 123 );
+    // Same as "my.var.a.b.c = 123", but it creates the variable if not exist.
+
+
+NK.get( variable, default_value )
+----------------------------------------------------------------------------
+If the variable does not exist, is undefined, or is null, returns default_value
+
+    Example 1
+      let aux = NK.get( myVar, false );
     
+    Example 2
+      let aux = NK.get( () => my.var.a.b.c, false );
 
 
 NK.backtrace( message )

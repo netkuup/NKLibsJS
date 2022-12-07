@@ -37,6 +37,19 @@ NK.set = function ( str_obj_path, value ) {
     eval(aux_path + " = " + JSON.stringify(value));
 }
 
+NK.get = function ( variable, default_value = undefined ) {
+    if ( typeof variable === 'undefined' ) return default_value;
+    if ( variable == null ) return default_value;
+    if ( typeof variable === 'function' ) {
+        try {
+            return variable();
+        } catch (e) {
+            return default_value;
+        }
+    }
+    return variable;
+}
+
 NK.backtrace = function ( msg = "" ) {
     let backtrace = new Error().stack.split("\n").slice(2).join("\n");
     console.log("Backtrace: " + msg + "\n" + backtrace);
