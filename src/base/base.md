@@ -33,6 +33,16 @@ Clone an object. The new object has a new reference.
 
     var array_b = NK.clone(array_a);
 
+
+NK.set( variable_path, value )
+----------------------------------------------------------------------------
+Initialize an undefined nested variable
+
+    NK.set( "my.variable.a.b.c", 123 );
+    // Same as "my.variable.a.b.c = 123", but it creates the variable if not exist.
+    
+
+
 NK.backtrace( message )
 ----------------------------------------------------------------------------
 Prints the current backtrace to the console. An optional message can be indicated.

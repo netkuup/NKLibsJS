@@ -25,6 +25,18 @@ NK.clone = function ( obj ) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+NK.set = function ( str_obj_path, value ) {
+    var path_parts = str_obj_path.split(".");
+    var aux_path = path_parts[0];
+
+    for ( var i = 1; i < path_parts.length; i++ ) {
+        aux_path += "." + path_parts[i];
+        if ( eval("typeof " + aux_path) === "undefined" ) eval(aux_path + " = {}");
+    }
+
+    eval(aux_path + " = " + JSON.stringify(value));
+}
+
 NK.backtrace = function ( msg = "" ) {
     let backtrace = new Error().stack.split("\n").slice(2).join("\n");
     console.log("Backtrace: " + msg + "\n" + backtrace);
