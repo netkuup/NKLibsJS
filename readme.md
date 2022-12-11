@@ -11,22 +11,23 @@ Daily use JavaScript function set.
 ## Index
 * [NKBase](./src/base/base.md)
 * [NKActions](./src/actions/actions.md)
+* [NKCast](./src/cast/cast.md)
+* [NKClipboard](./src/clipboard/clipboard.md)
+* [NKContextMenu](./src/context_menu/context_menu.md)
+* [NKDrag](./src/dragdrop/drag.md)
+* [NKForm](./src/form/form.md)
+* [NKLoader](./src/loader/loader.md)
+* [NKModal](./src/modal/modal.md)
 * [NKPosition](./src/position/position.md)
 * [NKPopup](./src/popup/popup.md)
-* [NKContextMenu](./src/context_menu/context_menu.md)
-* [NKForm](./src/form/form.md)
-* [NKCast](./src/cast/cast.md)
-* [NKStick](./src/stick/stick.md)
-* [NKDrag](./src/dragdrop/drag.md)
-* [NKLoader](./src/loader/loader.md)
-* [NKStorage](./src/storage/storage.md)
-* [NKRouting](./src/routing/routing.md)
-* [NKModal](./src/modal/modal.md)
 * [NKResize](./src/resize/resize.md)
+* [NKRouting](./src/routing/routing.md)
+* [NKStick](./src/stick/stick.md)
+* [NKStorage](./src/storage/storage.md)
+
 
 
 ## Recommended external libraries
-* [MustacheJS](https://github.com/janl/mustache.js): Templating library
 * [Libsodium](https://github.com/jedisct1/libsodium.js): Library for encryption, decryption, signatures, password hashing and more.
 
 
