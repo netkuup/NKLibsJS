@@ -18,6 +18,7 @@ Daily use JavaScript function set.
 * [NKForm](./src/form/form.md)
 * [NKLoader](./src/loader/loader.md)
 * [NKModal](./src/modal/modal.md)
+* [NKNotification](./src/notification/notification.md)
 * [NKPosition](./src/position/position.md)
 * [NKPopup](./src/popup/popup.md)
 * [NKResize](./src/resize/resize.md)
@@ -29,7 +30,7 @@ Daily use JavaScript function set.
 
 ## Recommended external libraries
 * [Libsodium](https://github.com/jedisct1/libsodium.js): Library for encryption, decryption, signatures, password hashing and more.
-
+* [Tabler icons](https://tabler-icons.io): Opensource icons
 
 
 ## Build sources
