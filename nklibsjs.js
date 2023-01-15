@@ -329,6 +329,11 @@ NKContextMenu.start = function() {
     if ( typeof NKPosition === 'undefined' ) {
         throw "You must include position.js";
     }
+
+    if ( document.body === null ) {
+        throw "The \<body\> tag must be fully loaded before calling NKContextMenu.start()";
+    }
+
     NKPosition.start();
 
     if ( $('#NKContextMenu').length < 1 ) {
