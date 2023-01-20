@@ -112,21 +112,23 @@ NKForm.send = function( form_selector, url, callback ) {
 
 
 // ExtensionList = accept=".gif,.jpg,.jpeg,.png,.doc,.docx";
-NKForm.fileChooser = function( callback, extension_list ) {
+NKForm.fileChooser = function( callback, extension_list, multiple = false, base64 = true ) {
     extension_list = extension_list || "";
-    $('body').append('<input type="file" id="NKtmpfile" accept="'+extension_list+'">');
+    multiple = multiple ? "multiple" : "";
+    $('body').append('<input type="file" id="NKtmpfile" accept="'+extension_list+'" ' + multiple +'>');
     var element = document.getElementById("NKtmpfile");
-    element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
+    element.addEventListener('change', async function (e) {
+        var file_list = await NKForm._cleanFileList(this.files, base64);
+        callback( file_list );
+    } , false);
     $('#NKtmpfile').trigger('click');
     element.parentNode.removeChild(element);
 };
 
-NKForm.dirChooser = function( callback ) {
-    $('body').append('<input type="file" id="NKtmpfile" webkitdirectory directory multiple/>');
-    var element = document.getElementById("NKtmpfile");
-    element.addEventListener('change', function (e) { callback( e.path[0].value ) } , false);
-    $('#NKtmpfile').trigger('click');
-    element.parentNode.removeChild(element);
+NKForm.dirChooser = function( start_in, callback ) {
+    window.showDirectoryPicker({startIn: start_in}).then((e) => {
+        callback( e );
+    });
 };
 
 
@@ -149,30 +151,18 @@ NKForm.postFile = function( url, file_obj, args, cbk ) {
     });
 }
 
-NKForm.fileDropzone = function ( object, cbk ) {
+NKForm.fileDropzone = function ( object, cbk, base64 = true ) {
 
     object.addEventListener("drop", async function ( e ) {
         e.preventDefault();
 
         var files = e.dataTransfer.files;
 
-        var result = [];
-        for ( var i = 0; i < files.length; i++ ) {
-            var file = files[i];
+        if ( files.length === 0 ) console.error( "Unable to handle dragged files." );
 
-            result.push({
-                file_obj: file,
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                lastModifiedDate: file.lastModifiedDate,
-                lastModified: file.lastModified,
-                base64: await NKForm.getFileBase64( file )
-            });
-        }
-        if ( files.length > 0 ) return cbk( result );
+        var file_list = await NKForm._cleanFileList(files, base64);
 
-        console.error( "Unable to handle dragged files." );
+        cbk( file_list );
     });
 
     object.addEventListener("dragover", function ( e ) {
@@ -180,6 +170,27 @@ NKForm.fileDropzone = function ( object, cbk ) {
     });
 
 };
+
+NKForm._cleanFileList = async function ( files, base64 = true ) {
+    var result = [];
+
+    for ( var i = 0; i < files.length; i++ ) {
+        var file = files[i];
+        var r = {
+            file_obj: file,
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            lastModifiedDate: file.lastModifiedDate,
+            lastModified: file.lastModified
+        }
+        if ( base64 ) r.base64 = await NKForm.getFileBase64( file );
+
+        result.push(r);
+    }
+
+    return result;
+}
 
 NKForm.getFileBase64 = function ( file_obj ) {
 
