@@ -669,7 +669,69 @@ NKForm.dirChooser = function( callback ) {
     element.parentNode.removeChild(element);
 };
 
-;var NKLoader = {};
+
+NKForm.postFile = function( url, file_obj, args, cbk ) {
+    var form_data = new FormData();
+    form_data.append( 'file[]', file_obj );
+    for ( var key in args ) {
+        form_data.append( key, args[key] );
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        success: function ( response ) {
+            cbk( response );
+        }
+    });
+}
+
+NKForm.fileDropzone = function ( object, cbk ) {
+
+    object.addEventListener("drop", async function ( e ) {
+        e.preventDefault();
+
+        var files = e.dataTransfer.files;
+
+        var result = [];
+        for ( var i = 0; i < files.length; i++ ) {
+            var file = files[i];
+
+            result.push({
+                file_obj: file,
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                lastModifiedDate: file.lastModifiedDate,
+                lastModified: file.lastModified,
+                base64: await NKForm.getFileBase64( file )
+            });
+        }
+        if ( files.length > 0 ) return cbk( result );
+
+        console.error( "Unable to handle dragged files." );
+    });
+
+    object.addEventListener("dragover", function ( e ) {
+        e.preventDefault();
+    });
+
+};
+
+NKForm.getFileBase64 = function ( file_obj ) {
+
+    return new Promise(function( resolve, reject ) {
+        var fr = new FileReader();
+        fr.onload = function(e) { resolve( this.result ); };
+        fr.onerror = function ( e ) { reject(); };
+
+        fr.readAsDataURL( file_obj );
+    });
+
+};var NKLoader = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before loader.js";

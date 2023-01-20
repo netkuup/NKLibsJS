@@ -126,12 +126,11 @@ NKForm.fileChooser()
 Opens a file chooser.
 
 JS
-    
-    function showFile( filePath ) {
-        console.log("Selected file path: ", filePath);
-    }
-    
-    NKForm.fileChooser( showFile, ".gif,.jpg,.jpeg,.png,.doc,.docx" );
+
+    NKForm.fileChooser( function (file_path) {
+        console.log( "Selected file path: ", file_path );
+
+    }, ".gif,.jpg,.jpeg,.png,.doc,.docx" );
 
 **Params:**
 
@@ -142,5 +141,52 @@ NKForm.fileChooser( callback, extension_list )
 | callback | Function | Yes | Function called when a file is selected. |
 | extension_list | String | No | The allowed file extensions. Example: ".gif,.jpg,.jpeg,.png,.doc,.docx"
 
+
+NKForm.dirChooser()
+----------------------------------------------------------------------------
+Opens a directory chooser.
+
+JS
+
+    NKForm.dirChooser( function (dir_path) {
+        console.log( dir_path );
+    });
+
+**Params:**
+
+NKForm.dirChooser( callback )
+
+| param | Values | Mandatory | Description                                   |
+|:---|:---|:---|:----------------------------------------------|
+| callback | Function | Yes | Function called when a directory is selected. |
+
+
+NKForm.fileDropzone()
+----------------------------------------------------------------------------
+Allow file and image dropping to specific zone.
+
+HTML
+
+    File uploader <br />
+    <div id="my_droppable_area" style="border: 3px dashed gray;">
+        Drop files here
+    </div>
+
+    Preview <br />
+    <embed id="preview_embed" type='application/pdf' style="border: 1px solid gray;">
+
+JS
+
+    NKForm.fileDropzone( document.getElementById("my_droppable_area"), function ( files ) {
+
+        // Show file preview
+        document.getElementById("preview_embed").src = files[0].base64;
+
+        // Send file to server via POST
+        NKForm.postFile("/post.php", files[0].file_obj, {file_name: "My file"}, function ( response ) {
+            console.log(response);
+        });
+
+    });
 
 [<< Index](../../../../)
