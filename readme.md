@@ -11,20 +11,25 @@ Daily use JavaScript function set.
 ## Index
 * [NKBase](./src/NK/NKBase.md)
 * [NKActions](./src/NKActions/NKActions.md)
+* [NKArray](./src/NKArray/NKArray.md)
 * [NKCast](./src/NKCast/NKCast.md)
 * [NKClipboard](./src/NKClipboard/NKClipboard.md)
 * [NKContextMenu](./src/NKContextMenu/NKContextMenu.md)
+* [NKDate](./src/NKDate/NKDate.md)
 * [NKDrag](./src/NKDrag/NKDrag.md)
 * [NKForm](./src/NKForm/NKForm.md)
 * [NKLoader](./src/NKLoader/NKLoader.md)
 * [NKModal](./src/NKModal/NKModal.md)
 * [NKNotification](./src/NKNotification/NKNotification.md)
 * [NKPosition](./src/NKPosition/NKPosition.md)
+* [NKPromise](./src/NKPromise/NKPromise.md)
+* [NKObject](./src/NKObject/NKObject.md)
 * [NKPopup](./src/NKPopup/NKPopup.md)
 * [NKResize](./src/NKResize/NKResize.md)
 * [NKRouting](./src/NKRouting/NKRouting.md)
 * [NKStick](./src/NKStick/NKStick.md)
 * [NKStorage](./src/NKStorage/NKStorage.md)
+* [NKVar](./src/NKVar/NKVar.md)
 
 
 

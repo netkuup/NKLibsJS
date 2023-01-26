@@ -22,32 +22,8 @@ NK.empty = function(variable) {
 };
 
 NK.clone = function ( obj ) {
+    console.error("NK.clone() deprecated, use NKObject.clone() instead.");
     return JSON.parse(JSON.stringify(obj));
-}
-
-NK.set = function ( str_obj_path, value ) {
-    var path_parts = str_obj_path.split(".");
-    var aux_path = path_parts[0];
-
-    for ( var i = 1; i < path_parts.length; i++ ) {
-        aux_path += "." + path_parts[i];
-        if ( eval("typeof " + aux_path) === "undefined" ) eval(aux_path + " = {}");
-    }
-
-    eval(aux_path + " = " + JSON.stringify(value));
-}
-
-NK.get = function ( variable, default_value = undefined ) {
-    if ( typeof variable === 'undefined' ) return default_value;
-    if ( variable == null ) return default_value;
-    if ( typeof variable === 'function' ) {
-        try {
-            return variable();
-        } catch (e) {
-            return default_value;
-        }
-    }
-    return variable;
 }
 
 NK.backtrace = function ( msg = "" ) {
@@ -209,6 +185,73 @@ NKActions.reload = function() {
 
 };
 
+
+;let NKArray = {};
+
+NKArray.clone = function ( obj ) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+// Arguments: Multiple arrays, get all possible combinations
+NKArray.getCombinations = function(){
+    if ( typeof arguments[0] !== "string" ) {
+        console.error("First argument must be a string.");
+        return [];
+    }
+
+    let join_str = arguments[0];
+    let array_of_arrays = [];
+
+    for ( let i = 1; i < arguments.length; i++ ) {
+        if( !Array.isArray(arguments[i]) ) {
+            console.error("One of the parameters is not an array.");
+            return [];
+        }
+        array_of_arrays.push( arguments[i] );
+    }
+
+
+    function formCombination( odometer, array_of_arrays ){
+        return odometer.reduce(
+            function(accumulator, odometer_value, odometer_index){
+                return "" + accumulator + array_of_arrays[odometer_index][odometer_value] + join_str;
+            },
+            ""
+        );
+    }
+
+    function odometer_increment( odometer, array_of_arrays ){
+
+        for ( let i_odometer_digit = odometer.length-1; i_odometer_digit >= 0; i_odometer_digit-- ){
+
+            let maxee = array_of_arrays[i_odometer_digit].length - 1;
+
+            if( odometer[i_odometer_digit] + 1 <= maxee ){
+                odometer[i_odometer_digit]++;
+                return true;
+            }
+            if ( i_odometer_digit - 1 < 0 ) return false;
+            odometer[i_odometer_digit] = 0;
+
+        }
+
+    }
+
+
+    let odometer = new Array( array_of_arrays.length ).fill( 0 );
+    let output = [];
+
+    let newCombination = formCombination( odometer, array_of_arrays );
+
+    output.push( newCombination.slice(0, -1) );
+
+    while ( odometer_increment( odometer, array_of_arrays ) ){
+        newCombination = formCombination( odometer, array_of_arrays );
+        output.push( newCombination.slice(0, -1) );
+    }
+
+    return output;
+};
 
 ;var NKCast = {};
 
@@ -478,6 +521,182 @@ NKContextMenu.refresh = function() {
 
 }
 
+
+;let NKDate = {};
+
+
+NKDate.set = function( date_obj, dd = null, mm = null, yyyy = null, h = null, m = null, s = null, ms = null ) {
+    date_obj.setTime( new Date( yyyy, mm-1, dd, h, m, s, ms ).getTime() );
+    return date_obj;
+};
+
+NKDate.clone = function ( date_obj ) {
+    return new Date(date_obj.getTime());
+}
+
+NKDate.setFromString = function( date_obj, str_date, date_pattern ) {
+
+    let date_parts = str_date.split(/(?:\/| |:|\\)+/);
+    let pattern_parts = date_pattern.split(/(?:\/| |:|\\)+/);
+
+    if ( date_parts.length !== pattern_parts.length ) {
+        throw "Date (" + str_date + ") does not fit the pattern (" + date_pattern + ")";
+    }
+
+    date_obj.setHours(0,0,0,0);
+    for ( let i = 0; i < pattern_parts.length; i++ ) {
+        switch ( pattern_parts[i] ) {
+            case 'DD': NKDate.setDay(date_obj, date_parts[i]); break;
+            case 'MM': NKDate.setMonth(date_obj, date_parts[i]); break;
+            case 'YYYY': NKDate.setYear(date_obj, date_parts[i]); break;
+            case 'YY': NKDate.setYear(date_obj, date_parts[i]); break;
+            case 'hh': NKDate.setHour(date_obj, date_parts[i]); break;
+            case 'mm': NKDate.setMinute(date_obj, date_parts[i]); break;
+            case 'sss': NKDate.setMilisecond(date_obj, date_parts[i]); break;
+            case 'ss': NKDate.setSecond(date_obj, date_parts[i]); break;
+        }
+    }
+
+    return date_obj;
+};
+
+NKDate.getString = function( date_obj, format = 'DD/MM/YYYY' ) {
+    let result = format;
+
+    result = result.replaceAll('DD', NKDate.getDay(date_obj, true));
+    result = result.replaceAll('MM', NKDate.getMonth(date_obj, true));
+    result = result.replaceAll('YYYY', NKDate.getYear(date_obj, true));
+    result = result.replaceAll('YY', NKDate.getYear(date_obj, false));
+    result = result.replaceAll('hh', NKDate.getHour(date_obj, true));
+    result = result.replaceAll('mm', NKDate.getMinute(date_obj, true));
+    result = result.replaceAll('sss', NKDate.getMillisecond(date_obj, true));
+    result = result.replaceAll('ss', NKDate.getSecond(date_obj, true));
+
+    return result;
+};
+
+NKDate.getDay = function( date_obj, two_digits = true ) {
+    let d = date_obj.getDate();
+    if ( two_digits ) d = d.toString().padStart(2, "0");
+    return d;
+};
+
+NKDate.setDay = function( date_obj, day ) {
+    if ( day === null ) return;
+    date_obj.setDate( day );
+    return date_obj;
+};
+
+NKDate.getMonth = function( date_obj, two_digits = true ) {
+    let m = date_obj.getMonth()+1;
+    if ( two_digits ) m = m.toString().padStart(2, "0");
+    return m;
+};
+
+NKDate.setMonth = function( date_obj, month ) {
+    if ( month === null ) return;
+    date_obj.setMonth( parseInt(month)-1 );
+    return date_obj;
+};
+
+NKDate.getYear = function( date_obj, four_digits = true ) {
+    if ( four_digits ) return date_obj.getFullYear();
+    let y = date_obj.getYear();
+    if ( y > 100 ) y -= 100;
+    return y;
+};
+
+NKDate.setYear = function( date_obj, year ) {
+    if ( year === null ) return;
+    date_obj.setYear( year );
+    return date_obj;
+};
+
+NKDate.getHour = function( date_obj, two_digits = true ) {
+    let h = date_obj.getHours();
+    if ( two_digits ) h = h.toString().padStart(2, "0");
+    return h;
+};
+
+NKDate.setHour = function( date_obj, hour ) {
+    if ( hour === null ) return;
+    date_obj.setHours( hour );
+    return date_obj;
+};
+
+NKDate.getMinute = function( date_obj, two_digits = true ) {
+    let m = date_obj.getMinutes();
+    if ( two_digits ) m = m.toString().padStart(2, "0");
+    return m;
+};
+
+NKDate.setMinute = function( date_obj, minute ) {
+    if ( minute === null ) return;
+    date_obj.setMinutes( minute );
+    return date_obj;
+};
+
+NKDate.getSecond = function( date_obj, two_digits = true ) {
+    let s = date_obj.getSeconds();
+    if ( two_digits ) s = s.toString().padStart(2, "0");
+    return s;
+};
+
+NKDate.setSecond = function( date_obj, second ) {
+    if ( second === null ) return;
+    date_obj.setSeconds( second );
+    return date_obj;
+};
+
+NKDate.getMillisecond = function( date_obj, three_digits = true ) {
+    let ms = date_obj.getMilliseconds();
+    if ( three_digits ) ms = ms.toString().padStart(3, "0");
+    return ms;
+};
+
+NKDate.setMilisecond = function( date_obj, milisecond ) {
+    if ( milisecond === null ) return;
+    date_obj.setMilliseconds( milisecond );
+    return date_obj;
+};
+
+NKDate.getUnixTimestamp = function ( date_obj ) {
+    return date_obj.getTime();
+};
+
+NKDate.addHours = function ( date_obj, hours ) {
+    return NKDate.addMiliseconds(date_obj, (hours * 60) * 60000);
+};
+
+NKDate.addMinutes = function ( date_obj, minutes ) {
+    return NKDate.addMiliseconds(date_obj, minutes * 60 * 1000);
+};
+
+NKDate.addSeconds = function ( date_obj, seconds ) {
+    return NKDate.addMiliseconds(date_obj, seconds * 1000);
+};
+
+NKDate.addMiliseconds = function ( date_obj, miliseconds ) {
+    date_obj = new Date( date_obj.getTime() + miliseconds );
+    return date_obj;
+};
+
+NKDate.print = function ( date_obj ) {
+    console.log( date_obj.toLocaleString() );
+};
+
+NKDate.getDatesBetween = function ( date_start_obj, date_end_obj = null ) {
+    if ( date_end_obj === null ) date_end_obj = date_start_obj;
+
+    let dateArray = [];
+    let currentDate = new Date(date_start_obj);
+
+    while ( currentDate <= date_end_obj ) {
+        dateArray.push( new Date( currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0,0,0,0 ) );
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dateArray;
+};
 
 ;var NKDrag = {};
 
@@ -926,6 +1145,37 @@ NKNotification.hide = function() {
     document.getElementById("NKNotification").style.display = "none";
 
 }
+;let NKObject = {};
+
+NKObject.clone = function ( obj ) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+NKObject.setValue = function ( start_obj, str_obj_path, value ) {
+    let path_parts = str_obj_path.split(".");
+    let aux_path = "start_obj";
+
+    for ( let i = 0; i < path_parts.length; i++ ) {
+        aux_path += "." + path_parts[i];
+        if ( eval("typeof " + aux_path) === "undefined" ) eval(aux_path + " = {}");
+    }
+
+    eval(aux_path + " = " + JSON.stringify(value));
+}
+
+NKObject.getValue = function ( variable, default_value = undefined ) {
+    if ( typeof variable === 'undefined' ) return default_value;
+    if ( variable == null ) return default_value;
+    if ( typeof variable === 'function' ) {
+        try {
+            return variable();
+        } catch (e) {
+            return default_value;
+        }
+    }
+    return variable;
+}
+
 ;var NKPopup = {};
 
 if ( typeof NK === 'undefined' ) {
@@ -1212,7 +1462,21 @@ NKPosition.getScrollX = function() {
 NKPosition.getScrollY = function() {
     return window.scrollY;
 };
-;var NKResize = {};
+;class NKPromise {
+
+    constructor() {
+        let aux_resolve = null;
+        let aux_reject = null;
+        let p = new Promise((resolve, reject) => {
+            aux_resolve = resolve;
+            aux_reject = reject;
+        });
+        p.resolve = aux_resolve;
+        p.reject = aux_reject;
+        return p;
+    }
+
+};var NKResize = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
@@ -1763,6 +2027,30 @@ window.onbeforeunload = function (e) {
         NKStorage.save( true );
     }
 };
+
+;let NKVar = {};
+
+NKVar.isset = function( variable ) {
+        if ( typeof variable === 'undefined' ) return false;
+        if ( variable == null ) return false;
+        if ( typeof variable === 'function' ) {
+            try {
+                variable();
+            } catch (e) {
+                return false;
+            }
+        }
+
+        return true;
+};
+
+NKVar.empty = function( variable ) {
+    if ( !NK.isset(variable) ) return true;
+    if ( typeof variable === 'function' ) variable = variable();
+    if ( variable.length === 0 ) return true;
+    return false;
+};
+
 
 ;
 // -------------------------------------------------------------------------

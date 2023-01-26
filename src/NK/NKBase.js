@@ -22,32 +22,8 @@ NK.empty = function(variable) {
 };
 
 NK.clone = function ( obj ) {
+    console.error("NK.clone() deprecated, use NKObject.clone() instead.");
     return JSON.parse(JSON.stringify(obj));
-}
-
-NK.set = function ( str_obj_path, value ) {
-    var path_parts = str_obj_path.split(".");
-    var aux_path = path_parts[0];
-
-    for ( var i = 1; i < path_parts.length; i++ ) {
-        aux_path += "." + path_parts[i];
-        if ( eval("typeof " + aux_path) === "undefined" ) eval(aux_path + " = {}");
-    }
-
-    eval(aux_path + " = " + JSON.stringify(value));
-}
-
-NK.get = function ( variable, default_value = undefined ) {
-    if ( typeof variable === 'undefined' ) return default_value;
-    if ( variable == null ) return default_value;
-    if ( typeof variable === 'function' ) {
-        try {
-            return variable();
-        } catch (e) {
-            return default_value;
-        }
-    }
-    return variable;
 }
 
 NK.backtrace = function ( msg = "" ) {

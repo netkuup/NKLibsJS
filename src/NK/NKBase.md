@@ -25,32 +25,6 @@ Returns false if any of these conditions are met:
 - variable == null
 - variable.length == 0 (Works with strings and arrays)
 
-NK.clone( object )
-----------------------------------------------------------------------------
-Clone an object. The new object has a new reference.
-
-    var array_a = [{name: "James"}, {name: "Mary"}];
-
-    var array_b = NK.clone(array_a);
-
-
-NK.set( variable_path, value )
-----------------------------------------------------------------------------
-Initialize an undefined nested variable
-
-    NK.set( "my.var.a.b.c", 123 );
-    // Same as "my.var.a.b.c = 123", but it creates the variable if not exist.
-
-
-NK.get( variable, default_value )
-----------------------------------------------------------------------------
-If the variable does not exist, is undefined, or is null, returns default_value
-
-    Example 1
-      let aux = NK.get( myVar, false );
-    
-    Example 2
-      let aux = NK.get( () => my.var.a.b.c, false );
 
 
 NK.backtrace( message )

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Get form fields example.</title>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../../nklibsjs.js" ></script>
+    </head>
+
+    <body>
+
+        <button onclick="runExample()">Run example (in console)</button>
+
+        <script>
+            function wait5seconds() {
+                let p = new NKPromise();
+
+                setTimeout(function() {
+
+                    p.resolve("Hello world");
+                    //p.reject("Error");
+
+                }, 5000);
+
+                return p;
+            }
+
+            async function runExample() {
+                console.log("Waiting 5 seconds...");
+
+                let foo = await wait5seconds();
+
+                console.log("Done.");
+                console.log( foo );
+            }
+
+        </script>
+
+
+
+    </body>
+
+</html>
+
+
+
