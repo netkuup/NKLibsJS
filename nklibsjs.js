@@ -664,6 +664,11 @@ NKDate.getUnixTimestamp = function ( date_obj ) {
     return date_obj.getTime();
 };
 
+NKDate.addMonths = function( date_obj, months ) {
+    date_obj.setMonth(date_obj.getMonth() + months);
+    return date_obj;
+};
+
 NKDate.addHours = function ( date_obj, hours ) {
     return NKDate.addMiliseconds(date_obj, (hours * 60) * 60000);
 };
@@ -677,13 +682,30 @@ NKDate.addSeconds = function ( date_obj, seconds ) {
 };
 
 NKDate.addMiliseconds = function ( date_obj, miliseconds ) {
-    date_obj = new Date( date_obj.getTime() + miliseconds );
+    date_obj.setTime( date_obj.getTime() + miliseconds );
     return date_obj;
 };
 
 NKDate.print = function ( date_obj ) {
     console.log( date_obj.toLocaleString() );
 };
+
+
+NKDate.daysInMonth = function( year, month ) {
+    if ( month === 0 ) throw "Month 0 does not exist, January is month 1.";
+    return 32 - new Date(year, month-1, 32).getDate();
+};
+
+
+// start_on_sunday = false; 0: Monday, 1: Tuesday, 2: Wednesday ...
+// start_on_sunday = true;  0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday ...
+NKDate.firstDayOfMonth = function ( year, month, start_on_sunday = false ) {
+    if ( month === 0 ) throw "Month 0 does not exist, January is month 1.";
+    let fd = new Date(year, month-1).getDay();
+    if ( start_on_sunday ) return fd;
+    return (fd === 0) ? 6 : fd-1;
+};
+
 
 NKDate.getDatesBetween = function ( date_start_obj, date_end_obj = null ) {
     if ( date_end_obj === null ) date_end_obj = date_start_obj;
@@ -697,6 +719,27 @@ NKDate.getDatesBetween = function ( date_start_obj, date_end_obj = null ) {
     }
     return dateArray;
 };
+
+
+
+NKDate.getCalendar = function( year, month, add_empty_days = true, start_on_sunday = false) {
+    let calendar = [];
+    let today = new Date();
+    let current_year_month = (year === today.getFullYear() && month === today.getMonth());
+
+    if ( add_empty_days ) {
+        let firstDay = NKDate.firstDayOfMonth(year, month, start_on_sunday);
+        for ( let i = 0; i < firstDay; i++ ) calendar.push({day: "", today: false, date: null});
+    }
+
+    let daysInMonth = NKDate.daysInMonth(year, month);
+    for ( let i = 0; i < daysInMonth; i++ ) {
+        calendar.push({day: i+1, today: (current_year_month && i+1 === today.getDate()), date: new Date(year, month-1, i+1)});
+    }
+
+    return calendar;
+}
+
 
 ;var NKDrag = {};
 

@@ -64,10 +64,41 @@ Setters and getters
 
 Add hours, minutes, seconds
 ----------------------------------------------------------------------------
+* NKDate.addMonths( date_obj, months )
 * NKDate.addHours( date_obj, hours )
 * NKDate.addMinutes( date_obj, minutes )
 * NKDate.addSeconds( date_obj, seconds )
 * NKDate.addMiliseconds( date_obj, miliseconds )
+
+
+
+NKDate.daysInMonth( year, month )
+----------------------------------------------------------------------------
+    
+    let jan_days = NKDate.daysInMonth( 2023, 1 );
+    
+    console.log( "January has " + jan_days + " days" ); //Output: January has 31 days
+
+NKDate.firstDayOfMonth( year, month, start_on_sunday )
+----------------------------------------------------------------------------
+* **start_on_sunday = false;** 0: Monday, 1: Tuesday, 2: Wednesday ...
+* **start_on_sunday = true;**  0: Sunday, 1: Monday, 2: Tuesday, 3: Wednesday ...
+
+Example 1: (start_on_sunday = false)
+
+    let first_day = NKDate.firstDayOfMonth( 2023, 1, false );
+    
+    console.log( "The first day of January 2023 is " + first_day );
+
+    //Output: The first day of January 2023 is 6 (6 means sunday)
+
+Example 2: (start_on_sunday = true)
+
+    let first_day = NKDate.firstDayOfMonth( 2023, 1, true );
+    
+    console.log( "The first day of January 2023 is " + first_day );
+
+    //Output: The first day of January 2023 is 0 (0 means sunday)
 
 
 NKDate.getDatesBetween( date_start_obj, date_end_obj )
@@ -87,10 +118,52 @@ NKDate.getDatesBetween( date_start_obj, date_end_obj )
     // 23/2/2022, 0:00:00
     // 24/2/2022, 0:00:00
 
+NKDate.getCalendar = function( year, month, add_empty_days, start_on_sunday ) 
+----------------------------------------------------------------------------
+Example 1: The first day of January 2023 is sunday, add empty days (Monday-Saturday)
 
+    let calendar = NKDate.getCalendar( 2023, 1, true );
+    
+    console.log( calendar );
+    //Output:
+    // [
+    //     {"day": "", "today": false, "date": null},
+    //     {"day": "", "today": false, "date": null},
+    //     {"day": "", "today": false, "date": null},
+    //     {"day": "", "today": false, "date": null},
+    //     {"day": "", "today": false, "date": null},
+    //     {"day": "", "today": false, "date": null},
+    //     {"day": 1, "today": false, "date": "2022-12-31T23:00:00.000Z"},
+    //     {"day": 2, "today": false, "date": "2023-01-01T23:00:00.000Z"},
+    //     {"day": 3, "today": false, "date": "2023-01-02T23:00:00.000Z"},
+    //     {"day": 4, "today": false, "date": "2023-01-03T23:00:00.000Z"},
+    //     {"day": 5, "today": false, "date": "2023-01-04T23:00:00.000Z"},
+    //     {"day": 6, "today": false, "date": "2023-01-05T23:00:00.000Z"},
+    //     {"day": 7, "today": false, "date": "2023-01-06T23:00:00.000Z"},
+    //     {"day": 8, "today": false, "date": "2023-01-07T23:00:00.000Z"},
+    //     {"day": 9, "today": false, "date": "2023-01-08T23:00:00.000Z"},
+    //     {"day": 10, "today": false, "date": "2023-01-09T23:00:00.000Z"},
+    //     .....
+    //     {"day": 31, "today": false, "date": "2023-01-30T23:00:00.000Z"}
+    // ]
 
+Example 2: Without empty days
 
+    let calendar = NKDate.getCalendar( 2023, 1, false );
 
-
-
-
+    console.log( calendar );
+    //Output:
+    // [
+    //     {"day": 1, "today": false, "date": "2022-12-31T23:00:00.000Z"},
+    //     {"day": 2, "today": false, "date": "2023-01-01T23:00:00.000Z"},
+    //     {"day": 3, "today": false, "date": "2023-01-02T23:00:00.000Z"},
+    //     {"day": 4, "today": false, "date": "2023-01-03T23:00:00.000Z"},
+    //     {"day": 5, "today": false, "date": "2023-01-04T23:00:00.000Z"},
+    //     {"day": 6, "today": false, "date": "2023-01-05T23:00:00.000Z"},
+    //     {"day": 7, "today": false, "date": "2023-01-06T23:00:00.000Z"},
+    //     {"day": 8, "today": false, "date": "2023-01-07T23:00:00.000Z"},
+    //     {"day": 9, "today": false, "date": "2023-01-08T23:00:00.000Z"},
+    //     {"day": 10, "today": false, "date": "2023-01-09T23:00:00.000Z"},
+    //     .....
+    //     {"day": 31, "today": false, "date": "2023-01-30T23:00:00.000Z"}
+    // ]
