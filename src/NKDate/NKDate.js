@@ -201,7 +201,7 @@ NKDate.getDatesBetween = function ( date_start_obj, date_end_obj = null ) {
 NKDate.getCalendar = function( year, month, add_empty_days = true, start_on_sunday = false) {
     let calendar = [];
     let today = new Date();
-    let current_year_month = (year === today.getFullYear() && month === today.getMonth());
+    let current_year_month = (year === today.getFullYear() && month === today.getMonth()+1);
 
     if ( add_empty_days ) {
         let firstDay = NKDate.firstDayOfMonth(year, month, start_on_sunday);

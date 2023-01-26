@@ -89,4 +89,4 @@ NKArray.mountTree = function ( data, id_name, parent_id_name, child_arr_name ) {
     }
 
     return result;
-}
+};
