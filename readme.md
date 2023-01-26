@@ -9,22 +9,22 @@ Daily use JavaScript function set.
 
 
 ## Index
-* [NKBase](./src/base/base.md)
-* [NKActions](./src/actions/actions.md)
-* [NKCast](./src/cast/cast.md)
-* [NKClipboard](./src/clipboard/clipboard.md)
-* [NKContextMenu](./src/context_menu/context_menu.md)
-* [NKDrag](./src/dragdrop/drag.md)
-* [NKForm](./src/form/form.md)
-* [NKLoader](./src/loader/loader.md)
-* [NKModal](./src/modal/modal.md)
-* [NKNotification](./src/notification/notification.md)
-* [NKPosition](./src/position/position.md)
-* [NKPopup](./src/popup/popup.md)
-* [NKResize](./src/resize/resize.md)
-* [NKRouting](./src/routing/routing.md)
-* [NKStick](./src/stick/stick.md)
-* [NKStorage](./src/storage/storage.md)
+* [NKBase](./src/NK/NKBase.md)
+* [NKActions](./src/NKActions/NKActions.md)
+* [NKCast](./src/NKCast/NKCast.md)
+* [NKClipboard](./src/NKClipboard/NKClipboard.md)
+* [NKContextMenu](./src/NKContextMenu/NKContextMenu.md)
+* [NKDrag](./src/NKDrag/NKDrag.md)
+* [NKForm](./src/NKForm/NKForm.md)
+* [NKLoader](./src/NKLoader/NKLoader.md)
+* [NKModal](./src/NKModal/NKModal.md)
+* [NKNotification](./src/NKNotification/NKNotification.md)
+* [NKPosition](./src/NKPosition/NKPosition.md)
+* [NKPopup](./src/NKPopup/NKPopup.md)
+* [NKResize](./src/NKResize/NKResize.md)
+* [NKRouting](./src/NKRouting/NKRouting.md)
+* [NKStick](./src/NKStick/NKStick.md)
+* [NKStorage](./src/NKStorage/NKStorage.md)
 
 
 

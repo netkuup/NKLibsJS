@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Context menu example</title>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../NKBase/NKBase.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../NKBase/NKBase.css"/>
+        <script type="text/javascript" src="../NKContextMenu.js"></script>
+        <link rel="stylesheet" type="text/css" href="../NKContextMenu.css"/>
+        <script type="text/javascript" src="../../NKPosition/NKPosition.js"></script>
+    </head>
+
+    <body>
+
+        Right click anywhere <br /><br />
+
+        <div id="my_div" style="background-color: lightblue; width: 200px; cursor: pointer;">
+            RIGHT CLICK HERE
+        </div>
+
+    </body>
+
+
+    <script>
+        let content_1 = [
+            {type: "item", id: 1, text: "Add", icon:""},
+            {type: "item", id: 2, text: "Delete", icon:""},
+            {type: "divider"},
+            {type: "menu", id: 3, text: "Menu 1", icon:"", items: [
+                    {type: "menu", id: 4, text: "Menu 2", icon:"", items: [
+                            {type: "item", id: 5, text: "Subitem 3", icon:""},
+                            {type: "item", id: 6, text: "Subitem 4", icon:""},
+                        ]},
+                    {type: "item", id: 7, text: "Subitem 1", icon:""},
+                    {type: "item", id: 8, text: "Subitem 2", icon:""},
+                    {type: "menu", id: 9, text: "Menu 3", icon:"", items: [
+                            {type: "item", id: 10, text: "Subitem 5", icon:""},
+                            {type: "item", id: 11, text: "Subitem 6", icon:""},
+                        ]},
+                ]},
+        ];
+
+        let content_2 = [
+            {type: "item", id: 1, text: "Add Blue box", icon:""},
+            {type: "item", id: 2, text: "Delete Blue box", icon:""}
+        ];
+
+
+
+        NKContextMenu.start();
+
+        NKContextMenu.addEventListener('onOpen', function( data ) {
+            console.log( "Open context menu", data );
+
+            if ( data.target.id === "my_div" ) {
+                NKContextMenu.setContent( content_2 );
+            } else {
+                NKContextMenu.setContent( content_1 );
+            }
+
+        });
+
+        NKContextMenu.addEventListener('onClose', function( data ) {
+            console.log( "Close context menu", data );
+        });
+
+
+    </script>
+
+
+</html>
+
+
+

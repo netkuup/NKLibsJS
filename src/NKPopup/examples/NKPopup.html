@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Popup example</title>
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../NKBase/NKBase.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../NKBase/NKBase.css"/>
+        <script type="text/javascript" src="../NKPopup.js"></script>
+        <link rel="stylesheet" type="text/css" href="../NKPopup.css"/>
+        <script type="text/javascript" src="../../NKPosition/NKPosition.js"></script>
+    </head>
+
+    <body>
+        Style
+        <br><br><br>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="top,center"<br>nk-arrow-size="30, 20"</div>
+            <div class="NKPopup_dst my_style" nk-type="box" nk-align="top,center" nk-arrow-size="30, 20">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <style>
+            .my_style {
+                text-align: center;
+                font: italic normal 90% Georgia, serif;
+                line-height: 150%;
+                text-shadow: white 0 1px;
+                background: #DDD;
+                border: 5px solid #6E6E6E;
+                border-radius: 3px;
+                width: 250px;
+            }
+        </style>
+
+        <hr>
+        Box type.
+
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="top,center"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="top,center">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="top,left"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="top,left">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="top,right"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="top,right">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,middle"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,middle">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,top"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,top">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,bottom"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,bottom">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <hr>
+        Mouse type.
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="top,center"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="top,center">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="top,left"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="top,left">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="top,right"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="top,right">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="left,middle"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="left,middle">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="left,top"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="left,top">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="left,bottom"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="left,bottom">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <hr>
+        Arrow
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,bottom"<br>nk-arrow-size="10,7"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,bottom" nk-arrow-size="10,7">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <br><br><br>
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="top,center"<br>nk-arrow-size="30, 20"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="top,center" nk-arrow-size="30, 20">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <br><br><br>
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src" style="width: 10px;">i</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="top,left" nk-arrow-size="10,7" nk-offset="20,0">
+                nk-type="box"<br>nk-align="top,left"<br>nk-arrow-size="10,7"<br>nk-offset="20,0"
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src" style="width: 10px;">i</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,top" nk-arrow-size="10,7" nk-offset="0,20">
+                nk-type="box"<br>nk-align="left,top"<br>nk-arrow-size="10,7"<br>nk-offset="0,20"
+            </div>
+        </div>
+
+        <hr>
+        Offset
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="top,center"<br>nk-offset="0,0"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="top,center" nk-offset="0,0">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="top,center"<br>nk-offset="0,-20"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="top,center" nk-offset="0,-20">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="mouse"<br>nk-align="top,center"<br>nk-offset="200,-20"</div>
+            <div class="NKPopup_dst" nk-type="mouse" nk-align="top,center" nk-offset="200,-20">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <hr>
+        Fixed X
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,top"<br>nk-x="100"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,top" nk-x="100">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,middle"<br>nk-x="100"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,middle" nk-x="100">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <div>
+            <div class="NKPopup_src">nk-type="box"<br>nk-align="left,bottom"<br>nk-x="100"</div>
+            <div class="NKPopup_dst" nk-type="box" nk-align="left,bottom" nk-x="100">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+        </div>
+
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+
+    </body>
+
+
+    <style>
+
+        .NKPopup_src {
+            width: 170px;
+            margin: 0 auto;
+            background-color: lightblue;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+    </style>
+
+
+
+    <script>
+
+        NKPopup.start( true );
+
+    </script>
+
+
+</html>
+
+
+

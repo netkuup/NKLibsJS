@@ -1212,22 +1212,7 @@ NKPosition.getScrollX = function() {
 NKPosition.getScrollY = function() {
     return window.scrollY;
 };
-;
-// -------------------------------------------------------------------------
-// String
-// -------------------------------------------------------------------------
-
-// Escape html characters.
-String.prototype.escape = function() {
-    var tagsToReplace = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;'
-    };
-    return this.replace(/[&<>]/g, function(tag) {
-        return tagsToReplace[tag] || tag;
-    });
-};;var NKResize = {};
+;var NKResize = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
@@ -1779,3 +1764,19 @@ window.onbeforeunload = function (e) {
     }
 };
 
+;
+// -------------------------------------------------------------------------
+// String
+// -------------------------------------------------------------------------
+
+// Escape html characters.
+String.prototype.escape = function() {
+    var tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return this.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+};
