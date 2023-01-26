@@ -65,3 +65,28 @@ NKArray.getCombinations = function(){
     return output;
 };
 
+
+NKArray.mountTree = function ( data, id_name, parent_id_name, child_arr_name ) {
+    let refs = {};
+    let result = [];
+
+    for (let i = 0; i < data.length; i++ ) {
+        if ( typeof refs[data[i][id_name]] === 'undefined' ) {
+            refs[data[i][id_name]] = {};
+            refs[data[i][id_name]][child_arr_name] = [];
+        }
+        if ( typeof refs[data[i][parent_id_name]] === 'undefined' ) {
+            refs[data[i][parent_id_name]] = {};
+            refs[data[i][parent_id_name]][child_arr_name] = [];
+        }
+        refs[data[i][id_name]] = {...data[i], ...refs[data[i][id_name]]};
+
+        if ( parseInt(data[i][parent_id_name]) === 0 ) {
+            result.push(refs[data[i][id_name]]);
+        } else {
+            refs[data[i][parent_id_name]][child_arr_name].push(refs[data[i][id_name]]);
+        }
+    }
+
+    return result;
+}
