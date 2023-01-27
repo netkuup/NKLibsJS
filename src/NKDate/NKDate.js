@@ -84,7 +84,8 @@ NKDate.getYear = function( date_obj, four_digits = true ) {
 
 NKDate.setYear = function( date_obj, year ) {
     if ( year === null ) return;
-    date_obj.setYear( year );
+    if ( parseInt(year) < 100) year = "20"+year;
+    date_obj.setFullYear( year );
     return date_obj;
 };
 
@@ -232,13 +233,13 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
 
             if ( task_end === null ) {
                 if (task_start >= day_start && task_start <= day_end) { //1day = 86400000ms
-                    cal[cal_tasklist_name].push(task);
+                    cal[cal_tasklist_name].push(NKObject.clone(task));
                 }
             } if ( task_start === null ) {
                 console.error("Task with date_end without date_start");
             } else {
                 if ( task_end >= day_start && task_start <= day_end) {
-                    cal[cal_tasklist_name].push(task);
+                    cal[cal_tasklist_name].push(NKObject.clone(task));
                 }
             }
         }
