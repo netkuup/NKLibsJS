@@ -8,7 +8,7 @@ NKDate.set = function( date_obj, dd = null, mm = null, yyyy = null, h = null, m 
 
 NKDate.clone = function ( date_obj ) {
     return new Date(date_obj.getTime());
-}
+};
 
 NKDate.setFromString = function( date_obj, str_date, date_pattern ) {
 
@@ -214,6 +214,33 @@ NKDate.getCalendar = function( year, month, add_empty_days = true, start_on_sund
     }
 
     return calendar;
-}
+};
 
+NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklist_name, task_startdate_name, task_enddate_name ) {
 
+    for ( let i = 0; i < tasks.length; i++ ) {
+        let task = tasks[i];
+        let task_start = ( task[task_startdate_name] === "0000-00-00 00:00:00" ) ? null : new Date(task[task_startdate_name]).getTime();
+        let task_end = ( task[task_enddate_name] === "0000-00-00 00:00:00" ) ? null : new Date(task[task_enddate_name]).getTime();
+
+        for ( let c = 0; c < calendar.length; c++ ) {
+            let cal = calendar[c];
+            if ( cal[cal_date_name] === null ) continue;
+
+            let day_start = cal[cal_date_name].getTime();
+            let day_end = day_start + 86399999;
+
+            if ( task_end === null ) {
+                if (task_start >= day_start && task_start <= day_end) { //1day = 86400000ms
+                    cal[cal_tasklist_name].push(task);
+                }
+            } if ( task_start === null ) {
+                console.error("Task with date_end without date_start");
+            } else {
+                if ( task_end >= day_start && task_start <= day_end) {
+                    cal[cal_tasklist_name].push(task);
+                }
+            }
+        }
+    }
+};
