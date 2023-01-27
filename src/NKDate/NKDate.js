@@ -167,6 +167,13 @@ NKDate.print = function ( date_obj ) {
     console.log( date_obj.toLocaleString() );
 };
 
+NKDate.equals = function ( date_1, date_2, compare_time = true ) {
+    if ( compare_time ) return (date_1.getTime() === date_2.getTime());
+    if ( date_1.getDate() !== date_2.getDate() ) return false;
+    if ( date_1.getMonth() !== date_2.getMonth() ) return false;
+    if ( date_1.getFullYear() !== date_2.getFullYear() ) return false;
+    return true;
+}
 
 NKDate.daysInMonth = function( year, month ) {
     if ( month === 0 ) throw "Month 0 does not exist, January is month 1.";
