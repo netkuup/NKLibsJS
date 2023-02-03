@@ -12,7 +12,7 @@ NKStorage.np = null;
 
 
 NKStorage.save = function( force ) {
-    if ( force === true ) {
+    if ( force === true || NKStorage.is_safari ) {
         localStorage.setItem( 'NKStorage', JSON.stringify(NKStorage.p) );
         sessionStorage.setItem( 'NKStorage', JSON.stringify(NKStorage.np) );
         NKStorage.saveOnLeave = false;
@@ -26,6 +26,8 @@ NKStorage.start = function( save_on_leave = true ) {
     NKStorage.saveOnLeave = save_on_leave;
 
     if ( NK.isset(NKStorage.loaded) && NKStorage.loaded === true ) return;
+
+    NKStorage.is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     try {
         NKStorage.p = JSON.parse( localStorage.getItem('NKStorage') );

@@ -37,7 +37,7 @@ You can write persistent data like:
 
     NKStorage.p.myVariable1 = "Hello world";
     NKStorage.p.myVariable2 = 123;
-    NKStorage.save();
+    NKStorage.save(); //Optional in chrome/firefox, mandatory on safari
 
 You can write non persistent data like: 
 
@@ -46,7 +46,7 @@ You can write non persistent data like:
         name: "John",
         age: 23
     }
-    NKStorage.save();
+    NKStorage.save(); //Optional in chrome/firefox, mandatory on safari
 
 
 Detect data changes
@@ -76,13 +76,18 @@ This function will set 'NKStorage.p' and 'NKStorage.np' with the values stored o
 
 About NKStorage.save()
 ----------------------------------------------------------------------------
-This function will save 'NKStorage.p' to localStorage and 'NKStorage.np' to sessionStorage **WHEN THE USER LEAVES** the current page, tab, etc. 
+This function will save 'NKStorage.p' to localStorage and 'NKStorage.np' to sessionStorage.
 
-    NKStorage.save(); //It can be called multiple times and only runs once when user leaves current page.
+Calling this function is optional in chrome/firefox (they save the information before closing the tab), but mandatory in safari (safari doesn't allow detecting when the user closes the tab)
 
-If you want to force save the data **WHEN THE FUNCTION IS CALLED** use:
+    NKStorage.save();
+
+On chrome/firefox use this function if you want to force save the data **WHEN THE FUNCTION IS CALLED**,
+otherwise they will save the information before closing the tab.
 
     NKStorage.save( true ); //It runs each call
+
+
 
 **Params:**
 
