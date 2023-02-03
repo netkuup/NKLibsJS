@@ -777,8 +777,8 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
 
     for ( let i = 0; i < tasks.length; i++ ) {
         let task = tasks[i];
-        let task_start = ( task[task_startdate_name] === "0000-00-00 00:00:00" ) ? null : new Date(task[task_startdate_name]).getTime();
-        let task_end = ( task[task_enddate_name] === "0000-00-00 00:00:00" ) ? null : new Date(task[task_enddate_name]).getTime();
+        let task_start = ( task[task_startdate_name] === "0000-00-00 00:00:00" ) ? null : new Date(task[task_startdate_name].replace(/-/g, "/")).getTime();
+        let task_end = ( task[task_enddate_name] === "0000-00-00 00:00:00" ) ? null : new Date(task[task_enddate_name].replace(/-/g, "/")).getTime();
 
         for ( let c = 0; c < calendar.length; c++ ) {
             let cal = calendar[c];
