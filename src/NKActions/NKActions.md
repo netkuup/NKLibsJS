@@ -1,4 +1,4 @@
-# NKActions
+# NKDomActions
 A set of helpers for basic user actions.
 
 Demo
@@ -57,34 +57,5 @@ If we use '.NKReact' after 'NKToggle_btn', the text 'Foo' will be automatically 
 
 [Live demo](https://codepen.io/Netkuup/pen/PjGdbG)
 
-NKTemplate
-----------------------------------------------------------------------------
-* __Note:__ This method will be deprecated or improved in the near future. I do not recommend using it.
-* When click '<i>.NKTemplate_btn.T1</i>' the element '<i>.NKTemplate_src.T1</i>' will be copied and appended to '<i>.NKTemplate_dst.T1</i>'
-* The next class of '<i>NKTemplate_</i>', in this case '<i>T1</i>' is a template name of your choice.
-
-Example 1:
-
-    <div id="element" class="NKTemplate_src T1">
-        Potatoes<br>
-    </div>
-    
-    <div id="element_list" class="NKTemplate_dst T1"></div>
-
-    <a class="NKTemplate_btn T1">Add potatoes to list</a>
-
-Example 2:
-
-    <div id="element" class="NKTemplate_src list1 list2">
-        Potatoes<br>
-    </div>
-    
-    <div id="element_list_a" class="NKTemplate_dst list1"></div>
-    <div id="element_list_b" class="NKTemplate_dst list2"></div>
-
-    <a class="NKTemplate_btn list1">Add element to list 1</a>
-    <a class="NKTemplate_btn list2">Add element to list 2</a>
-    
-Note: 'NKTemplate_btn [template_name]' only can contain one template name.
 
 [<< Index](../../../../)

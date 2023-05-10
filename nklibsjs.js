@@ -63,10 +63,6 @@ function NKEventListener() {
 }
 
 
-if ( !NK.isset(() => $) ) {
-    throw "Error, you must include jquery before using NKLibsJS";
-}
-
 
 NK.core = {};
 
@@ -108,7 +104,12 @@ NK.core.ignoreMutations = function( numMutations ) {
 };
 
 
-window.addEventListener("load", function () { window.loaded = true; });
+window.addEventListener("load", function () {
+    if ( !NK.isset(() => $) ) {
+        throw "Error, you must include jquery before using NKLibsJS";
+    }
+    window.loaded = true;
+});
 
 /*
 NK.autoload = function( modules ) {
@@ -174,13 +175,6 @@ NKActions.reload = function() {
     $('.NKToggle_btn.NKReact').each(function() {
         var e = $(this).siblings('.NKToggle_dst');
         reactLabel(this, e);
-    });
-
-    $('.NKTemplate_btn').off().on('click', function(){
-        var template_name = $(this).attr("class").split('NKTemplate_btn ')[1].split(' ')[0];
-        $('.NKTemplate_dst.'+template_name).append(
-            $('.NKTemplate_src.'+template_name).clone(true, true).removeClass('NKTemplate_src').addClass('NKTemplate').show()
-        );
     });
 
 };
@@ -561,8 +555,8 @@ NKDate.clone = function ( date_obj ) {
 
 NKDate.setFromString = function( date_obj, str_date, date_pattern ) {
 
-    let date_parts = str_date.split(/(?:\/| |:|\\)+/);
-    let pattern_parts = date_pattern.split(/(?:\/| |:|\\)+/);
+    let date_parts = str_date.split(/(?:\/|-| |:|\\)+/);
+    let pattern_parts = date_pattern.split(/(?:\/|-| |:|\\)+/);
 
     if ( date_parts.length !== pattern_parts.length ) {
         throw "Date (" + str_date + ") does not fit the pattern (" + date_pattern + ")";
@@ -801,7 +795,64 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
         }
     }
 };
-;var NKDrag = {};
+;NKDomTemplate = {};
+NKDomElement = {};
+
+NKDomTemplate.register = function ( template_name, template_code ) {
+
+    if ( typeof customElements.get(template_name) !== "undefined" ) {
+        console.error("Error, " + template_name + " is already registered.");
+        return;
+    }
+
+    customElements.define(template_name,
+        class extends HTMLElement {
+            connectedCallback() {
+                this.attachShadow({mode: 'open'});
+                this.shadowRoot.innerHTML = template_code;
+            }
+        }
+    );
+
+}
+
+
+NKDomTemplate.start = function () {
+    let doc_templates = document.querySelectorAll( 'template' );
+
+    for ( let i = 0; i < doc_templates.length; i++ ) {
+        NKDomTemplate.register( doc_templates[i].attributes.name.value, doc_templates[i].innerHTML );
+    }
+
+}
+
+
+NKDomTemplate.fill = function ( template_name, template_data ) {
+    let content_array = Array.isArray(template_data) ? template_data : [template_data];
+    let html_result = "";
+
+    for ( let i = 0; i < content_array.length; i++ ) {
+
+        html_result += "<" + template_name + ">";
+
+        for (const [key, value] of Object.entries(content_array[i])) {
+            html_result += '<span slot="' + key + '">' + value + '</span>';
+        }
+
+        html_result += "</" + template_name + ">";
+
+    }
+
+    return html_result;
+}
+
+NKDomElement.setHtml = function ( element_id_or_class, element_html ) {
+    document.getElementById( element_id_or_class.slice(1) ).innerHTML = element_html;
+}
+
+NKDomElement.appendHtml = function ( element_id_or_class, element_html ) {
+    document.getElementById( element_id_or_class.slice(1) ).insertAdjacentHTML("afterend", element_html);
+};var NKDrag = {};
 
 //if ( typeof NK === 'undefined' ) {
 //    throw "You must include base.js before drag.js";

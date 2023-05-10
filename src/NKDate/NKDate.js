@@ -12,8 +12,8 @@ NKDate.clone = function ( date_obj ) {
 
 NKDate.setFromString = function( date_obj, str_date, date_pattern ) {
 
-    let date_parts = str_date.split(/(?:\/| |:|\\)+/);
-    let pattern_parts = date_pattern.split(/(?:\/| |:|\\)+/);
+    let date_parts = str_date.split(/(?:\/|-| |:|\\)+/);
+    let pattern_parts = date_pattern.split(/(?:\/|-| |:|\\)+/);
 
     if ( date_parts.length !== pattern_parts.length ) {
         throw "Date (" + str_date + ") does not fit the pattern (" + date_pattern + ")";

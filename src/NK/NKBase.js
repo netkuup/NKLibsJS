@@ -63,10 +63,6 @@ function NKEventListener() {
 }
 
 
-if ( !NK.isset(() => $) ) {
-    throw "Error, you must include jquery before using NKLibsJS";
-}
-
 
 NK.core = {};
 
@@ -108,7 +104,12 @@ NK.core.ignoreMutations = function( numMutations ) {
 };
 
 
-window.addEventListener("load", function () { window.loaded = true; });
+window.addEventListener("load", function () {
+    if ( !NK.isset(() => $) ) {
+        throw "Error, you must include jquery before using NKLibsJS";
+    }
+    window.loaded = true;
+});
 
 /*
 NK.autoload = function( modules ) {
