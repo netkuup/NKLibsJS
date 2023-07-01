@@ -105,7 +105,7 @@ NK.core.ignoreMutations = function( numMutations ) {
 
 
 window.addEventListener("load", function () {
-    if ( !NK.isset(() => $) ) {
+    if ( !NK.isset(() => window.$) ) {
         throw "Error, you must include jquery before using NKLibsJS";
     }
     window.loaded = true;
