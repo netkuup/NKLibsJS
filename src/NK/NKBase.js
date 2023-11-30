@@ -24,12 +24,24 @@ NK.empty = function(variable) {
 NK.clone = function ( obj ) {
     console.error("NK.clone() deprecated, use NKObject.clone() instead.");
     return JSON.parse(JSON.stringify(obj));
-}
+};
 
 NK.backtrace = function ( msg = "" ) {
     let backtrace = new Error().stack.split("\n").slice(2).join("\n");
     console.log("Backtrace: " + msg + "\n" + backtrace);
-}
+};
+
+NK.getScriptPath = function () {
+    let scripts = document.querySelectorAll("script"); //Los otros tag aun no están parseados
+    let script_src = scripts[scripts.length - 1].src;
+    return script_src.substring(8, script_src.lastIndexOf("/"));
+};
+
+NK.sleep = function (ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+};
 
 function NKEventListener() {
     this.events = {};

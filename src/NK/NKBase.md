@@ -32,6 +32,17 @@ NK.backtrace( message )
 Prints the current backtrace to the console. An optional message can be indicated.
 
 
+NK.getScriptPath()
+----------------------------------------------------------------------------
+Returns the current .js file path.
+
+
+NK.sleep( milliseconds )
+----------------------------------------------------------------------------
+Sleep x milliseconds
+
+    await NK.sleep(1000);
+
 
 # NKBase CSS
 A set of basic styles
