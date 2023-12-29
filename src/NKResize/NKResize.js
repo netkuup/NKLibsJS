@@ -4,8 +4,8 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
 }
 
-let event_listener = new NKEventListener();
-NKResize = { ...event_listener };
+let nkresize_event_listener = new NKEventListener();
+NKResize = { ...nkresize_event_listener };
 
 NKResize.config = {
     column_resize_cursor: 'col-resize',

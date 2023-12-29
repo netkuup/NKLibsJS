@@ -4,8 +4,8 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
 }
 
-var event_listener = new NKEventListener();
-NKContextMenu = { ...event_listener };
+var nkcontextmenu_event_listener = new NKEventListener();
+NKContextMenu = { ...nkcontextmenu_event_listener };
 
 
 

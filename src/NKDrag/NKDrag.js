@@ -1,7 +1,7 @@
 let NKDrag = {};
 
-let event_listener = new NKEventListener();
-NKDrag = { ...event_listener };
+let nkdrag_event_listener = new NKEventListener();
+NKDrag = { ...nkdrag_event_listener };
 
 NKDrag.selection = { element: null };
 

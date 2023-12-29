@@ -4,8 +4,8 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before storage.js";
 }
 
-var event_listener = new NKEventListener();
-NKStorage = { ...event_listener };
+var nkstorage_event_listener = new NKEventListener();
+NKStorage = { ...nkstorage_event_listener };
 
 NKStorage.p = null;
 NKStorage.np = null;

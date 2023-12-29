@@ -517,8 +517,8 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
 }
 
-var event_listener = new NKEventListener();
-NKContextMenu = { ...event_listener };
+var nkcontextmenu_event_listener = new NKEventListener();
+NKContextMenu = { ...nkcontextmenu_event_listener };
 
 
 
@@ -1134,8 +1134,8 @@ NKDom.addEventListener = function ( element, event_name, event_listener_function
     });
 };let NKDrag = {};
 
-let event_listener = new NKEventListener();
-NKDrag = { ...event_listener };
+let nkdrag_event_listener = new NKEventListener();
+NKDrag = { ...nkdrag_event_listener };
 
 NKDrag.selection = { element: null };
 
@@ -1917,8 +1917,8 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
 }
 
-let event_listener = new NKEventListener();
-NKResize = { ...event_listener };
+let nkresize_event_listener = new NKEventListener();
+NKResize = { ...nkresize_event_listener };
 
 NKResize.config = {
     column_resize_cursor: 'col-resize',
@@ -2394,8 +2394,8 @@ if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before storage.js";
 }
 
-var event_listener = new NKEventListener();
-NKStorage = { ...event_listener };
+var nkstorage_event_listener = new NKEventListener();
+NKStorage = { ...nkstorage_event_listener };
 
 NKStorage.p = null;
 NKStorage.np = null;
