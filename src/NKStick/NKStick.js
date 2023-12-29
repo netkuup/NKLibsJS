@@ -1,4 +1,4 @@
-var NKStick = {};
+let NKStick = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before stick.js";
@@ -9,8 +9,9 @@ if ( typeof NK === 'undefined' ) {
 NKStick.start = function() {
     if ( NK.isset(NKStick.loaded) && NKStick.loaded === true ) return;
 
-    $.each( $('.NKStickBD'), function( key, value ) {
-        $(this).attr('nkdata-top', $(this).offset().top );
+
+    NKDom.select('.NKStickBD').forEach(function ( el, i ){
+        NKDom.setAttribute( el, 'nkdata-top', el.offsetTop )
     });
 
 
@@ -23,52 +24,48 @@ NKStick.start = function() {
 
 NKStick.reload = function() {
 
-    var scroll_visible = $(document).height() > $(window).height();
-    var scroll_top = $(document).scrollTop();
+    let scroll_visible = document.documentElement.scrollHeight > window.innerHeight;
+    let scroll_top = document.documentElement.scrollTop;
 
     // NKStickBN
     if ( scroll_visible ) {
-        $('.NKStickBN').removeClass('NKStickBO');
+        NKDom.removeClass('.NKStickBN', 'NKStickBO');
     } else {
-        $('.NKStickBN').addClass('NKStickBO');
+        NKDom.addClass('.NKStickBN', 'NKStickBO');
     }
 
     if ( !scroll_visible ) return;
 
     // NKStickBD
-    $('.NKStickBD').removeClass('NKStickBO');
+    NKDom.removeClass('.NKStickBD', 'NKStickBO');
 
-    $.each( $('.NKStickBD'), function( key, value ) {
-        if ( scroll_top + $(window).height() < $(this).offset().top + $(this).height() ) {
-            $('.NKStickBD').addClass('NKStickBO');
+    NKDom.select('.NKStickBD').forEach(function (el, i){
+        if ( scroll_top + window.innerHeight < el.offsetTop + el.clientHeight ) {
+            NKDom.addClass('.NKStickBD', 'NKStickBO');
         }
     });
 
 
     // NKStickTD
-    $('.NKStickTD').removeClass('NKStickTO');
+    NKDom.removeClass('.NKStickTD', 'NKStickTO');
 
-    $.each( $('.NKStickTD'), function( key, value ) {
-
-        if ( $(this).css('position') === "fixed" ) {
-            var top = parseInt($(this).css('top'));
+    NKDom.select('.NKStickTD').forEach(function (el, i){
+        if ( NKDom.getCss(el, 'position') === "fixed" ) {
+            let top = parseInt( NKDom.getCss(el, 'top') );
 
             if ( scroll_top < top ) {
-                $(this).css('margin-top', -scroll_top );
+                NKDom.setCss(el, 'margin-top', -scroll_top);
             } else {
-                $(this).css('margin-top', -top );
+                NKDom.setCss(el, 'margin-top', -top);
             }
 
         } else {
-            if ( scroll_top > $(this).offset().top ) {
-                $('.NKStickTD').addClass('NKStickTO');
+            if ( scroll_top > el.offsetTop ) {
+                NKDom.addClass('.NKStickTD', 'NKStickTO');
             }
 
         }
-
-
     });
-
 
 
 };

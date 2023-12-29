@@ -1,10 +1,6 @@
-var NKDrag = {};
+let NKDrag = {};
 
-//if ( typeof NK === 'undefined' ) {
-//    throw "You must include base.js before drag.js";
-//}
-
-var event_listener = new NKEventListener();
+let event_listener = new NKEventListener();
 NKDrag = { ...event_listener };
 
 NKDrag.selection = { element: null };
@@ -14,7 +10,7 @@ NKDrag.start = function( reactable ) {
     NKDrag.loaded = true;
 
     if ( typeof NKPosition === 'undefined' ) {
-        throw "You must include position.js";
+        throw "You must include NKPosition.js";
     }
     NKPosition.start();
 
@@ -24,36 +20,41 @@ NKDrag.start = function( reactable ) {
     if ( reactable === true ) {
         NK.core.reloadOnDomChange( NKDrag );
     }
-
-    $(document).on('mousemove', function() {
+    function onMouseMove(e) {
         if ( NKDrag.selection.element != null ) {
-            var left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
-            var top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
+            let left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
+            let top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
 
-            NKDrag.selection.element.offset({left: left, top: top});
+            NKDrag.selection.element.style.left = left + "px";
+            NKDrag.selection.element.style.top = top+ "px";
 
             NKDrag.dispatchEvent('onDrag', {
-                e: NKDrag.selection.element[0],
-                offset: {left: left, top: top},
-                position: NKDrag.selection.element.position()
+                e: NKDrag.selection.element,
+                position: {left: left, top: top}
             });
         }
-    });
+    }
+
+    NKDom.addEventListener( document, 'mousemove', onMouseMove );
 };
 
 NKDrag.reload = function() {
 
-    $('.NKDrag_src').on('mousedown', function() {
-        NKDrag.selection.element = $(this).closest('.NKDrag_dst');
+    function onMouseDown( e ) {
+        NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 
-        var pos = NKDrag.selection.element.offset();
-        NKDrag.selection.offset[0] -= pos.left;
-        NKDrag.selection.offset[1] -= pos.top;
-    });
+        // let pos = NKDrag.selection.element.offset;
+        NKDrag.selection.offset[0] -= NKDrag.selection.element.offsetLeft;
+        NKDrag.selection.offset[1] -= NKDrag.selection.element.offsetTop;
+    }
 
-    $('.NKDrag_src').on('mouseup', function() {
+    NKDom.addEventListener( '.NKDrag_src', 'mousedown', onMouseDown );
+
+    function onMouseUp( e ) {
         NKDrag.selection.element = null;
-    });
+    }
+
+    NKDom.addEventListener( '.NKDrag_src', 'mouseup', onMouseUp );
 
 };

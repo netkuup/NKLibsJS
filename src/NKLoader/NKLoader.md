@@ -10,10 +10,6 @@ NKLoader.setSelector( loader_selector, error_selector )
 
 HTML
 
-    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="../base/base.js" ></script>
-    <script type="text/javascript" src="./loader.js" ></script>
-
     <div>
         <div id="myLoader">Loading...</div>
         <div id="myError" class="NKHide_dst" style="color: red">

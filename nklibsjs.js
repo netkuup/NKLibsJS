@@ -934,7 +934,7 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
     }
 };
 ;NKDomTemplate = {};
-NKDomElement = {};
+NKDom = {};
 
 NKDomTemplate.register = function ( template_name, template_code ) {
 
@@ -984,19 +984,157 @@ NKDomTemplate.fill = function ( template_name, template_data ) {
     return html_result;
 }
 
-NKDomElement.setHtml = function ( element_id_or_class, element_html ) {
-    document.getElementById( element_id_or_class.slice(1) ).innerHTML = element_html;
+NKDom.parseIdOrClass = function ( element_id_or_class ) {
+    let result = {
+        is_class: false,
+        is_id: false,
+        name: ""
+    };
+    if ( element_id_or_class.length === 0 ) return result;
+
+    result.is_id = ( element_id_or_class[0] === "#" );
+    result.is_class = ( element_id_or_class[0] === "." );
+    result.name = element_id_or_class.slice(1);
+
+    return result;
 }
 
-NKDomElement.appendHtml = function ( element_id_or_class, element_html ) {
-    document.getElementById( element_id_or_class.slice(1) ).insertAdjacentHTML("afterend", element_html);
-};var NKDrag = {};
+NKDom.select = function ( element_id_or_class ) {
+    let result = document.querySelectorAll( element_id_or_class );
+    return ( element_id_or_class[0] === "#" ) ? result[0] : result;
+}
 
-//if ( typeof NK === 'undefined' ) {
-//    throw "You must include base.js before drag.js";
-//}
 
-var event_listener = new NKEventListener();
+//Para uso interno
+NKDom.getElementList = function ( element ) {
+    if ( typeof element === 'string' ) element = NKDom.select( element );
+    if ( element instanceof NodeList ) return element;
+    if ( element instanceof Node ) return [element];
+    return [];
+}
+
+//Para uso interno
+NKDom.getElement = function ( element ) {
+    if ( typeof element === 'string' ) element = NKDom.select( element );
+    if ( element instanceof NodeList && element.length > 0 ) return element[0];
+    if ( element instanceof Node ) return element;
+}
+
+// tag_name = "div"
+NKDom.getChildren = function ( element, tag_name = "" ) {
+    let result = [];
+    tag_name = tag_name.toLowerCase();
+
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        for ( let i = 0; i < el.children.length; i++ ) {
+            if ( tag_name === "" || el.children[i].tagName.toLowerCase() === tag_name ) {
+                result.push(el.children[i]);
+            }
+        }
+    });
+
+    //Pasamos el array a NodeList
+    var emptyNodeList = document.createDocumentFragment().childNodes;
+    var resultNodeList = Object.create(emptyNodeList, {
+        'length': {value: result.length, enumerable: false},
+        'item': {"value": function(i) {return this[+i || 0];}, enumerable: false}
+    });
+    result.forEach((v, i) => resultNodeList[i] = v);
+
+    return resultNodeList;
+}
+
+NKDom.getClosest = function ( element, id_or_class ) {
+    element = NKDom.getElement(element);
+    id_or_class = NKDom.parseIdOrClass(id_or_class);
+
+    if ( id_or_class.is_class ) {
+        while (element && !element.classList.contains(id_or_class.name)) element = element.parentNode;
+    } else if ( id_or_class.is_id ) {
+        while (element && element.id !== id_or_class.name) element = element.parentNode;
+    }
+
+    return element;
+}
+
+
+NKDom.setCss = function ( element, css_property_name, css_property_value ) {
+    let css_prop = css_property_name.replace(/-([a-z])/g, function(match, letra) {return letra.toUpperCase();});
+
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        el.style[css_prop] = css_property_value;
+    });
+}
+
+NKDom.getCss = function ( element, css_property_name ) {
+    let css_prop = css_property_name.replace(/-([a-z])/g, function(match, letra) {return letra.toUpperCase();});
+
+    let result = [];
+
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        result.push( window.getComputedStyle(el)[css_prop] );
+    });
+
+    if ( result.length === 0 ) return;
+    if ( result.length === 1 ) return result[0];
+    return result;
+}
+
+NKDom.setAttribute = function ( element, attribute_name, attribute_value ) {
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        el.setAttribute(attribute_name, attribute_value);
+    });
+}
+
+NKDom.getAttribute = function ( element, attribute_name ) {
+    element = NKDom.getElementList(element);
+    if ( element.length === 0 ) return;
+
+    return element[0].getAttribute( attribute_name );
+}
+
+NKDom.addClass = function ( element, class_name ) {
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        el.classList.add(class_name);
+    });
+}
+
+NKDom.removeClass = function ( element, class_name ) {
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        el.classList.remove(class_name);
+    });
+}
+
+NKDom.hasClass = function ( element, class_name ) {
+    let elements = NKDom.getElementList(element);
+
+    for ( var i = 0; i < elements.length; i++ ) {
+        if ( elements[i].classList.contains(class_name) ) return true;
+    }
+
+    return false;
+}
+
+NKDom.setHtml = function ( element, element_html ) {
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        el.innerHTML = element_html;
+    });
+}
+
+NKDom.appendHtml = function ( element_id_or_class, element_html ) {
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        el.insertAdjacentHTML("afterend", element_html);
+    });
+}
+
+NKDom.addEventListener = function ( element, event_name, event_listener_function, remove_previous = true ) {
+    NKDom.getElementList(element).forEach(function( el, i ) {
+        if ( remove_previous ) el.removeEventListener(event_name, event_listener_function);
+        el.addEventListener(event_name, event_listener_function);
+    });
+};let NKDrag = {};
+
+let event_listener = new NKEventListener();
 NKDrag = { ...event_listener };
 
 NKDrag.selection = { element: null };
@@ -1006,7 +1144,7 @@ NKDrag.start = function( reactable ) {
     NKDrag.loaded = true;
 
     if ( typeof NKPosition === 'undefined' ) {
-        throw "You must include position.js";
+        throw "You must include NKPosition.js";
     }
     NKPosition.start();
 
@@ -1016,37 +1154,42 @@ NKDrag.start = function( reactable ) {
     if ( reactable === true ) {
         NK.core.reloadOnDomChange( NKDrag );
     }
-
-    $(document).on('mousemove', function() {
+    function onMouseMove(e) {
         if ( NKDrag.selection.element != null ) {
-            var left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
-            var top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
+            let left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
+            let top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
 
-            NKDrag.selection.element.offset({left: left, top: top});
+            NKDrag.selection.element.style.left = left + "px";
+            NKDrag.selection.element.style.top = top+ "px";
 
             NKDrag.dispatchEvent('onDrag', {
-                e: NKDrag.selection.element[0],
-                offset: {left: left, top: top},
-                position: NKDrag.selection.element.position()
+                e: NKDrag.selection.element,
+                position: {left: left, top: top}
             });
         }
-    });
+    }
+
+    NKDom.addEventListener( document, 'mousemove', onMouseMove );
 };
 
 NKDrag.reload = function() {
 
-    $('.NKDrag_src').on('mousedown', function() {
-        NKDrag.selection.element = $(this).closest('.NKDrag_dst');
+    function onMouseDown( e ) {
+        NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 
-        var pos = NKDrag.selection.element.offset();
-        NKDrag.selection.offset[0] -= pos.left;
-        NKDrag.selection.offset[1] -= pos.top;
-    });
+        // let pos = NKDrag.selection.element.offset;
+        NKDrag.selection.offset[0] -= NKDrag.selection.element.offsetLeft;
+        NKDrag.selection.offset[1] -= NKDrag.selection.element.offsetTop;
+    }
 
-    $('.NKDrag_src').on('mouseup', function() {
+    NKDom.addEventListener( '.NKDrag_src', 'mousedown', onMouseDown );
+
+    function onMouseUp( e ) {
         NKDrag.selection.element = null;
-    });
+    }
+
+    NKDom.addEventListener( '.NKDrag_src', 'mouseup', onMouseUp );
 
 };
 ;var NKForm = {};
@@ -1253,24 +1396,24 @@ NKForm.getFileBase64 = function ( file_obj ) {
         fr.readAsDataURL( file_obj );
     });
 
-};var NKLoader = {};
+};let NKLoader = {};
 
 if ( typeof NK === 'undefined' ) {
-    throw "You must include base.js before loader.js";
+    throw "You must include NKBase.js before loader.js";
 }
 
 
 NKLoader.setSelector = function( loader_selector, error_selector ) {
 
-    $(loader_selector).css('display', 'none');
-    $(error_selector).css('display', 'none');
+    NKDom.setCss( loader_selector, 'display', 'none' );
+    NKDom.setCss( error_selector, 'display', 'none' );
 
     window.setInterval(function(){
         if ($.active > 0) {
-            $(loader_selector).css('display', 'block');
+            NKDom.setCss( loader_selector, 'display', 'block' );
         } else {
             $.active = 0;
-            $(loader_selector).css('display', 'none');
+            NKDom.setCss( loader_selector, 'display', 'none' );
         }
     }, 500);
 
@@ -1283,7 +1426,7 @@ NKLoader.setSelector = function( loader_selector, error_selector ) {
             $.active = 0;
 
             if ( NK.isset(error_selector) ) {
-                $(error_selector).css('display', 'block');
+                NKDom.setCss( error_selector, 'display', 'block' );
             }
 
             console.log("Error: ", message, url, lineNumber);
@@ -1768,13 +1911,13 @@ NKPosition.getScrollY = function() {
         return p;
     }
 
-};var NKResize = {};
+};let NKResize = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before context_menu.js";
 }
 
-var event_listener = new NKEventListener();
+let event_listener = new NKEventListener();
 NKResize = { ...event_listener };
 
 NKResize.config = {
@@ -1785,11 +1928,14 @@ NKResize.config = {
 
 
 NKResize.start = function( reactable ) {
-    if ( NK.isset(NKResize.loaded) && NKResize.loaded === true ) return;
+    if ( NKResize.loaded === true ) return;
     NKResize.loaded = true;
 
+    if ( typeof NKDom === 'undefined' ) {
+        throw "You must include NKDom.js";
+    }
     if ( typeof NKPosition === 'undefined' ) {
-        throw "You must include position.js";
+        throw "You must include NKPosition.js";
     }
     NKPosition.start();
 
@@ -1803,61 +1949,65 @@ NKResize.start = function( reactable ) {
 };
 
 NKResize.reload = function() {
-    var self = this;
-    $('.NKDrag_columns').off();
-    $('.NKDrag_rows').off();
-    $('.NKDrag_columns').children('div').off();
-    $('.NKDrag_rows').children('div').off();
 
-    $( ".NKDrag_columns" ).each(function( i ) {
-        var sizes = [];
+    let cols = NKDom.select(".NKResize_columns");
+    let rows = NKDom.select(".NKResize_rows");
 
-        $(this).children('div').each(function ( j ) {
-            $(this).attr('nk-i', j);
-            $(this).css( 'overflow', 'hidden' );
-            var size = $(this).attr('nk-width');
+    cols.forEach(function( col, i ) {
+        let sizes = [];
+
+        let children = NKDom.getChildren(col, 'div');
+
+        children.forEach(function ( child, j ) {
+            NKDom.setAttribute( child, 'nk-i', j );
+            NKDom.setCss( child, 'overflow', 'hidden' );
+
+            let size = NKDom.getAttribute( child, 'nk-width' );
             size = NK.empty(size) ? "auto" : size;
             sizes.push( size );
         });
 
-        $(this).css( 'display', 'grid' );
-        $(this).css( 'grid-template-columns', sizes.join(" ") );
-        $(this).css( 'overflow', 'hidden' );
+        NKDom.setCss( col, 'display', 'grid' );
+        NKDom.setCss( col, 'grid-template-columns', sizes.join(" ") );
+        NKDom.setCss( col, 'overflow', 'hidden' );
     });
 
-    $( ".NKDrag_rows" ).each(function( i ) {
-        var sizes = [];
+    rows.forEach(function( row, i ) {
+        let sizes = [];
 
-        $(this).children('div').each(function ( j ) {
-            $(this).attr('nk-i', j);
-            $(this).css( 'overflow', 'hidden' );
-            var size = $(this).attr('nk-height');
+        let children = NKDom.getChildren(row, 'div');
+
+        children.forEach(function ( child, j ) {
+            NKDom.setAttribute( child, 'nk-i', j );
+            NKDom.setCss( child, 'overflow', 'hidden' );
+
+            let size = NKDom.getAttribute( child, 'nk-height' );
             size = NK.empty(size) ? "auto" : size;
             sizes.push( size );
         });
 
-        $(this).css( 'display', 'grid' );
-        $(this).css( 'grid-template-rows', sizes.join(" ") );
-        $(this).css( 'overflow', 'hidden' );
+        NKDom.setCss( row, 'display', 'grid' );
+        NKDom.setCss( row, 'grid-template-rows', sizes.join(" ") );
+        NKDom.setCss( row, 'overflow', 'hidden' );
     });
 
     NKResize.resizing_vertical_element = null;
     NKResize.resizing_horizontal_element = null;
 
     function calculateSizes( parent, child, new_width, columns ) {
-        var curr_colums = [];
-        var new_columns = [];
-        var col_i = parseFloat(child.attr('nk-i'));
+        let curr_colums = [];
+        let new_columns = [];
+        let col_i = parseInt( NKDom.getAttribute(child, 'nk-i') );
 
         if ( columns ) {
-            curr_colums = parent.css('grid-template-columns').split(" ");
+            curr_colums = NKDom.getCss(parent, 'grid-template-columns').split(" ");
         } else {
-            curr_colums = parent.css('grid-template-rows').split(" ");
+            curr_colums = NKDom.getCss(parent, 'grid-template-rows').split(" ");
         }
 
         if ( col_i === curr_colums.length-1 ) return curr_colums.join(" ");
 
-        for ( var i = 0; i < curr_colums.length; i++ ) {
+        for ( let i = 0; i < curr_colums.length; i++ ) {
             if ( i === col_i ) {
                 new_columns.push( new_width + "px" );
 
@@ -1875,134 +2025,136 @@ NKResize.reload = function() {
 
 
     function onMouse( e ) {
-        var column_pos = [$(this).offset().left, $(this).offset().top];
-        var mouse_pos = NKPosition.getMouse();
-        var diff_pos = [mouse_pos[0]-column_pos[0], mouse_pos[1]-column_pos[1]];
-        var div_size = [$(this).width(), $(this).height()];
-        var in_vertical_border = (diff_pos[0] >= (div_size[0]-5));
-        var in_horizontal_border = (diff_pos[1] >= (div_size[1]-5));
-        var is_last_child = $(this).is(':last-child');
-        var action = e.type;
-
+        let column_pos = [this.offsetLeft, this.offsetTop];
+        let mouse_pos = NKPosition.getMouse();
+        let diff_pos = [mouse_pos[0]-column_pos[0], mouse_pos[1]-column_pos[1]];
+        //let div_size = [this.offsetWidth, this.offsetHeight];
+        let div_size = [this.clientWidth, this.clientHeight];
+        let in_vertical_border = (diff_pos[0] >= (div_size[0]-5));
+        let in_horizontal_border = (diff_pos[1] >= (div_size[1]-5));
+        let is_last_child = (this === this.parentNode.lastElementChild);
+        let action = e.type;
 
         if ( action === 'mousedown' ) {
             if ( in_vertical_border && !is_last_child ) {
                 NKResize.resizing_vertical_element = this;
-                NKResize.start_columns = $(this).parent().css('grid-template-columns').split(" ");
+                NKResize.start_columns = NKDom.getCss( this.parentNode, 'grid-template-columns' ).split(" ");
                 NKResize.start_pos = mouse_pos;
                 NKResize.start_size = div_size;
-                $('.NKDrag_columns').children('div').children().addClass( "NKResize_disable_temp" );
+                NKDom.addClass( NKDom.getChildren(NKDom.getChildren('.NKResize_columns', 'div')), "NKResize_disable_temp" );
             }
             if ( in_horizontal_border && !is_last_child ) {
                 NKResize.resizing_horizontal_element = this;
-                NKResize.start_rows = $(this).parent().css('grid-template-rows').split(" ");
+                NKResize.start_rows = NKDom.getCss( this.parentNode, 'grid-template-rows' ).split(" ");
                 NKResize.start_pos = mouse_pos;
                 NKResize.start_size = div_size;
-                $('.NKDrag_rows').children('div').children().addClass( "NKResize_disable_temp" );
+                NKDom.addClass( NKDom.getChildren(NKDom.getChildren('.NKResize_rows', 'div')), "NKResize_disable_temp" );
             }
 
 
         } else if ( action === 'mousemove' ) {
-            var r_v_e = NKResize.resizing_vertical_element;
-            var r_h_e = NKResize.resizing_horizontal_element;
+            let r_v_e = NKResize.resizing_vertical_element;
+            let r_h_e = NKResize.resizing_horizontal_element;
 
             if ( r_v_e !== null ) {
-                var parent = $(r_v_e).parent();
-                var border_right = parseInt($(r_v_e).css("border-right-width").slice(0, -2));
-                var new_width = NKResize.start_size[0] + (mouse_pos[0] - NKResize.start_pos[0]) + border_right;
-                var new_sizes = calculateSizes(parent, $(r_v_e), new_width, true);
+                let parent = r_v_e.parentNode;
+                let border_right = parseInt( NKDom.getCss(r_v_e, "border-right-width") );
+                let new_width = NKResize.start_size[0] + (mouse_pos[0] - NKResize.start_pos[0]) + border_right;
+                let new_sizes = calculateSizes(parent, r_v_e, new_width, true);
 
-                parent.css('grid-template-columns', new_sizes.join(" "));
-                parent.children('div').each(function ( i ) {
-                    $(this).attr('nk-width', new_sizes[i]);
+                NKDom.setCss( parent, 'grid-template-columns', new_sizes.join(" ") );
+
+                NKDom.getChildren(parent, 'div').forEach(function (child, i) {
+                    NKDom.setAttribute( child, 'nk-width', new_sizes[i] );
                 });
 
-
-                $(this).css('cursor', NKResize.config.column_resize_cursor);
+                NKDom.setCss( this, 'cursor', NKResize.config.column_resize_cursor );
 
             } else if ( r_h_e !== null ) {
-                var parent = $(r_h_e).parent();
-                var border_bottom = parseInt($(r_h_e).css("border-bottom-width").slice(0, -2));
-                var new_height = NKResize.start_size[1] + (mouse_pos[1] - NKResize.start_pos[1]) + border_bottom;
-                var new_sizes = calculateSizes(parent, $(r_h_e), new_height, false);
+                let parent = r_h_e.parentNode;
+                let border_bottom = parseInt( NKDom.getCss(r_h_e, "border-bottom-width") );
+                let new_height = NKResize.start_size[1] + (mouse_pos[1] - NKResize.start_pos[1]) + border_bottom;
+                let new_sizes = calculateSizes(parent, r_h_e, new_height, false);
 
-                parent.css('grid-template-rows', new_sizes.join(" "));
-                parent.children('div').each(function ( i ) {
-                    $(this).attr('nk-height', new_sizes[i]);
+                NKDom.setCss( parent, 'grid-template-rows', new_sizes.join(" ") );
+
+                NKDom.getChildren(parent, 'div').forEach(function (child, i) {
+                    NKDom.setAttribute( child, 'nk-height', new_sizes[i] );
                 });
 
-                $(this).css('cursor', NKResize.config.row_resize_cursor);
+                NKDom.setCss( this, 'cursor', NKResize.config.row_resize_cursor );
 
             } else {
-                if ( in_vertical_border && !is_last_child && $(this).parent().hasClass('NKDrag_columns') ) {
-                    $(this).css('cursor', NKResize.config.column_resize_cursor);
+                if ( in_vertical_border && !is_last_child && NKDom.hasClass( this.parentNode, 'NKResize_columns' ) ) {
+                    NKDom.setCss( this, 'cursor', NKResize.config.column_resize_cursor );
 
-                } else  if ( in_horizontal_border && !is_last_child && $(this).parent().hasClass('NKDrag_rows') ) {
-                    $(this).css('cursor', NKResize.config.row_resize_cursor);
+                } else  if ( in_horizontal_border && !is_last_child && NKDom.hasClass( this.parentNode, 'NKResize_rows' ) ) {
+                    NKDom.setCss( this, 'cursor', NKResize.config.row_resize_cursor );
 
                 } else {
-                    $(this).css('cursor', '');
+                    NKDom.setCss( this, 'cursor', '' );
 
                 }
 
             }
 
         } else if ( action === 'mouseup' ) {
-            var r_v_e = NKResize.resizing_vertical_element;
-            var r_h_e = NKResize.resizing_horizontal_element;
+            let r_v_e = NKResize.resizing_vertical_element;
+            let r_h_e = NKResize.resizing_horizontal_element;
 
             if ( r_v_e !== null ) {
-                var sizes = $(r_v_e).parent().css('grid-template-columns').split(" ");
-                var col_i = parseFloat($(r_v_e).attr('nk-i'));
+                let sizes = NKDom.getCss( r_v_e.parentNode, 'grid-template-columns' ).split(" ");
+                let col_i = parseInt( NKDom.getAttribute(r_v_e, 'nk-i') );
                 NKResize.dispatchEvent('onResize', {
                     start: NKResize.start_columns,
                     end: sizes,
                     i: col_i,
-                    e: $(r_v_e)[0],
-                    parent: $(r_v_e).parent()[0]
+                    e: r_v_e,
+                    parent: r_v_e.parentNode
                 });
-                $('.NKDrag_columns').children('div').children().removeClass( "NKResize_disable_temp" );
+                NKDom.removeClass( NKDom.getChildren(NKDom.getChildren('.NKResize_columns', 'div')), "NKResize_disable_temp" );
             }
             if ( r_h_e !== null ) {
-                var sizes = $(r_h_e).parent().css('grid-template-rows').split(" ");
-                var col_i = parseFloat($(r_h_e).attr('nk-i'));
+                let sizes = NKDom.getCss( r_h_e.parentNode, 'grid-template-rows' ).split(" ");
+                let col_i = parseInt( NKDom.getAttribute(r_h_e, 'nk-i') );
                 NKResize.dispatchEvent('onResize', {
                     start: NKResize.start_rows,
                     end: sizes,
                     i: col_i,
-                    e: $(r_h_e)[0],
-                    parent: $(r_h_e).parent()[0]
+                    e: r_h_e,
+                    parent: r_h_e.parentNode
                 });
-                $('.NKDrag_rows').children('div').children().removeClass( "NKResize_disable_temp" );
+                NKDom.removeClass( NKDom.getChildren(NKDom.getChildren('.NKResize_rows', 'div')), "NKResize_disable_temp" );
             }
 
             NKResize.resizing_vertical_element = null;
             NKResize.resizing_horizontal_element = null;
-            $(this).css('cursor', '');
+            NKDom.setCss( this, 'cursor', '' );
 
         }
 
-       // console.log("diff_pos", diff_pos);
-       // console.log("div_size", div_size);
     }
 
-    $('.NKDrag_columns').on('mouseleave', function (){
-        NKResize.resizing_vertical_element = null;
-        $(this).css('cursor', '');
-    });
-    $('.NKDrag_rows').on('mouseleave', function (){
-        NKResize.resizing_horizontal_element = null;
-        $(this).css('cursor', '');
-    });
 
-    $('.NKDrag_columns').children('div')
-        .on('mousemove', onMouse)
-        .on('mousedown', onMouse)
-        .on('mouseup', onMouse);
-    $('.NKDrag_rows').children('div')
-        .on('mousemove', onMouse)
-        .on('mousedown', onMouse)
-        .on('mouseup', onMouse);
+    function onMouseLeaveColumns() {
+        NKResize.resizing_vertical_element = null;
+        NKDom.setCss( this, 'cursor', '' );
+    }
+    function onMouseLeaveRows() {
+        NKResize.resizing_horizontal_element = null;
+        NKDom.setCss( this, 'cursor', '' );
+    }
+
+    NKDom.addEventListener('.NKResize_columns', 'mouseleave', onMouseLeaveColumns);
+    NKDom.addEventListener('.NKResize_rows', 'mouseleave', onMouseLeaveRows);
+
+    NKDom.addEventListener(NKDom.getChildren( '.NKResize_columns', 'div' ), 'mousemove', onMouse);
+    NKDom.addEventListener(NKDom.getChildren( '.NKResize_columns', 'div' ), 'mousedown', onMouse);
+    NKDom.addEventListener(NKDom.getChildren( '.NKResize_columns', 'div' ), 'mouseup', onMouse);
+
+    NKDom.addEventListener(NKDom.getChildren( '.NKResize_rows', 'div' ), 'mousemove', onMouse);
+    NKDom.addEventListener(NKDom.getChildren( '.NKResize_rows', 'div' ), 'mousedown', onMouse);
+    NKDom.addEventListener(NKDom.getChildren( '.NKResize_rows', 'div' ), 'mouseup', onMouse);
 };
 
 
@@ -2165,7 +2317,7 @@ NKRouting._run_controller = function( router_name, section ) {
 };
 
 
-;var NKStick = {};
+;let NKStick = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before stick.js";
@@ -2176,8 +2328,9 @@ if ( typeof NK === 'undefined' ) {
 NKStick.start = function() {
     if ( NK.isset(NKStick.loaded) && NKStick.loaded === true ) return;
 
-    $.each( $('.NKStickBD'), function( key, value ) {
-        $(this).attr('nkdata-top', $(this).offset().top );
+
+    NKDom.select('.NKStickBD').forEach(function ( el, i ){
+        NKDom.setAttribute( el, 'nkdata-top', el.offsetTop )
     });
 
 
@@ -2190,52 +2343,48 @@ NKStick.start = function() {
 
 NKStick.reload = function() {
 
-    var scroll_visible = $(document).height() > $(window).height();
-    var scroll_top = $(document).scrollTop();
+    let scroll_visible = document.documentElement.scrollHeight > window.innerHeight;
+    let scroll_top = document.documentElement.scrollTop;
 
     // NKStickBN
     if ( scroll_visible ) {
-        $('.NKStickBN').removeClass('NKStickBO');
+        NKDom.removeClass('.NKStickBN', 'NKStickBO');
     } else {
-        $('.NKStickBN').addClass('NKStickBO');
+        NKDom.addClass('.NKStickBN', 'NKStickBO');
     }
 
     if ( !scroll_visible ) return;
 
     // NKStickBD
-    $('.NKStickBD').removeClass('NKStickBO');
+    NKDom.removeClass('.NKStickBD', 'NKStickBO');
 
-    $.each( $('.NKStickBD'), function( key, value ) {
-        if ( scroll_top + $(window).height() < $(this).offset().top + $(this).height() ) {
-            $('.NKStickBD').addClass('NKStickBO');
+    NKDom.select('.NKStickBD').forEach(function (el, i){
+        if ( scroll_top + window.innerHeight < el.offsetTop + el.clientHeight ) {
+            NKDom.addClass('.NKStickBD', 'NKStickBO');
         }
     });
 
 
     // NKStickTD
-    $('.NKStickTD').removeClass('NKStickTO');
+    NKDom.removeClass('.NKStickTD', 'NKStickTO');
 
-    $.each( $('.NKStickTD'), function( key, value ) {
-
-        if ( $(this).css('position') === "fixed" ) {
-            var top = parseInt($(this).css('top'));
+    NKDom.select('.NKStickTD').forEach(function (el, i){
+        if ( NKDom.getCss(el, 'position') === "fixed" ) {
+            let top = parseInt( NKDom.getCss(el, 'top') );
 
             if ( scroll_top < top ) {
-                $(this).css('margin-top', -scroll_top );
+                NKDom.setCss(el, 'margin-top', -scroll_top);
             } else {
-                $(this).css('margin-top', -top );
+                NKDom.setCss(el, 'margin-top', -top);
             }
 
         } else {
-            if ( scroll_top > $(this).offset().top ) {
-                $('.NKStickTD').addClass('NKStickTO');
+            if ( scroll_top > el.offsetTop ) {
+                NKDom.addClass('.NKStickTD', 'NKStickTO');
             }
 
         }
-
-
     });
-
 
 
 };
