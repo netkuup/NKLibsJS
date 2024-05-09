@@ -37,10 +37,17 @@ NK.getScriptPath = function () {
     return script_src.substring(8, script_src.lastIndexOf("/"));
 };
 
-NK.sleep = function (ms) {
-    return new Promise((resolve) => {
+//Avoid sync = true
+NK.sleep = function ( ms, sync = false ) {
+    if ( !sync ) return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
+
+    let  inicio = new Date().getTime();
+
+    while ( new Date().getTime() - inicio < ms ) {
+        // DO NOT USE! ONLY FOR TESTING PURPOSES!
+    }
 };
 
 function NKEventListener() {

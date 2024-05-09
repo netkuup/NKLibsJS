@@ -56,5 +56,6 @@ NKDrag.reload = function() {
     }
 
     NKDom.addEventListener( '.NKDrag_src', 'mouseup', onMouseUp );
+    NKDom.addEventListener( '.NKDrag_src', 'blur', onMouseUp );
 
 };

@@ -19,6 +19,7 @@ Daily use JavaScript function set.
 * [NKDomActions](./src/NKActions/NKActions.md)
 * [NKDrag](./src/NKDrag/NKDrag.md)
 * [NKForm](./src/NKForm/NKForm.md)
+* [NKHttp](./src/NKHttp/NKHttp.md)
 * [NKLoader](./src/NKLoader/NKLoader.md)
 * [NKModal](./src/NKModal/NKModal.md)
 * [NKNotification](./src/NKNotification/NKNotification.md)
