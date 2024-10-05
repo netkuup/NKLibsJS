@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKChart example</title>
+
+    <script type="text/javascript" src="../../external_libs/big.js"></script>
+    <script type="text/javascript" src="../../NK/NKBase.js"></script>
+    <script type="text/javascript" src="../../NKDrawbox/NKDrawbox.js"></script>
+    <script type="text/javascript" src="candle_data.js"></script>
+    <script type="text/javascript" src="../NKChart.js"></script>
+</head>
+
+<body>
+
+    <div id="my_chart" style="background-color: ghostwhite; position: absolute; border- top: 100px; left: 200px;">
+        Chart area
+    </div>
+
+    <script>
+
+        let candle_chart = new NKCandleChart('my_chart');
+
+        let candle_array = [];
+
+        for ( let i = 0; i < candle_data.length; i++ ) { //candle_data from candle_data.js
+            let data = candle_data[i];
+
+            // Data contents:
+            // 0. timestamp
+            // 1. open
+            // 2. high
+            // 3. low
+            // 4. close
+            // 5. volume
+            // 6. close_timestamp
+            // 7. quote_asset_volume
+            // 8. number_of_trades
+            // 9. taker_buy_base_asset_volume
+            // 10. taker_buy_quote_asset_volume
+            // 11. ignore (deprecated)
+
+            candle_array.push({
+                timestamp: data[0],
+                open: data[1],
+                high: data[2],
+                low: data[3],
+                close: data[4]
+            });
+        }
+
+        candle_chart.drawCandles( candle_array );
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+

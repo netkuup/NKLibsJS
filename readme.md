@@ -18,6 +18,7 @@ Daily use JavaScript function set.
 * [NKDom](./src/NKDom/NKDom.md)
 * [NKDomActions](./src/NKActions/NKActions.md)
 * [NKDrag](./src/NKDrag/NKDrag.md)
+* [NKDrawbox](./src/NKDrawbox/NKDrawbox.md)
 * [NKForm](./src/NKForm/NKForm.md)
 * [NKHttp](./src/NKHttp/NKHttp.md)
 * [NKLoader](./src/NKLoader/NKLoader.md)
@@ -40,7 +41,6 @@ Daily use JavaScript function set.
 * [Libsodium](https://github.com/jedisct1/libsodium.js): Library for encryption, decryption, signatures, password hashing and more.
 * [Tabler icons](https://tabler-icons.io): Opensource icons
 
-
 ## Build sources
 
 1. Make the corresponding changes in .js files.
@@ -48,3 +48,6 @@ Daily use JavaScript function set.
 
         # npm install
         # grunt
+
+## Acknowledgments
+* [big.js](https://github.com/MikeMcl/big.js): This project uses `big.js`, which is licensed under the MIT License.

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKDrawbox example</title>
+
+    <script type="text/javascript" src="../../external_libs/big.js"></script>
+    <script type="text/javascript" src="../../NK/NKBase.js"></script>
+    <script type="text/javascript" src="../NKDrawbox.js"></script>
+</head>
+
+<body>
+
+    <div id="my_drawbox" style="background-color: gray; position: absolute; border- top: 100px; left: 200px;">
+        Draw area
+    </div>
+
+    <script>
+
+        let draw_box = new NKDrawbox('my_drawbox');
+
+        draw_box.drawRect({
+            x: 100,
+            y: 100,
+            w: 50,
+            h: 50,
+            color: "red",
+            border_px: 3,
+            borderolor: "black",
+            border_style: "dotted"
+        });
+
+        draw_box.drawRect({
+            x: 100,
+            y: 100,
+            x2: 150,
+            y2: 150,
+            color: "red",
+            border_px: 3,
+            border_color: "black",
+            border_style: "dotted"
+        });
+
+        draw_box.drawLine({
+            x: 0,
+            y: 0,
+            x2: 400,
+            y2: 200,
+            w: 1,
+            color: "black",
+            style: "dashed"
+        });
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+

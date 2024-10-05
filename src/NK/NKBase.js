@@ -140,3 +140,45 @@ NK.autoload = function( modules ) {
     }
 };
 */
+
+
+// https://mikemcl.github.io/big.js/
+
+Number.prototype.nksum = function(value) {
+    return new Big(this).add(value).toNumber();
+};
+Number.prototype.nkadd = function(value) {
+    return new Big(this).add(value).toNumber();
+};
+Number.prototype.nkminus = function(value) {
+    return new Big(this).minus(value).toNumber();
+};
+Number.prototype.nksubtract = function(value) {
+    return new Big(this).minus(value).toNumber();
+};
+Number.prototype.nkdiv = function(value) {
+    return new Big(this).div(value).toNumber();
+};
+Number.prototype.nkmul = function(value) {
+    return new Big(this).mul(value).toNumber();
+};
+Number.prototype.nkpow = function(value) {
+    return new Big(this).pow(value).toNumber();
+};
+Number.prototype.nkmod = function(value) {
+    return new Big(this).mod(value).toNumber();
+};
+Number.prototype.nkprec = function(value) {
+    return new Big(this).prec(value).toNumber();
+};
+Number.prototype.nkround = function(value) {
+    return new Big(this).prec(value).toNumber();
+};
+Number.prototype.nksqrt = function() {
+    return new Big(this).sqrt().toNumber();
+};
+Number.prototype.nkabs = function() {
+    return Math.abs(this);
+};
+
+

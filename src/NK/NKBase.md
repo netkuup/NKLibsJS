@@ -43,6 +43,30 @@ Sleep x milliseconds
 
     await NK.sleep(1000);
 
+Math functions
+----------------------------------------------------------------------------
+Special thanks to the developers of `big.js` for their incredible library, which is licensed under the MIT License and has greatly assisted this project.
+
+[Big.js Docs](https://mikemcl.github.io/big.js)
+
+    let number_1 = 1.7;
+    let number_2 = 3.4;
+
+    number_1.nkadd(number_2);
+    number_1.nksum(number_2); //Same as add
+    number_1.nkminus(number_2);
+    number_1.nksubtract(number_2); //Same as minus
+    number_1.nkdiv(number_2);
+    number_1.nkmul(number_2);
+    number_1.nkpow(number_2);
+    number_1.nkprec(number_2);
+    number_1.nkround(number_2);
+    number_1.nksqrt();
+
+    (-1.7).nkabs(); //1.7
+    
+
+
 
 # NKBase CSS
 A set of basic styles
