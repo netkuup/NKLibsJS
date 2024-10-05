@@ -29,6 +29,7 @@ Daily use JavaScript function set.
 * [NKPopup](./src/NKPopup/NKPopup.md)
 * [NKResize](./src/NKResize/NKResize.md)
 * [NKRouting](./src/NKRouting/NKRouting.md)
+* [NKSemaphore](./src/NKSemaphore/NKSemaphore.md)
 * [NKStick](./src/NKStick/NKStick.md)
 * [NKStorage](./src/NKStorage/NKStorage.md)
 * [NKVar](./src/NKVar/NKVar.md)
