@@ -29,3 +29,18 @@ NKObject.getValue = function ( variable, default_value = undefined ) {
     return variable;
 }
 
+NKObject.getTypeName = function ( value ) {
+    let type = typeof value;
+    if ( value === undefined ) return 'undefined';
+    if ( type === "string" ) return 'string';
+    if ( type === "number" ) return 'number';
+    if ( type === "boolean" ) return 'boolean';
+    if ( type === "object" && Array.isArray(value) ) return 'array';
+    if ( type === "object" && (value === null) ) return 'null';
+    if ( type === "object" ) return 'object';
+    return 'unknown';
+}
+
+NKObject.isType = function ( value, type_str ) {
+    return (NKObject.getTypeName(value) === type_str);
+}

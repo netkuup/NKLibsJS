@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKSerialize.integer example</title>
+
+        <script type="text/javascript" src="../../NKObject/NKObject.js"></script>
+        <script type="text/javascript" src="../NKSerialize.js"></script>
+    </head>
+
+    <body>
+        Results on console.
+
+        <script>
+
+            NKSerialize.debug = false;
+
+            console.log("Max safe integer:", Number.MAX_SAFE_INTEGER);
+
+            let number = 1234567890;
+
+            console.log("Original integer:", number );
+
+            let result_serialized = NKSerialize.integer( number );
+            console.log("Result serialized:", result_serialized);
+
+            let result_unserialized = NKUnserialize.integer( result_serialized );
+            console.log("Result unserialized:", result_unserialized.value);
+
+        </script>
+
+    </body>
+
+
+
+</html>
+
+
+

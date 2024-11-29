@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKSerialize.stringArray example</title>
+
+        <script type="text/javascript" src="../../NKObject/NKObject.js"></script>
+        <script type="text/javascript" src="../NKSerialize.js"></script>
+    </head>
+
+    <body>
+        Results on console.
+        
+        <script>
+
+            let string_array = ["foo", "hello", "moustache"];
+
+            console.log("Original array:", string_array );
+
+            let result_serialized = NKSerialize.stringArray( string_array );
+            console.log("Result serialized:", result_serialized);
+
+            let result_unserialized = NKUnserialize.stringArray( result_serialized );
+            console.log("Result unserialized:", result_unserialized);
+
+        </script>
+
+    </body>
+
+
+
+</html>
+
+
+

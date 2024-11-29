@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKDebounce example</title>
+
+        <script type="text/javascript" src="../NKDebounce.js"></script>
+    </head>
+
+    <body>
+
+        If you click the button very quickly, console.log will not execute until 1 second has passed since the last time you pressed the button. <br /><br />
+
+        <input type="button" onclick="onClickBtn()" value="Button">
+
+        <script>
+            function onClickBtn() {
+                NKDebounce.callOnce( function () {
+                    console.log("Button click!");
+                }, 1000 );
+            }
+
+        </script>
+
+    </body>
+
+
+
+</html>
+
+
+

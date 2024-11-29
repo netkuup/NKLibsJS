@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKBase example</title>
+
+    <script type="text/javascript" src="../NKBase.js"></script>
+</head>
+
+<body>
+
+
+    <script>
+        let var1;
+        let var2 = null;
+        let var3 = {a: null};
+
+        console.log( NK.isset(var1) ); //False
+        console.log( NK.isset(var3.c) );  //False
+        console.log( NK.isset( () => var3.c.c ) );
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+

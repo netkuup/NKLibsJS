@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKBarChart example</title>
+
+    <script type="text/javascript" src="../../external_libs/big.js"></script>
+    <script type="text/javascript" src="../../NK/NKBase.js"></script>
+    <script type="text/javascript" src="../../NKDrawbox/NKDrawbox.js"></script>
+    <script type="text/javascript" src="../../NKCanvas/NKCanvas.js"></script>
+    <script type="text/javascript" src="candle_data.js"></script>
+    <script type="text/javascript" src="../NKBarChart.js"></script>
+</head>
+
+<body>
+    <div style="position: absolute; top: 50px; left: 0px;">
+        <div id="my_chart" style="background-color: ghostwhite; ">
+            Chart area
+        </div>
+    </div>
+
+
+    <canvas id="my_canvas" style="background-color: ghostwhite; position: absolute; top: 200px; left: 0px;"></canvas>
+
+    <script>
+
+        let bar_chart = new NKBarChart('my_chart');
+        bar_chart.setSize(8000, 100);
+
+        let bar_chart_canvas = new NKBarChart('my_canvas');
+        bar_chart_canvas.setSize(8000, 100);
+
+        let bar_array = [];
+
+        for ( let i = 0; i < candle_data.length; i++ ) { //candle_data from candle_data.js
+            let data = candle_data[i];
+
+            // Data contents:
+            // 0. timestamp
+            // 1. open
+            // 2. high
+            // 3. low
+            // 4. close
+            // 5. volume
+            // 6. close_timestamp
+            // 7. quote_asset_volume
+            // 8. number_of_trades
+            // 9. taker_buy_base_asset_volume
+            // 10. taker_buy_quote_asset_volume
+            // 11. ignore (deprecated)
+
+            let color = data[9] > (data[5]/2) ? "#EF5350" : "#26A69A";
+
+            if ( i === 10 ) {
+                bar_array.push({
+                    timestamp: data[0],
+                    value: -data[5],
+                    color: color
+                });
+            } else {
+                bar_array.push({
+                    timestamp: data[0],
+                    value: data[5],
+                    color: color
+                });
+            }
+
+        }
+
+        bar_chart.drawBars( bar_array );
+        bar_chart_canvas.drawBars( bar_array );
+
+        bar_chart.setMouseMoveCbk(function (x, y, data) {
+            console.log(x,y, data);
+        });
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+

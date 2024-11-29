@@ -20,7 +20,8 @@ Draw a rectangle
         color: "red",
         border_px: 3,
         borderolor: "black",
-        border_style: "dotted"
+        border_style: "dotted",
+        origin: "top left" //Default
     });
 .
 
@@ -36,6 +37,13 @@ Draw a rectangle
         border_style: "solid"
     });
 
+
+
+| param | Values                                                                                                                                                                | Mandatory | Description                                                     |
+|:---|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|:----------------------------------------------------------------|
+|color| "red", "blue". etc. <br> "#000000", "#111111", etc. | No | Background color name or hex.
+| origin | 'top left' <br> 'top center' <br> 'top right' <br> 'center left' <br> 'center center' <br> 'center right' <br> 'bottom left' <br> 'bottom center' <br> 'bottom right' | No        | The reference point.                                            |
+|border_style| solid <br> dashed <br> dotted <br> double <br> groove <br> ridge <br> inset <br> outset                                                                                     | No        | Border style |
 
 drawLine( args )
 ----------------------------------------------------------------------------

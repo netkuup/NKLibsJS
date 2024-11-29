@@ -6,21 +6,19 @@
 
     <script type="text/javascript" src="../../external_libs/big.js"></script>
     <script type="text/javascript" src="../../NK/NKBase.js"></script>
-    <script type="text/javascript" src="../NKDrawbox.js"></script>
+    <script type="text/javascript" src="../NKCanvas.js"></script>
 </head>
 
 <body>
 
-    <div id="my_drawbox" style="background-color: gray; position: absolute; top: 50px; left: 50px;">
-        Draw area
-    </div>
+    <canvas id="my_canvas" style="border: 1px solid gray; top: 55px; left: 55px; position:absolute;"></canvas>
 
     <script>
 
-        let draw_box = new NKDrawbox('my_drawbox');
-        //draw_box.setSize( 1000, 1000 );
+        let my_canvas = new NKCanvas('my_canvas');
+        my_canvas.setSize( 400, 200 );
 
-        draw_box.drawRect({
+        my_canvas.drawRect({
             x: 100,
             y: 100,
             x2: 150,
@@ -28,30 +26,27 @@
             color: "red",
             border_px: 3,
             border_color: "black",
-            border_style: "dotted"
+            border_pattern: [6, 2]
         });
 
-        draw_box.drawCircle({
+        my_canvas.drawCircle({
             x: 50,
             y: 50,
             r: 10,
             color: "blue"
         });
 
-        draw_box.drawLine({
+        my_canvas.drawLine({
             x: 0,
             y: 0,
-            x2: 600,
-            y2: 300,
+            x2: 400,
+            y2: 200,
             w: 1,
             color: "black",
-            style: "dashed"
+            pattern: [6, 2]
         });
 
-        //draw_box.clean();
-
-        draw_box.drawText({
-            class: "my_text",
+        my_canvas.drawText({
             x: 0,
             y: 0,
             text: "Foo",
@@ -60,8 +55,6 @@
             font_family: "Arial, sans-serif",
             font_weight: "bold"
         });
-
-
 
     </script>
 

@@ -14,12 +14,14 @@ NK.isset = function( variable ) {
     return true;
 };
 
-NK.empty = function(variable) {
+NK.empty = function( variable ) {
     if ( !NK.isset(variable) ) return true;
-    if ( typeof variable === 'function' ) variable = variable();
-    if ( variable.length === 0 ) return true;
-    return false;
+    return ( typeof variable === 'function' ) ? variable().length === 0 : variable.length === 0;
 };
+
+NK.var = function( variable, default_value ) {
+    return NK.isset( variable ) ? variable : default_value;
+}
 
 NK.clone = function ( obj ) {
     console.error("NK.clone() deprecated, use NKObject.clone() instead.");
@@ -172,7 +174,7 @@ Number.prototype.nkprec = function(value) {
     return new Big(this).prec(value).toNumber();
 };
 Number.prototype.nkround = function(value) {
-    return new Big(this).prec(value).toNumber();
+    return new Big(this).round(value).toNumber();
 };
 Number.prototype.nksqrt = function() {
     return new Big(this).sqrt().toNumber();

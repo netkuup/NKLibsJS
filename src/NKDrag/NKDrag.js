@@ -25,8 +25,7 @@ NKDrag.start = function( reactable ) {
             let left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
             let top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
 
-            NKDrag.selection.element.style.left = left + "px";
-            NKDrag.selection.element.style.top = top+ "px";
+            NKDrag.selection.element.style.transform = `translate(${left}px, ${top}px)`;
 
             NKDrag.dispatchEvent('onDrag', {
                 e: NKDrag.selection.element,
@@ -36,6 +35,12 @@ NKDrag.start = function( reactable ) {
     }
 
     NKDom.addEventListener( document, 'mousemove', onMouseMove );
+
+    function onMouseUp( e ) {
+        NKDrag.selection.element = null;
+    }
+
+    NKDom.addEventListener( document, 'mouseup', onMouseUp );
 };
 
 NKDrag.reload = function() {
@@ -44,18 +49,16 @@ NKDrag.reload = function() {
         NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 
-        // let pos = NKDrag.selection.element.offset;
-        NKDrag.selection.offset[0] -= NKDrag.selection.element.offsetLeft;
-        NKDrag.selection.offset[1] -= NKDrag.selection.element.offsetTop;
+        try {
+            const regex = /translate\(\s*([-+]?\d*\.?\d+px)\s*,\s*([-+]?\d*\.?\d+px)\s*\)/;
+            const match = NKDrag.selection.element.style.transform.match(regex);
+
+            NKDrag.selection.offset[0] -= parseFloat(match[1]); //translateX
+            NKDrag.selection.offset[1] -= parseFloat(match[2]); //translateY
+        } catch (e){}
+
     }
 
     NKDom.addEventListener( '.NKDrag_src', 'mousedown', onMouseDown );
-
-    function onMouseUp( e ) {
-        NKDrag.selection.element = null;
-    }
-
-    NKDom.addEventListener( '.NKDrag_src', 'mouseup', onMouseUp );
-    NKDom.addEventListener( '.NKDrag_src', 'blur', onMouseUp );
 
 };

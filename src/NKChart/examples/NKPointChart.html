@@ -2,26 +2,27 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>NKChart example</title>
+    <title>NKBarChart example</title>
 
     <script type="text/javascript" src="../../external_libs/big.js"></script>
     <script type="text/javascript" src="../../NK/NKBase.js"></script>
     <script type="text/javascript" src="../../NKDrawbox/NKDrawbox.js"></script>
     <script type="text/javascript" src="candle_data.js"></script>
-    <script type="text/javascript" src="../NKChart.js"></script>
+    <script type="text/javascript" src="../NKPointChart.js"></script>
 </head>
 
 <body>
 
-    <div id="my_chart" style="background-color: ghostwhite; position: absolute; border- top: 100px; left: 200px;">
+    <div id="my_chart" style="background-color: ghostwhite; position: absolute; top: 50px; left: 50px;">
         Chart area
     </div>
 
     <script>
 
-        let candle_chart = new NKCandleChart('my_chart');
+        let point_chart = new NKPointChart('my_chart');
+        point_chart.setSize(8000, 200);
 
-        let candle_array = [];
+        let point_array = [];
 
         for ( let i = 0; i < candle_data.length; i++ ) { //candle_data from candle_data.js
             let data = candle_data[i];
@@ -40,16 +41,18 @@
             // 10. taker_buy_quote_asset_volume
             // 11. ignore (deprecated)
 
-            candle_array.push({
+            if ( i % 10 !== 0 ) continue;
+
+            point_array.push({
                 timestamp: data[0],
-                open: data[1],
-                high: data[2],
-                low: data[3],
-                close: data[4]
+                value: data[1],
+                //connect_prev: ( i % 20 !== 0 )
             });
+
+
         }
 
-        candle_chart.drawCandles( candle_array );
+        point_chart.drawPoints( point_array );
 
     </script>
 

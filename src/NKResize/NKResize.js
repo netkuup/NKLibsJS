@@ -112,7 +112,8 @@ NKResize.reload = function() {
 
 
     function onMouse( e ) {
-        let column_pos = [this.offsetLeft, this.offsetTop];
+        let col_pos = this.getBoundingClientRect();
+        let column_pos = [col_pos.left, col_pos.top];
         let mouse_pos = NKPosition.getMouse();
         let diff_pos = [mouse_pos[0]-column_pos[0], mouse_pos[1]-column_pos[1]];
         //let div_size = [this.offsetWidth, this.offsetHeight];

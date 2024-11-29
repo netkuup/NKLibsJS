@@ -2,10 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Get mouse position example</title>
-        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="../../NKBase/NKBase.js" ></script>
-        <link rel="stylesheet" type="text/css" href="../../NKBase/NKBase.css"/>
+        <title>NKPosition example</title>
+        <script src="../../NK/NKBase.js"></script>
+        <script type="text/javascript" src="../../external_libs/big.js"></script>
         <script type="text/javascript" src="../NKPosition.js" ></script>
     </head>
 
@@ -43,16 +42,10 @@
         <script>
             NKPosition.start();
 
-            function setMouseLabels() {
-
-                $('#mouse_pos_absolute').text( NKPosition.getMouse(true).toString() );
-                $('#mouse_pos_relative').text( NKPosition.getMouse().toString() );
-
-            }
-
-            $('.box').on('mousemove', setMouseLabels);
-
-            $(document).on('scroll', setMouseLabels);
+            NKPosition.addEventListener('onMousemove', function( data ) {
+                document.getElementById('mouse_pos_absolute').innerText = data.abs;
+                document.getElementById('mouse_pos_relative').innerText = data.rel;
+            });
 
         </script>
 

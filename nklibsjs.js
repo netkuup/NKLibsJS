@@ -1057,12 +1057,14 @@ NK.isset = function( variable ) {
     return true;
 };
 
-NK.empty = function(variable) {
+NK.empty = function( variable ) {
     if ( !NK.isset(variable) ) return true;
-    if ( typeof variable === 'function' ) variable = variable();
-    if ( variable.length === 0 ) return true;
-    return false;
+    return ( typeof variable === 'function' ) ? variable().length === 0 : variable.length === 0;
 };
+
+NK.var = function( variable, default_value ) {
+    return NK.isset( variable ) ? variable : default_value;
+}
 
 NK.clone = function ( obj ) {
     console.error("NK.clone() deprecated, use NKObject.clone() instead.");
@@ -1215,7 +1217,7 @@ Number.prototype.nkprec = function(value) {
     return new Big(this).prec(value).toNumber();
 };
 Number.prototype.nkround = function(value) {
-    return new Big(this).prec(value).toNumber();
+    return new Big(this).round(value).toNumber();
 };
 Number.prototype.nksqrt = function() {
     return new Big(this).sqrt().toNumber();
@@ -1377,68 +1379,99 @@ NKArray.mountTree = function ( data, id_name, parent_id_name, child_arr_name ) {
 
     return result;
 };
-;var NKCanvas = {};
+;
+function NKCanvas( canvas_element_or_id = null ) {
+    this.canvas = null;
+    this.ctx = null;
+    this.w = 0;
+    this.h = 0;
 
-NKCanvas.getPixelColor = function ( canvas, x, y ) {
-    x = parseFloat(x);
-    y = parseFloat(y);
+    if ( canvas_element_or_id === null ) {
+        this.canvas = document.createElement('canvas');
 
-    var ctx = canvas.getContext('2d');
-    var data = ctx.getImageData(0, 0, canvas.width, canvas.height, {willReadFrequently: true}).data;
-    var cw = canvas.width;
+    } else if ( canvas_element_or_id instanceof HTMLCanvasElement ) {
+        this.canvas = canvas_element_or_id;
 
-    var pixel = (cw * y) + x;
-    var position = pixel * 4;
+    } else if ( typeof canvas_element_or_id === "string" ) {
+        this.canvas = document.getElementById( canvas_element_or_id );
+
+    } else {
+        console.error("NKCanvas invalid argument.");
+        return;
+    }
+
+    this.canvas.style.imageRendering = 'pixelated'; //Important!
+
+    this.ctx = this.canvas.getContext('2d');
+    //this.ctx.imageSmoothingEnabled = false;
+
+    this.w = this.canvas.width;
+    this.h = this.canvas.height;
+
+}
+
+NKCanvas.prototype.setSize = function ( w = 400, h = 200 ) {
+    this.canvas.width = w;
+    this.canvas.height = h;
+    this.w = w;
+    this.h = h;
+}
+
+NKCanvas.prototype.clean = function () {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+
+NKCanvas.prototype.getPixelColor = function ( x = 0, y = 0 ) {
+
+    let data = this.ctx.getImageData(0, 0, this.w, this.h, {willReadFrequently: true}).data;
+
+    let pixel = (this.w).nkmul(y).nksum(x);
+    let position = pixel.nkmul(4);
 
     return {
         rgba: [data[position], data[position + 1], data[position + 2], data[position + 3]]
     };
 }
 
-NKCanvas.searchPixelCoords = function ( canvas, rgba_color = [0, 0, 0] ) {
+NKCanvas.prototype.searchPixelCoords = function ( rgba_color = [0, 0, 0] ) {
 
-    var ctx = canvas.getContext('2d');
-    var cw = canvas.width;
+    let data = this.ctx.getImageData(0, 0, this.w, this.h).data;
 
-    var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-    var pos_i = -1;
-    for ( var i = 0; i < data.length; i = i+4 ) {
+    let pos_i = -1;
+    for ( let i = 0; i < data.length; i = i+4 ) {
         if ( data[i] === rgba_color[0] && data[i+1] === rgba_color[1] && data[i+2] === rgba_color[2] ) {
             pos_i = i;
             break;
         }
     }
 
-    var pixel_i = pos_i / 4;
-    var row = Math.floor(pixel_i / cw);
-    var col = pixel_i % cw;
+    let pixel_i = pos_i.nkdiv(4);
+    let row = Math.floor( pixel_i.nkdiv(this.w) );
+    let col = pixel_i % this.w;
 
     return {x: col, y: row};
+
 }
 
-
-NKCanvas.extractPortion = function ( canvas, x, y, w, h, ctx_options = {} ) {
-    var aux_canvas = document.createElement("canvas");
-    var aux_ctx = aux_canvas.getContext("2d", ctx_options);
+NKCanvas.prototype.extractPortion = function ( x, y, w, h, ctx_options = {}  ) {
+    let aux_canvas = document.createElement("canvas");
+    let aux_ctx = aux_canvas.getContext("2d", ctx_options);
 
     aux_canvas.hidden = true;
     aux_canvas.width = w;
     aux_canvas.height = h;
-    aux_ctx.drawImage(canvas, x, y, w, h, 0, 0, w, h);
+    aux_ctx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h);
 
     return aux_canvas;
 }
 
-
-NKCanvas.replaceColor = function ( canvas, old_color, new_color ) {
-    var ctx = canvas.getContext('2d');
-    var image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var data = image_data.data;
-    var replace_times = 0;
+NKCanvas.prototype.replaceColor = function ( old_color, new_color ) {
+    let image_data = this.ctx.getImageData(0, 0, this.w, this.h);
+    let data = image_data.data;
+    let replace_times = 0;
 
     if ( old_color.length === 4 && new_color.length === 4 ) {
-        for (var i = 0; i < data.length; i += 4) {
+        for (let i = 0; i < data.length; i += 4) {
             if ( data[i] === old_color[0] && data[i+1] === old_color[1] && data[i+2] === old_color[2] && data[i+3] === old_color[3] ) {
                 data[i] = new_color[0];
                 data[i+1] = new_color[1];
@@ -1448,7 +1481,7 @@ NKCanvas.replaceColor = function ( canvas, old_color, new_color ) {
             }
         }
     } else {
-        for (var i = 0; i < data.length; i += 4) {
+        for (let i = 0; i < data.length; i += 4) {
             if ( data[i] === old_color[0] && data[i+1] === old_color[1] && data[i+2] === old_color[2] ) {
                 data[i] = new_color[0];
                 data[i+1] = new_color[1];
@@ -1458,18 +1491,14 @@ NKCanvas.replaceColor = function ( canvas, old_color, new_color ) {
         }
     }
 
-    ctx.putImageData(image_data, 0, 0);
+    this.ctx.putImageData(image_data, 0, 0);
     return replace_times;
 }
 
 
-
-NKCanvas.compare = function ( canvas1, canvas2 ) {
-    const ctx1 = canvas1.getContext("2d");
-    const ctx2 = canvas2.getContext("2d");
-
-    const width = canvas1.width;
-    const height = canvas1.height;
+NKCanvas.prototype.compare = function ( canvas_2_element ) {
+    const ctx1 = this.ctx;
+    const ctx2 = canvas_2_element.getContext("2d");
 
     function comparePixels(pixel1, pixel2) {
         return (
@@ -1480,30 +1509,99 @@ NKCanvas.compare = function ( canvas1, canvas2 ) {
         );
     }
 
-    if (canvas1.width !== canvas2.width || canvas1.height !== canvas2.height) {
+    if (this.h !== canvas_2_element.width || this.h !== canvas_2_element.height) {
         return console.error("Los canvas tienen dimensiones diferentes.");
     }
 
-    const imageData1 = ctx1.getImageData(0, 0, width, height);
-    const imageData2 = ctx2.getImageData(0, 0, width, height);
+    const imageData1 = ctx1.getImageData(0, 0, this.w, this.h);
+    const imageData2 = ctx2.getImageData(0, 0, this.w, this.h);
 
     const data1 = imageData1.data;
     const data2 = imageData2.data;
 
-    var differences = [];
-    for (var i = 0; i < data1.length; i += 4) {
+    let differences = [];
+    for (let i = 0; i < data1.length; i += 4) {
         const pixel1 = data1.slice(i, i + 4);
         const pixel2 = data2.slice(i, i + 4);
 
         if (!comparePixels(pixel1, pixel2)) {
-            const x = (i / 4) % width;
-            const y = Math.floor(i / 4 / width);
+            const x = (i / 4) % this.w;
+            const y = Math.floor(i / 4 / this.w);
             differences.push({x: x, y: y, color_1: pixel1, color_2: pixel2});
         }
     }
 
     return differences;
-};var NKCast = {};
+}
+
+NKCanvas.prototype.drawRect = function ( args ) {
+    let border = NK.var(args.border_px, 0);
+    let x = NK.var(args.x, 0);
+    let y = NK.var(args.y, 0);
+    let w = NK.var(args.w, 0);
+    let h = NK.var(args.h, 0);
+
+    if ( args.x && args.x2 ) w = (args.x2).nkminus(args.x).nksum(border*2);
+    if ( args.y && args.y2 ) h = (args.y2).nkminus(args.y).nksum(border*2);
+
+
+    if ( NK.isset(args.color) ) this.ctx.fillStyle = args.color;
+    if ( NK.isset(args.border_px) ) this.ctx.lineWidth = args.border_px;
+    if ( NK.isset(args.border_color) ) this.ctx.strokeStyle = args.border_color;
+    if ( NK.isset(args.border_pattern) ) this.ctx.setLineDash(args.border_pattern); //array(2): [longitud del segmento, espacio]
+
+    if ( NK.isset(args.color) ) this.ctx.fillRect(x+border, y+border, w, h);
+    if ( NK.isset(args.border_color) || (NK.isset(args.border_px) && args.border_px > 0) ) this.ctx.strokeRect( x+border, y+border, w, h );
+
+}
+
+NKCanvas.prototype.drawCircle = function ( args ) {
+
+    let r = NK.var( args.r, NK.var(args.d, 10).nkdiv(2) );
+    let x = NK.var( (args.x).nksum(r), 0 ).nkminus( args.r );
+    let y = NK.var( (args.y).nksum(r), 0 ).nkminus( args.r );
+
+
+    this.ctx.beginPath();
+
+    this.ctx.arc(x, y, r, 0, Math.PI * 2);
+    if ( NK.isset(args.color) ) this.ctx.fillStyle = args.color;
+    if ( NK.isset(args.color) ) this.ctx.fill();
+
+    if ( NK.isset(args.border_px) ) this.ctx.lineWidth = args.border_px;
+    if ( NK.isset(args.border_color) ) this.ctx.strokeStyle = args.border_color;
+    if ( NK.isset(args.border_color) || NK.isset(args.border_px) ) this.ctx.stroke();
+
+}
+
+NKCanvas.prototype.drawLine = function ( args ) {
+
+    if ( NK.isset(args.color) ) this.ctx.strokeStyle = args.color;
+    if ( NK.isset(args.w) ) this.ctx.lineWidth = args.w;
+    if ( NK.isset(args.pattern) ) this.ctx.setLineDash(args.pattern); //array(2): [longitud del segmento, espacio]
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(args.x, args.y);
+    this.ctx.lineTo(NK.var(args.x2, args.x), NK.var(args.y2, args.y));
+    this.ctx.stroke();
+
+
+}
+
+NKCanvas.prototype.drawText = function ( args ) {
+    let font_size = NK.var( args.font_size, 12 );
+    if ( !isNaN(font_size) ) font_size = font_size + "px";
+
+    let font_weight = NK.var( args.font_weight, "normal" ); //bold
+    let font_family = NK.var( args.font_family, "Arial" );
+    let font_color = NK.var( args.font_color, "black" );
+
+    this.ctx.font = font_weight + " " + font_size + " " + font_family; //'bold 20px Arial'
+    this.ctx.fillStyle = font_color;
+    this.ctx.textBaseline = 'top'; //Top left
+    this.ctx.fillText(NK.var(args.text, "Text"), NK.var(args.x, 0), NK.var(args.y, 0));
+}
+;var NKCast = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before cast.js";
@@ -3022,37 +3120,183 @@ NKCast.utf8String = {
 [1728086340000,2414.41000000,2414.41000000,2414.40000000,2414.41000000,11.37880000,1728086399999,27473.02051200,69,4.57920000,11056.06627200,0]
 ];
 ;
-function NKCandleChart ( wrapper_id, px_per_second = -1, px_per_coin = 8 ) {
+function NKBarChart ( wrapper_id, w = 600, h = 300) {
     this.wrapper_id = wrapper_id;
     this.drawbox = null;
-    this.px_per_second = px_per_second;
-    this.px_per_coin = px_per_coin;
-    this.w = -1;
-    this.h = -1;
+    this.px_per_second = -1;
+    this.px_per_value = -1;
+    this.w = w;
+    this.h = h;
+    this.data_ref = [];
+
+    let is_canvas = ( document.getElementById( wrapper_id ) instanceof HTMLCanvasElement );
+
+    this.drawbox = is_canvas ? new NKCanvas( this.wrapper_id ) : new NKDrawbox( this.wrapper_id );
+
 }
 
-NKCandleChart.prototype.drawCandles = function ( candle_array ) {
-    if ( this.px_per_second === -1 ) this.px_per_second = 0.1; //Hay una candle cada 1min
-    if ( this.px_per_coin === -1 ) this.px_per_coin = 1;  //(layerh/(this.max_price-this.min_price))*this.zoom_y;
-    //this.px_per_coin = ( isFinite(px_per_coin) ) ? px_per_coin : 1;
+NKBarChart.prototype.setSize = function ( w = 600, h = 300 ) {
+    this.w = w;
+    this.h = h;
+}
 
+NKBarChart.prototype.setScale = function ( px_per_second = 0.1, px_per_value = 0.1 ) {
+    this.px_per_second = px_per_second;
+    this.px_per_value = px_per_value;
+}
+
+NKBarChart.prototype.setMouseMoveCbk = function ( cbk ) {
+    let self = this;
+
+    this.drawbox.onMouseMoveCbk = function (x, y) {
+        let minutes = parseInt( x.nkdiv( self.px_per_second ).nkdiv(60) );
+        try {
+            cbk(x, y, self.data_ref[minutes]);
+        } catch (e){}
+
+    }
+}
+
+NKBarChart.prototype.drawBars = function ( bar_array ) {
+    if ( bar_array.length === 0 ) return;
+
+    this.data_ref = bar_array;
+
+    let min_value = Infinity;
+    let max_value = 0;
+    let min_timestamp = Infinity;
+    let max_timestamp = 0;
+
+    for ( let i = 0; i < bar_array.length; i++ ) {
+        if ( bar_array[i].value < min_value ) min_value = bar_array[i].value;
+        if ( bar_array[i].value > max_value ) max_value = bar_array[i].value;
+        if ( bar_array[i].timestamp < min_timestamp ) min_timestamp = bar_array[i].timestamp;
+        if ( bar_array[i].timestamp > max_timestamp ) max_timestamp = bar_array[i].timestamp;
+    }
+
+    min_timestamp = min_timestamp.nkdiv(1000); //milliseconds to seconds
+    max_timestamp = max_timestamp.nkdiv(1000);
+
+    if ( this.px_per_second === -1 ) this.px_per_second = (this.w).nkdiv( max_timestamp.nkminus(min_timestamp) );
+    if ( this.px_per_value === -1 ) this.px_per_value = (this.h).nkdiv( max_value.nkminus(min_value) );
+
+    let neg_values = (min_value < 0);
+
+    this.h = max_value.nkminus(min_value).nkmul(this.px_per_value);
+    this.w = max_timestamp.nkminus(min_timestamp).nkmul(this.px_per_second);
+
+    this.drawbox.clean();
+    this.drawbox.setSize(this.w, this.h);
+
+
+    if ( neg_values ) { //Base line
+        let base_line_y = (this.h).nksum(min_value.nkmul(this.px_per_value));
+        this.drawbox.drawLine({
+            x: 0,
+            y: base_line_y,
+            x2: this.w,
+            y2: base_line_y,
+            w: 1,
+            color: "#E0E3EB"
+        });
+    }
+
+    let w = (50).nkmul(this.px_per_second); //Usar 50 segundos para dibujar cada candle
+
+    for ( let i = 0; i < bar_array.length; i++ ) {
+        let bar = bar_array[i];
+
+        let x = (bar.timestamp).nkdiv(1000).nkminus(min_timestamp).nkmul(this.px_per_second);
+        let h = (bar.value).nkmul(this.px_per_value);
+        let y = (this.h).nkminus( (bar.value).nkminus(min_value).nkmul(this.px_per_value) );
+
+        this.drawbox.drawRect({
+            x: x,
+            y: y,
+            w: w,
+            h: h,
+            color: bar.color,
+            border_px: 0
+        });
+
+    }
+
+
+};
+function NKCandleChart ( wrapper_id, w = 600, h = 300 ) {
+    this.wrapper_id = wrapper_id;
+    this.drawbox = null;
+    this.px_per_second = -1;
+    this.px_per_value = -1;
+    this.w = w;
+    this.h = h;
+    this.data_ref = [];
+
+    let is_canvas = ( document.getElementById( wrapper_id ) instanceof HTMLCanvasElement );
+
+    this.drawbox = is_canvas ? new NKCanvas( this.wrapper_id ) : new NKDrawbox( this.wrapper_id );
+}
+
+NKCandleChart.prototype.setSize = function ( w = 600, h = 300 ) {
+    this.w = w;
+    this.h = h;
+}
+
+NKCandleChart.prototype.setScale = function ( px_per_second = 0.1, px_per_value = 0.1 ) {
+    this.px_per_second = px_per_second;
+    this.px_per_value = px_per_value;
+}
+
+NKCandleChart.prototype.setMouseMoveCbk = function ( cbk ) {
+    let self = this;
+
+    this.drawbox.onMouseMoveCbk = function (x, y) {
+        let minutes = parseInt( x.nkdiv( self.px_per_second ).nkdiv(60) );
+        try {
+            cbk(x, y, self.data_ref[minutes]);
+        } catch (e){}
+
+    }
+}
+
+/*
+NKCandleChart.prototype.zoomW = function ( x ) {
+    this.px_per_second = (this.px_per_second).nksum(x);
+}
+
+NKCandleChart.prototype.zoomH = function ( y ) {
+    this.px_per_value = (this.px_per_value).nksum(y);
+}*/
+
+NKCandleChart.prototype.drawCandles = function ( candle_array ) {
     if ( candle_array.length === 0 ) return;
+
+    this.data_ref = candle_array;
 
     let min_price = Infinity;
     let max_price = 0;
+    let min_timestamp = Infinity;
+    let max_timestamp = 0;
 
     for ( let i = 0; i < candle_array.length; i++ ) {
         if ( candle_array[i].low < min_price ) min_price = candle_array[i].low;
         if ( candle_array[i].high > max_price ) max_price = candle_array[i].high;
+        if ( candle_array[i].timestamp < min_timestamp ) min_timestamp = candle_array[i].timestamp;
+        if ( candle_array[i].timestamp > max_timestamp ) max_timestamp = candle_array[i].timestamp;
     }
 
-    this.h = max_price.nkminus(min_price).nkmul(this.px_per_coin);
+    min_timestamp = min_timestamp.nkdiv(1000); //milliseconds to seconds
+    max_timestamp = max_timestamp.nkdiv(1000);
+
+    if ( this.px_per_second === -1 ) this.px_per_second = (this.w).nkdiv( max_timestamp.nkminus(min_timestamp) );
+    if ( this.px_per_value === -1 ) this.px_per_value = (this.h).nkdiv( max_price.nkminus(min_price) );
+
+    this.h = max_price.nkminus(min_price).nkmul(this.px_per_value);
     this.w = (candle_array.length).nkmul(60).nkmul(this.px_per_second); //60 seg per candle (1min)
 
-    this.drawbox = new NKDrawbox( this.wrapper_id, this.w, this.h );
+    this.drawbox.clean();
+    this.drawbox.setSize(this.w, this.h);
 
-
-    let timestamp0_secs = (candle_array[0].timestamp).nkdiv(1000);
 
     let rw = 1;
 
@@ -3061,21 +3305,29 @@ NKCandleChart.prototype.drawCandles = function ( candle_array ) {
         let candle = candle_array[i];
 
 
-        let low = this.h - (candle.low-min_price) * this.px_per_coin;
-        let high = this.h - (candle.high-min_price) * this.px_per_coin;
-        let open = this.h - (candle.open-min_price) * this.px_per_coin;
-        let close = this.h - (candle.close-min_price) * this.px_per_coin;
+        let low = this.h - (candle.low-min_price) * this.px_per_value;
+        let high = this.h - (candle.high-min_price) * this.px_per_value;
+        let open = this.h - (candle.open-min_price) * this.px_per_value;
+        let close = this.h - (candle.close-min_price) * this.px_per_value;
 
-        let x = (candle.timestamp).nkdiv(1000).nkminus(timestamp0_secs).nkmul(this.px_per_second);
+
+        let x = (candle.timestamp).nkdiv(1000).nkminus(min_timestamp).nkmul(this.px_per_second);
 
         let y1 = high;
         let y2 = low;
 
-        let color = open < close ? "red" : "green";
+        //Red: #EF5350
+        //Green: #26A69A
+        let default_color = open < close ? "#EF5350" : "#26A69A";
+        let color = candle.color ? candle.color : default_color;
 
-        let w = (60).nkmul(this.px_per_second); //Usar 60 segundos para dibujar cada candle
+        let w = (50).nkmul(this.px_per_second); //Usar 60 segundos para dibujar cada candle
+
         //let x_rect = x.nkminus( (35).nkmul(this.px_per_second) )
-        let line_x = x.nkadd( (35).nkmul(this.px_per_second) )
+        let line_x = x.nkadd( (35).nkmul(this.px_per_second) );
+        let candle_x = x.nksum( (5).nkmul(this.px_per_second) ); //Como el ancho del candle es 50seg en vez de 60, le sumamos 5seg por lado
+
+
 
 
         this.drawbox.drawLine({
@@ -3084,20 +3336,233 @@ NKCandleChart.prototype.drawCandles = function ( candle_array ) {
             x2: line_x,
             y2: y2,
             w: 1,
-            color: "gray",
+            color: color,
         });
 
         this.drawbox.drawRect({
-            x: x,
+            x: candle_x,
             y: Math.min(open, close),
             w: w,
             h: Math.abs(open-close),
-            color: color
+            color: color,
+            border_px: 0
         });
 
 
 
     }
+
+
+};
+function NKPointChart ( wrapper_id, connect_points = true, w = 600, h = 300) {
+    this.wrapper_id = wrapper_id;
+    this.drawbox = null;
+    this.connect_points = connect_points;
+    this.px_per_second = -1;
+    this.px_per_value = -1;
+    this.w = w;
+    this.h = h;
+    this.data_ref = [];
+
+
+    let is_canvas = ( document.getElementById( wrapper_id ) instanceof HTMLCanvasElement );
+
+    this.drawbox = is_canvas ? new NKCanvas( this.wrapper_id ) : new NKDrawbox( this.wrapper_id );
+
+}
+
+NKPointChart.prototype.setSize = function ( w = 600, h = 300 ) {
+    this.w = w;
+    this.h = h;
+}
+
+NKPointChart.prototype.setScale = function ( px_per_second = 0.1, px_per_value = 0.1 ) {
+    this.px_per_second = px_per_second;
+    this.px_per_value = px_per_value;
+}
+
+NKPointChart.prototype.setMouseMoveCbk = function ( cbk ) {
+    let self = this;
+
+    this.drawbox.onMouseMoveCbk = function (x, y) {
+        let minutes = parseInt( x.nkdiv( self.px_per_second ).nkdiv(60) );
+        try {
+            cbk(x, y, self.data_ref[minutes]);
+        } catch (e){}
+
+    }
+}
+
+NKPointChart.prototype.drawPoints = function ( point_array ) {
+    if ( point_array.length === 0 ) return;
+
+    this.data_ref = point_array;
+
+    let min_value = Infinity;
+    let max_value = 0;
+    let min_timestamp = Infinity;
+    let max_timestamp = 0;
+
+    for ( let i = 0; i < point_array.length; i++ ) {
+        if ( point_array[i].value < min_value ) min_value = point_array[i].value;
+        if ( point_array[i].value > max_value ) max_value = point_array[i].value;
+        if ( point_array[i].timestamp < min_timestamp ) min_timestamp = point_array[i].timestamp;
+        if ( point_array[i].timestamp > max_timestamp ) max_timestamp = point_array[i].timestamp;
+    }
+
+    min_timestamp = min_timestamp.nkdiv(1000); //milliseconds to seconds
+    max_timestamp = max_timestamp.nkdiv(1000);
+
+    if ( this.px_per_second === -1 ) this.px_per_second = (this.w).nkdiv( max_timestamp.nkminus(min_timestamp) );
+    if ( this.px_per_value === -1 ) this.px_per_value = (this.h).nkdiv( max_value.nkminus(min_value) );
+
+    let neg_values = (min_value < 0);
+
+    this.h = max_value.nkminus(min_value).nkmul(this.px_per_value);
+    this.w = max_timestamp.nkminus(min_timestamp).nkmul(this.px_per_second);
+
+    this.drawbox.clean();
+    this.drawbox.setSize(this.w, this.h);
+
+    if ( neg_values ) { //Base line
+        let base_line_y = (this.h).nksum( min_value.nkmul(this.px_per_value) );
+        this.drawbox.drawLine({
+            x: 0,
+            y: base_line_y,
+            x2: this.w,
+            y2: base_line_y,
+            w: 1,
+            color: "#E0E3EB"
+        });
+    }
+
+    let last_x = null;
+    let last_y = null;
+
+    for ( let i = 0; i < point_array.length; i++ ) {
+        let point = point_array[i];
+
+        let x = (point.timestamp).nkdiv(1000).nkminus(min_timestamp).nkmul(this.px_per_second);
+        let y = (this.h).nkminus( (point.value).nkminus(min_value).nkmul(this.px_per_value) );
+
+        if ( (this.connect_points || point.connect_prev === true)  && point.connect_prev !== false && last_x !== null ) {
+            this.drawbox.drawLine({
+                x: last_x,
+                y: last_y,
+                x2: x,
+                y2: y,
+                w: 1,
+                color: "blue",
+                style: "solid"
+            });
+        }
+
+        this.drawbox.drawCircle({
+            x: x,
+            y: y,
+            r: 1.5,
+            color: "blue"
+        });
+
+        last_x = x;
+        last_y = y;
+    }
+
+
+};
+function NKTimeLineChart ( wrapper_id, w = 600 ) {
+    this.wrapper_id = wrapper_id;
+    this.drawbox = null;
+    this.horizontal = true;
+    this.px_per_second = -1;
+    this.w = w;
+
+
+    let is_canvas = ( document.getElementById( wrapper_id ) instanceof HTMLCanvasElement );
+
+    this.drawbox = is_canvas ? new NKCanvas( this.wrapper_id ) : new NKDrawbox( this.wrapper_id );
+}
+
+NKTimeLineChart.prototype.setSize = function ( w = 600 ) {
+    this.w = w;
+}
+
+NKTimeLineChart.prototype.setScale = function ( px_per_second = 0.1 ) {
+    this.px_per_second = px_per_second;
+}
+
+NKTimeLineChart.prototype.setMouseMoveCbk = function ( cbk ) {
+    let self = this;
+
+    this.drawbox.onMouseMoveCbk = function (x, y) {
+        cbk(x, y, null);
+    }
+}
+
+
+NKTimeLineChart.prototype.drawValues = function ( min_timestamp, max_timestamp, milliseconds = true ) {
+    let min_timestamp_s = min_timestamp.nkdiv(1000); //milliseconds to seconds
+    let max_timestamp_s = max_timestamp.nkdiv(1000);
+
+
+    if ( this.px_per_second === -1 ) this.px_per_second = (this.w).nkdiv( max_timestamp_s.nkminus(min_timestamp_s) );
+
+    this.w = max_timestamp_s.nkminus(min_timestamp_s).nkmul(this.px_per_second);//3600s = 1h
+
+    this.drawbox.clean();
+
+    if ( this.horizontal ) {
+        this.drawbox.setSize( this.w, 28 );
+    } else {
+        this.drawbox.setSize( 50, this.w );
+
+        console.error("NKScaleChart vertical: Not implemented.");
+        return;
+    }
+
+    let min_timestamp_obj = new Date( min_timestamp );
+    let next_hour = new Date( min_timestamp );
+    next_hour.setHours(min_timestamp_obj.getHours() + 1, 0, 0, 0);
+    let diff_ms = NKDate.getUnixTimestamp(next_hour) - min_timestamp_obj;
+
+    let total_hours = Math.floor( max_timestamp.nkminus(min_timestamp).nkdiv(3600000) );
+
+    let first_line_x = diff_ms.nkdiv(1000).nkmul(this.px_per_second);
+
+
+
+    for ( let i = 0; i < total_hours; i++ ) {
+        this.drawbox.drawLine({
+            x: first_line_x,
+            y: 0,
+            x2: first_line_x,
+            y2: 4,
+        });
+
+
+        let h_text = NKDate.getString( next_hour, "hh:mm" );
+        let d_text =  NKDate.getString( next_hour, "DD/MM" )
+
+        this.drawbox.drawText({
+            x: first_line_x,
+            y: 5,
+            text: h_text,
+            font_size: 10,
+            font_family: "Arial, sans-serif",
+        });
+        this.drawbox.drawText({
+            x: first_line_x,
+            y: 14,
+            text: d_text,
+            font_size: 10,
+            font_family: "Arial, sans-serif",
+        });
+
+        first_line_x += (3600).nkmul(this.px_per_second); //3600s = 1h
+
+        NKDate.addHours(next_hour, 1);
+    }
+
 
 
 };var NKClipboard = {};
@@ -3547,6 +4012,35 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
         }
     }
 };
+;let NKDebounce = {
+    timeoutId: {}
+};
+
+
+NKDebounce.callOnce = function ( func, ms = 200 ) {
+    let call_line = NKDebounce.getCallLine();
+
+    clearTimeout( NKDebounce.timeoutId[call_line] );
+
+    NKDebounce.timeoutId[call_line] = setTimeout(() => {
+        func();
+    }, ms);
+
+}
+
+NKDebounce.getCallLine = function () {
+    const stack = new Error().stack;
+    const match = stack.match(/\(([^)]+)\)/);
+    let call_line = match ? match[1] : null;
+
+    if ( call_line === null ) {
+        console.error("NKDebounce error.");
+        return "";
+    }
+
+    call_line = call_line.split("/");
+    return call_line[call_line.length - 1];
+}
 ;NKDomTemplate = {};
 NKDom = {};
 
@@ -3773,8 +4267,7 @@ NKDrag.start = function( reactable ) {
             let left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
             let top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
 
-            NKDrag.selection.element.style.left = left + "px";
-            NKDrag.selection.element.style.top = top+ "px";
+            NKDrag.selection.element.style.transform = `translate(${left}px, ${top}px)`;
 
             NKDrag.dispatchEvent('onDrag', {
                 e: NKDrag.selection.element,
@@ -3784,6 +4277,12 @@ NKDrag.start = function( reactable ) {
     }
 
     NKDom.addEventListener( document, 'mousemove', onMouseMove );
+
+    function onMouseUp( e ) {
+        NKDrag.selection.element = null;
+    }
+
+    NKDom.addEventListener( document, 'mouseup', onMouseUp );
 };
 
 NKDrag.reload = function() {
@@ -3792,19 +4291,17 @@ NKDrag.reload = function() {
         NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 
-        // let pos = NKDrag.selection.element.offset;
-        NKDrag.selection.offset[0] -= NKDrag.selection.element.offsetLeft;
-        NKDrag.selection.offset[1] -= NKDrag.selection.element.offsetTop;
+        try {
+            const regex = /translate\(\s*([-+]?\d*\.?\d+px)\s*,\s*([-+]?\d*\.?\d+px)\s*\)/;
+            const match = NKDrag.selection.element.style.transform.match(regex);
+
+            NKDrag.selection.offset[0] -= parseFloat(match[1]); //translateX
+            NKDrag.selection.offset[1] -= parseFloat(match[2]); //translateY
+        } catch (e){}
+
     }
 
     NKDom.addEventListener( '.NKDrag_src', 'mousedown', onMouseDown );
-
-    function onMouseUp( e ) {
-        NKDrag.selection.element = null;
-    }
-
-    NKDom.addEventListener( '.NKDrag_src', 'mouseup', onMouseUp );
-    NKDom.addEventListener( '.NKDrag_src', 'blur', onMouseUp );
 
 };
 ;/*if ( typeof NK === 'undefined' ) {
@@ -3813,17 +4310,43 @@ NKDrag.reload = function() {
 
 function NKDrawbox ( wrapper_id, w = 400, h = 200 ) {
     this.wrapper = null;
+    this.shadow = null;
+    this.onMouseMoveCbk = null;
     this.drawings = [];
 
-    let wrapper_div = document.getElementById(wrapper_id);
+    this.wrapper = document.getElementById(wrapper_id);
 
-    if ( wrapper_div === null ) return console.error("NKDrawbox: Error, invalid id '" + wrapper_id + "'");
-    wrapper_div.style.display = 'inline-block';
-    wrapper_div.style.width = w + 'px';
-    wrapper_div.style.height = h + 'px';
-    wrapper_div.innerHTML = '';
+    if ( this.wrapper === null ) return console.error("NKDrawbox: Error, invalid id '" + wrapper_id + "'");
+    this.wrapper.style.display = 'inline-block';
+    this.wrapper.style.width = w + 'px';
+    this.wrapper.style.height = h + 'px';
+    this.wrapper.style.overflow = 'hidden';
+    this.wrapper.style.position = 'relative';
+    this.wrapper.innerHTML = '';
 
-    this.wrapper = wrapper_div.attachShadow({ mode: 'open' });
+    //If initialized, get the existent shadowRoot
+    this.shadow = this.wrapper.shadowRoot || this.wrapper.attachShadow({ mode: 'open' });
+
+    this.wrapper.addEventListener("mousemove", (event) => {
+        /*const rect = this.shadow.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        console.log(`Posición del mouse en el div: X: ${x}, Y: ${y}`);*/
+
+        /*const x = event.offsetX;
+        const y = event.offsetY;
+        console.log(`Posición del mouse en el div: X: ${x}, Y: ${y}`);*/
+        if ( this.onMouseMoveCbk !== null ) this.onMouseMoveCbk(event.offsetX, event.offsetY);
+    });
+}
+
+NKDrawbox.prototype.clean = function () {
+    this.shadow.innerHTML = '';
+}
+
+NKDrawbox.prototype.setSize = function ( w = 400, h = 200 ) {
+    this.wrapper.style.width = w + 'px';
+    this.wrapper.style.height = h + 'px';
 }
 
 
@@ -3831,61 +4354,131 @@ NKDrawbox.prototype._drawDiv = function ( args ) {
    // console.log(args);
     const new_div = document.createElement('div');
 
+    if ( NK.isset(args.class) ) new_div.className = args.class;
     new_div.style.position = 'absolute';
-    new_div.style.transformOrigin = 'top left';
+    new_div.style.transformOrigin = args.origin ? args.origin : 'top left';
 
-    if ( args.x ) new_div.style.left = args.x + 'px';
-    if ( args.y ) new_div.style.top = args.y + 'px';
+    if ( NK.isset(args.h) && args.h < 0 ) { //Si le ponemos una altura negativa
+        args.h = (args.h).nkabs();
+        if ( NK.isset(args.y) ) args.y = (args.y).nksubtract(args.h);
+    }
 
-    if ( args.w ) new_div.style.width = args.w + 'px';
-    if ( args.h ) new_div.style.height = args.h + 'px';
+    if ( NK.isset(args.x) ) new_div.style.left = args.x + 'px';
+    if ( NK.isset(args.y) ) new_div.style.top = args.y + 'px';
 
-    if ( args.color ) new_div.style.backgroundColor = args.color;
+    if ( NK.isset(args.w) ) new_div.style.width = args.w + 'px';
+    if ( NK.isset(args.h) ) new_div.style.height = args.h + 'px';
+
+    if ( NK.isset(args.color) ) new_div.style.backgroundColor = args.color;
+
+    if ( NK.isset(args.border_radius) ) new_div.style.borderRadius = args.border_radius + '%';
 
     if ( args.border_px || args.border_color || args.border_style ) {
-        if ( !args.border_px ) args.border_px = 1;
-        if ( !args.border_color ) args.border_color = "black";
-        if ( !args.border_style ) args.border_style = "solid"; //dotted
+        if ( !NK.isset(args.border_px) ) args.border_px = 1;
+        if ( !NK.isset(args.border_color) ) args.border_color = "black";
+        if ( !NK.isset(args.border_style) ) args.border_style = "solid"; //dotted
         new_div.style.border  =  args.border_px + 'px ' + args.border_style + ' ' + args.border_color;
     }
 
     if ( args.border_top_px || args.border_top_color || args.border_top_style ) {
-        if ( !args.border_top_px ) args.border_top_px = 1;
-        if ( !args.border_top_color ) args.border_top_color = "black";
-        if ( !args.border_top_style ) args.border_top_style = "solid"; //dotted
+        if ( !NK.isset(args.border_top_px) ) args.border_top_px = 1;
+        if ( !NK.isset(args.border_top_color) ) args.border_top_color = "black";
+        if ( !NK.isset(args.border_top_style) ) args.border_top_style = "solid"; //dotted
         new_div.style.borderTop  =  args.border_top_px + 'px ' + args.border_top_style + ' ' + args.border_top_color;
     }
 
     let transform = "";
-    if ( args.rotate ) transform += `rotate(${args.rotate}deg) `;
+    if ( NK.isset(args.rotate) ) transform += `rotate(${args.rotate}deg) `;
     new_div.style.transform = transform;
 
-    this.wrapper.appendChild(new_div);
+    if ( NK.isset(args.text) ) new_div.textContent = args.text;
+    if ( NK.isset(args.font_color) ) new_div.style.color = args.font_color;
+    if ( NK.isset(args.font_size) ) new_div.style.fontSize = isNaN(args.font_size) ? args.font_size : args.font_size + "px";
+    if ( NK.isset(args.font_family) ) new_div.style.fontFamily = args.font_family;
+    if ( NK.isset(args.font_weight) ) new_div.style.fontWeight = args.font_weight;
+
+
+    this.shadow.appendChild(new_div);
 }
 
 
 NKDrawbox.prototype.drawRect = function( args ) {
-    if ( args.x && args.x2 ) args.w = (args.x2).nkminus(args.x);
-    if ( args.y && args.y2 ) args.h = (args.y2).nkminus(args.y);
 
-    this._drawDiv( args );
+    let props = {
+        x: args.x ?? 0,
+        y: args.y ?? 0,
+        w: args.w ?? 0,
+        h: args.h ?? 0,
+        border_px: args.border_px ?? 1,
+        border_color: args.border_color ?? "black",
+    }
+
+    if ( args.x && args.x2 ) props.w = (args.x2).nkminus(args.x);
+    if ( args.y && args.y2 ) props.h = (args.y2).nkminus(args.y);
+
+    if ( args.class ) props.class = args.class;
+    if ( args.color ) props.color = args.color;
+    if ( args.border_style ) props.border_style = args.border_style;
+
+    this._drawDiv( props );
 };
 
 NKDrawbox.prototype.drawLine = function( args ) {
 
-    const length = ((args.x2).nkminus(args.x).nkpow(2).nksum( (args.y2).nkminus(args.y).nkpow(2) )).nksqrt();
-    const angle = Math.atan2( (args.y2).nkminus(args.y), (args.x2).nkminus(args.x) ).nkmul( (180).nkdiv(Math.PI) );
+    let props = {
+        x: args.x ?? 0,
+        y: args.y ?? 0,
+        border_top_px: args.w ?? 1,
+        border_top_color: args.color ?? "black",
+        border_top_style: args.style ?? "solid"
+    }
 
-    this._drawDiv({
-        x: args.x,
-        y: args.y,
-        w: length,
-        rotate: angle,
-        border_top_px: args.w || 1,
-        border_top_color: args.color || "black",
-        border_top_style: args.style || "solid"
-    });
-};var NKForm = {};
+    // Line length
+    props.w = ((args.x2??0).nkminus(args.x??0).nkpow(2).nksum( (args.y2??0).nkminus(args.y??0).nkpow(2) )).nksqrt();
+
+    // Angle
+    props.rotate = Math.atan2( (args.y2??0).nkminus(args.y??0), (args.x2??0).nkminus(args.x??0) ).nkmul( (180).nkdiv(Math.PI) );
+
+    if ( args.class ) props.class = args.class;
+
+    this._drawDiv(props);
+}
+
+NKDrawbox.prototype.drawCircle = function( args ) {
+    if ( !NK.isset(args.r) ) args.r = 10;
+    let d = (args.r).nkmul(2);
+
+    let props = {
+        x: (args.x ?? 0).nkminus( args.r ),
+        y: (args.y ?? 0).nkminus( args.r ),
+        w: d,
+        h: d,
+        color: args.color ?? "black",
+        border_radius: 50 //Circle
+    }
+
+    if ( args.class ) props.class = args.class;
+
+    this._drawDiv(props);
+}
+
+NKDrawbox.prototype.drawText = function( args ) {
+    if ( !args.text ) return;
+
+    let props = {
+        x: args.x ?? 0,
+        y: args.y ?? 0,
+        text: args.text,
+    }
+
+    if ( args.class ) props.class = args.class;
+    if ( args.font_color ) props.font_color = args.font_color;
+    if ( args.font_size ) props.font_size = args.font_size;
+    if ( args.font_family ) props.font_family = args.font_family;
+    if ( args.font_weight ) props.font_weight = args.font_weight;
+
+    this._drawDiv(props);
+};;var NKForm = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before form.js";
@@ -4375,6 +4968,21 @@ NKObject.getValue = function ( variable, default_value = undefined ) {
     return variable;
 }
 
+NKObject.getTypeName = function ( value ) {
+    let type = typeof value;
+    if ( value === undefined ) return 'undefined';
+    if ( type === "string" ) return 'string';
+    if ( type === "number" ) return 'number';
+    if ( type === "boolean" ) return 'boolean';
+    if ( type === "object" && Array.isArray(value) ) return 'array';
+    if ( type === "object" && (value === null) ) return 'null';
+    if ( type === "object" ) return 'object';
+    return 'unknown';
+}
+
+NKObject.isType = function ( value, type_str ) {
+    return (NKObject.getTypeName(value) === type_str);
+}
 ;var NKPopup = {};
 
 if ( typeof NK === 'undefined' ) {
@@ -4612,42 +5220,39 @@ NKPopup.reload = function() {
 
 };
 
-;var NKPosition = {};
+;let NKPosition = {};
 
-if ( typeof NK === 'undefined' ) {
-    throw "You must include base.js before position.js";
-}
+let nkposition_event_listener = new NKEventListener();
+NKPosition = { ...nkposition_event_listener };
 
-
-NKPosition.start = function() {
-    if ( NK.isset(NKPosition.loaded) && NKPosition.loaded === true ) return;
+NKPosition.start = function( dispatch_event = true ) {
+    if ( NKPosition.loaded === true ) return;
     NKPosition.loaded = true;
 
     NKPosition.mouse = [0,0];
 
     window.addEventListener('mousemove', function (event) {
-        NKPosition.mouse = [event.clientX, event.clientY];
+        NKPosition.mouse[0] = event.clientX;
+        NKPosition.mouse[1] = event.clientY;
+        if ( dispatch_event ) NKPosition.dispatchEvent('onMousemove', {
+            abs: NKPosition.mouse,
+            rel:  [ (NKPosition.mouse[0]).nksum(window.scrollX), (NKPosition.mouse[1]).nksum(window.scrollY) ]
+        });
     }, true);
 
 };
 
 
-NKPosition.getMouse = function( absolute ) {
-    absolute = absolute || false;
-    if ( absolute === true ) return NKPosition.mouse;
-    return [ NKPosition.mouse[0] + window.scrollX, NKPosition.mouse[1] + window.scrollY ];
+NKPosition.getMouse = function( absolute = false ) {
+    return absolute ? NKPosition.mouse : [ (NKPosition.mouse[0]).nksum(window.scrollX), (NKPosition.mouse[1]).nksum(window.scrollY) ];
 };
 
-NKPosition.getMouseX = function( absolute ) {
-    absolute = absolute || false;
-    if ( absolute === true ) return NKPosition.mouse[0];
-    return NKPosition.mouse[0] + window.scrollX;
+NKPosition.getMouseX = function( absolute = false) {
+    return absolute ? NKPosition.mouse[0] : (NKPosition.mouse[0]).nksum(window.scrollX);
 };
 
-NKPosition.getMouseY = function( absolute ) {
-    absolute = absolute || false;
-    if ( absolute === true ) return NKPosition.mouse[1];
-    return NKPosition.mouse[1] + window.scrollY;
+NKPosition.getMouseY = function( absolute = false ) {
+    return absolute ? NKPosition.mouse[1] : (NKPosition.mouse[1]).nksum(window.scrollY);
 };
 
 NKPosition.getScroll = function() {
@@ -4789,7 +5394,8 @@ NKResize.reload = function() {
 
 
     function onMouse( e ) {
-        let column_pos = [this.offsetLeft, this.offsetTop];
+        let col_pos = this.getBoundingClientRect();
+        let column_pos = [col_pos.left, col_pos.top];
         let mouse_pos = NKPosition.getMouse();
         let diff_pos = [mouse_pos[0]-column_pos[0], mouse_pos[1]-column_pos[1]];
         //let div_size = [this.offsetWidth, this.offsetHeight];
@@ -5119,7 +5725,451 @@ class NKSemaphore {
             }
         }
     }
-};let NKStick = {};
+};let NKSerialize = { debug: false };
+let NKUnserialize = {};
+
+
+NKSerialize.number_types = {
+    integer_positive: 0,
+    integer_negative: 1,
+    float_positive: 2,
+    float_negative: 3
+}
+
+NKSerialize.types = {
+    null: 4,
+    undefined: 5,
+    number: 6,
+    number_array: 7,
+    string: 8,
+    string_array: 9,
+    boolean: 10,
+    object: 11,
+    object_array: 12,
+    sub_object: 13,
+    mix_array: 14
+}
+
+
+
+// NKSerialize
+// Al principio siempre añadimos la longitud
+// Añadimos la opción set_type = false
+// Devolvemos directamente en formato string
+
+// NKUnserialize
+// Devolvemos siempre {value: "", len: 0}
+
+
+NKSerialize.integer = function ( num ) {
+    if (num < 0) throw new Error("El número debe ser positivo.");
+
+    if ( NKSerialize.debug ) console.log("Src num: ", num);
+    let sbin = num.toString(2);
+
+    if ( NKSerialize.debug ) console.log("Src num bin: ", sbin);
+    let len = Math.ceil(sbin.length / 15) * 15;
+    sbin = sbin.padStart( len, '0' );
+
+    let result = [];
+
+    for ( let i = 0; i < sbin.length; i += 15 ) result.push("0" + sbin.substring(i, i + 15));
+    result[result.length-1] = "1" + result[result.length-1].slice(1);
+
+
+    if ( NKSerialize.debug ) console.log("Src num bin splitted: ", result);
+
+    let sresult = "";
+    for ( let i = 0; i < result.length; i++ ) {
+        result[i] = parseInt(result[i], 2);
+        sresult += String.fromCharCode(result[i]);
+    }
+
+    return sresult;
+}
+
+
+NKUnserialize.integer = function ( encoded ) {
+
+    let result = "";
+    let aux = [];
+    let i = 0;
+
+    for ( i = 0; i < encoded.length; i++ ) {
+        let bin = encoded[i].charCodeAt(0).toString(2).padStart(16, '0');
+        aux.push(bin);
+        result += bin.slice(-15);
+
+        if ( bin[0] === "1" ) break;
+    }
+
+    if ( NKSerialize.debug ) console.log("Dst num bin splitted: ", aux);
+    if ( NKSerialize.debug ) console.log("Dst num bin: ", result);
+
+    result = parseInt(result, 2);
+
+    if ( NKSerialize.debug ) console.log("Dst num: ", result);
+
+    return {value: result, len: i+1};
+}
+
+
+NKSerialize.boolean = function ( value, set_type = false ) {
+    let int_val = value ? 1 : 0;
+
+    if ( !set_type ) return NKSerialize.integer(int_val);
+    return NKSerialize.integer( NKSerialize.types.boolean ) + NKSerialize.integer(int_val);
+
+}
+
+NKUnserialize.boolean = function ( serialized_string ) {
+
+    let int_val = NKUnserialize.integer( serialized_string );
+    return {value: (int_val.value !== 0), len: int_val.len };
+
+}
+
+NKSerialize.string = function ( str, set_type = false ) {
+
+    if ( !set_type ) return NKSerialize.integer(str.length) + str;
+    return NKSerialize.integer( NKSerialize.types.string ) + NKSerialize.integer(str.length) + str;
+
+}
+
+NKUnserialize.string = function ( serialized_string ) {
+
+    let str_len = NKUnserialize.integer( serialized_string );
+    return {value: serialized_string.slice(str_len.len, str_len.len + str_len.value), len: str_len.len+str_len.value };
+
+}
+
+//Si serializamos un array suelto (structures=null), si hay objetos, se guarda en forma 'object' (cada uno con su listado de keys)
+//Si serializamos un array dentro de un objeto, si hay objetos seran tipo sub_object, y guardamos en structures.
+NKSerialize.array = function ( array, structures = null, set_type = false ) {
+    let first_type = NKObject.getTypeName( array[0] );
+    let all_same_type = array.every(e => NKObject.getTypeName(e) === first_type);
+
+    let type = NKSerialize.types.mix_array;
+    if ( all_same_type && array.length > 0 ) {
+        if ( first_type === "string" ) type = NKSerialize.types.string_array;
+        else if ( first_type === "number" ) type = NKSerialize.types.number_array;
+        else if ( first_type === "object" ) type = NKSerialize.types.object_array;
+        else console.error("Error, unknown type:", array[0], first_type);
+    }
+
+    let set_each_element_type = (type === NKSerialize.types.mix_array);
+
+    let result = "";
+    if ( set_type ) result += NKSerialize.integer(type);
+    result += NKSerialize.integer(array.length);
+
+
+    //Si no son todos del mismo tipo, le indicamos set_type
+    for ( let i = 0; i < array.length; i++ ) {
+        if ( NKObject.isType(array[i],"object") && (structures === null) ) {
+            result += NKSerialize.object( array[i], set_each_element_type );
+        } else {
+            result += NKSerialize.byType( array[i], set_each_element_type, structures );
+        }
+
+    }
+
+    return result;
+}
+
+//Contiene set_type delante de cada elemento
+NKUnserialize.mixArray = function ( serialized_array, structures ) {
+    let result = [];
+
+    let index = 0;
+    let i = 0;
+
+    let array_len = NKUnserialize.integer(serialized_array);
+    index += array_len.len;
+
+    while ( i++ < array_len.value ) {
+        let value = NKUnserialize.byType( serialized_array.slice(index), structures );
+        result.push( value.value );
+        index += value.len;
+    }
+
+    return {value: result, len: index};
+}
+
+//Si structures=null, significa que es un array de objetos simple, donde cada objeto tiene sus estructuras dentro
+NKUnserialize.objectArray = function ( serialized_array, structures = null ) {
+    let result = [];
+
+    let index = 0;
+    let i = 0;
+
+    let array_len = NKUnserialize.integer(serialized_array);
+    index += array_len.len;
+
+    while ( i++ < array_len.value ) {
+        let value = null;
+        if ( structures === null ) {
+            value = NKUnserialize.object( serialized_array.slice(index) );
+        } else {
+            value = NKUnserialize.sub_object( serialized_array.slice(index), structures );
+        }
+
+        result.push( value.value );
+        index += value.len;
+    }
+
+    return {value: result, len: index};
+}
+
+NKSerialize.stringArray = function ( string_array, set_type = false ) {
+    return NKSerialize.array(string_array, null, set_type);
+}
+
+NKUnserialize.stringArray = function ( serialized_string_array ) {
+    let result = [];
+
+    let index = 0;
+    let i = 0;
+
+    let array_len = NKUnserialize.integer(serialized_string_array);
+    index += array_len.len;
+
+    while ( i++ < array_len.value ) {
+        let str = NKUnserialize.string( serialized_string_array.slice(index) );
+        result.push( str.value );
+        index += str.len;
+    }
+
+    return {value: result, len: index};
+}
+
+
+
+
+NKSerialize.number = function ( num, set_type = false ) {
+    if ( num === NaN || num === Infinity || num === -Infinity ) num = 0;
+
+    if ( isNaN(num) )  {
+        console.error("Error, value (", num, ") is not a number.");
+        num = 0;
+    }
+
+    let result = "";
+
+    //1 (0001): positive int (integer)
+    //2 (0010): negative int (integer)
+    //3 (0011): positive float (two integers)
+    //4 (0100): negative float (two integers)
+
+    if ( Number.isInteger(num) ) {
+        if ( num >= 0 ) result = NKSerialize.integer( NKSerialize.number_types.integer_positive ) + NKSerialize.integer(num);
+        else result = NKSerialize.integer(NKSerialize.number_types.integer_negative) + NKSerialize.integer(-num);
+    } else {
+        let parts = (num+"").split(".");
+        parts[0] = parseInt(parts[0]);
+        parts[1] = parseInt(parts[1]);
+
+        if ( num >= 0 ) result = NKSerialize.integer(NKSerialize.number_types.float_positive) + NKSerialize.integer(parts[0]) + NKSerialize.integer(parts[1]);
+        else result = NKSerialize.integer(NKSerialize.number_types.float_negative) + NKSerialize.integer(-parts[0]) + NKSerialize.integer(parts[1]);
+    }
+
+    if ( set_type ) result = NKSerialize.integer( NKSerialize.types.number ) + result;
+
+    return result;
+}
+
+NKUnserialize.number = function ( serialized_num ) {
+    let type = NKUnserialize.integer(serialized_num);
+    serialized_num = serialized_num.slice(type.len);
+
+    let part1 = NKUnserialize.integer(serialized_num);
+
+    if ( type.value === NKSerialize.number_types.integer_positive ) return {value: part1.value, len: type.len+part1.len};
+    if ( type.value === NKSerialize.number_types.integer_negative ) return {value:-part1.value, len: type.len+part1.len};
+
+    serialized_num = serialized_num.slice(part1.len);
+
+    let part2 = NKUnserialize.integer(serialized_num);
+
+    let float_num = parseFloat(part1.value + "." + part2.value );
+
+    if ( type.value === NKSerialize.number_types.float_positive ) return {value: float_num, len: type.len+part1.len+part2.len};
+    if ( type.value === NKSerialize.number_types.float_negative ) return {value: -float_num, len: type.len+part1.len+part2.len};
+
+}
+
+NKSerialize.numberArray = function ( number_array, set_type = false ) {
+    return NKSerialize.array(number_array, null, set_type);
+}
+
+NKUnserialize.numberArray = function ( serialized_number_array ) {
+    let result = [];
+
+    let index = 0;
+    let i = 0;
+
+    let array_len = NKUnserialize.integer(serialized_number_array);
+    index += array_len.len;
+
+    while ( i++ < array_len.value ) {
+        let num = NKUnserialize.number( serialized_number_array.slice(index) );
+        result.push( num.value );
+        index += num.len;
+    }
+
+    return {value: result, len: index};
+}
+
+
+NKSerialize.byType = function ( value, set_type, structures = [] ) {
+    if ( NKObject.isType(value,"undefined")) return set_type ? NKSerialize.integer( NKSerialize.types.undefined ) : '';
+    if ( NKObject.isType(value,"string")   ) return NKSerialize.string( value, set_type );
+    if ( NKObject.isType(value,"number")   ) return NKSerialize.number( value, set_type );
+    if ( NKObject.isType(value,"boolean")  ) return NKSerialize.boolean( value, set_type );
+    if ( NKObject.isType(value,"array")    ) return NKSerialize.array( value, structures, set_type );
+    if ( NKObject.isType(value,"null")     ) return set_type ? NKSerialize.integer( NKSerialize.types.null ) : ''; //typeof null = 'object'
+    if ( NKObject.isType(value,"object")   ) return NKSerialize.sub_object( value, structures, set_type );
+
+    return NKSerialize.string( "Not implemented (Unknown type)", value );
+}
+
+
+
+
+NKSerialize.sub_object = function ( obj, structures = [], set_type = false ) {
+    let result = "";
+
+    let keys = Object.keys(obj);
+    keys.sort();
+    let curr_structure = NKSerialize.stringArray( keys );
+
+    let structure_index = structures.indexOf(curr_structure);
+
+    if ( structure_index === -1 ) {
+        structures.push(curr_structure);
+        structure_index = structures.length - 1;
+    }
+
+    if ( set_type ) result += NKSerialize.integer( NKSerialize.types.sub_object );
+    result += NKSerialize.integer( structure_index );
+
+
+    let values = []; //Same order than Object.keys
+    for ( let i = 0; i < keys.length; i++ ) values.push(obj[keys[i]]);
+
+
+
+    for ( let i = 0; i < values.length; i++ ) {
+        values[i] = NKSerialize.byType( values[i], true, structures );
+
+    }
+
+    result += values.join('');
+
+    return result;
+}
+
+NKSerialize.object = function ( obj, set_type = false ) {
+    let structures = [];
+
+    let serialized_obj = NKSerialize.sub_object( obj, structures );
+
+    let result = "";
+    if ( set_type ) result += NKSerialize.integer( NKSerialize.types.object );
+    result += NKSerialize.integer( structures.length );
+    result += structures.join('');
+
+    result += serialized_obj;
+
+    return result;
+}
+
+NKUnserialize.byType = function ( serialized_obj, structures = [] ) {
+    let type = NKUnserialize.integer(serialized_obj);
+    let content = {value: null, len: null};
+
+    if ( [NKSerialize.types.number].includes(type.value) ) {
+        content = NKUnserialize.number(serialized_obj.slice(type.len));
+
+    } else if ( type.value === NKSerialize.types.boolean ) {
+        content = NKUnserialize.boolean(serialized_obj.slice(type.len));
+
+    } else if ( type.value === NKSerialize.types.string ) {
+        content = NKUnserialize.string(serialized_obj.slice(type.len));
+
+    } else if ( type.value === NKSerialize.types.string_array ) {
+        content = NKUnserialize.stringArray(serialized_obj.slice(type.len));
+
+    } else if ( type.value === NKSerialize.types.number_array ) {
+        content = NKUnserialize.numberArray(serialized_obj.slice(type.len));
+
+    } else if ( type.value === NKSerialize.types.sub_object ) {
+        content = NKUnserialize.sub_object(serialized_obj.slice(type.len), structures);
+
+    } else if ( type.value === NKSerialize.types.object_array ) {
+        content = NKUnserialize.objectArray(serialized_obj.slice(type.len), structures);
+
+    } else if ( type.value === NKSerialize.types.mix_array ) {
+        content = NKUnserialize.mixArray(serialized_obj.slice(type.len), structures);
+
+    } else if ( type.value === NKSerialize.types.null ) {
+        content = {value: null, len: 0};
+
+    } else if ( type.value === NKSerialize.types.undefined ) {
+        content = {value: undefined, len: 0};
+
+    } else {
+        console.error("Unknown type " + type.value);
+    }
+
+    return {type: type.value, value: content.value, len: type.len+content.len};
+}
+
+NKUnserialize.sub_object = function ( serialized_obj, structures ) {
+    let index = 0;
+
+    let structure_index = NKUnserialize.integer( serialized_obj.slice(index) );
+    index += structure_index.len;
+
+    let keys = structures[ structure_index.value ];
+
+    let result = {};
+
+    for ( let i = 0; i < keys.length; i++ ) {
+        let key = keys[i];
+        let value = NKUnserialize.byType( serialized_obj.slice(index), structures );
+
+        result[key] = value.value;
+        index += value.len;
+    }
+
+    return {value: result, len: index};
+}
+
+NKUnserialize.object = function ( serialized_obj ) {
+    let index = 0;
+
+    let structures_len = NKUnserialize.integer(serialized_obj);
+    index += structures_len.len;
+
+    let structures = [];
+    for ( let i = 0; i < structures_len.value; i++ ) {
+
+        let structure = NKUnserialize.stringArray( serialized_obj.slice(index) );
+        index += structure.len;
+
+        structures.push(structure.value);
+    }
+
+
+    let result = NKUnserialize.sub_object( serialized_obj.slice(index), structures );
+
+    return {value: result.value, len: result.len + index};
+}
+
+
+
+;let NKStick = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before stick.js";

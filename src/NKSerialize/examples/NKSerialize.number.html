@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKSerialize.number example</title>
+
+        <script type="text/javascript" src="../../NKObject/NKObject.js"></script>
+        <script type="text/javascript" src="../NKSerialize.js"></script>
+    </head>
+
+    <body>
+        Results on console.
+
+        <script>
+            let number = 123.456;
+
+            console.log("Original number:", number );
+
+            let result_serialized = NKSerialize.number( number );
+            console.log("Result serialized:", result_serialized);
+            console.log("Result serialized len:", result_serialized.length);
+
+            let result_unserialized = NKUnserialize.number( result_serialized );
+            console.log("Result unserialized:", result_unserialized);
+
+        </script>
+
+    </body>
+
+
+
+</html>
+
+
+

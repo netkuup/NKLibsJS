@@ -56,6 +56,14 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+:root {
+    --nk-blue-light-text: #228ECD;
+    --nk-blue-dark-text: #1A6B9B;
+    --nk-blue-dark-border: #2490CE;
+    --nk-blue-light-border: #C9E5F7;
+    --nk-blue-light-background: #F3F8FE;
+}
 .NKTemplate_src {
     display: none;
 }

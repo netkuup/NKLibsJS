@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKSerialize.numberArray example</title>
+
+        <script type="text/javascript" src="../../NKObject/NKObject.js"></script>
+        <script type="text/javascript" src="../NKSerialize.js"></script>
+    </head>
+
+    <body>
+        Results on console.
+        
+        <script>
+            let number_array = [123.456, 123, 456, 12.45];
+
+            console.log("Original array:", number_array );
+
+            let result_serialized = NKSerialize.numberArray( number_array );
+            console.log("Result serialized:", result_serialized);
+
+            let result_unserialized = NKUnserialize.numberArray( result_serialized );
+            console.log("Result unserialized:", result_unserialized);
+
+        </script>
+
+    </body>
+
+
+
+</html>
+
+
+

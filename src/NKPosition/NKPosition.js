@@ -1,39 +1,36 @@
-var NKPosition = {};
+let NKPosition = {};
 
-if ( typeof NK === 'undefined' ) {
-    throw "You must include base.js before position.js";
-}
+let nkposition_event_listener = new NKEventListener();
+NKPosition = { ...nkposition_event_listener };
 
-
-NKPosition.start = function() {
-    if ( NK.isset(NKPosition.loaded) && NKPosition.loaded === true ) return;
+NKPosition.start = function( dispatch_event = true ) {
+    if ( NKPosition.loaded === true ) return;
     NKPosition.loaded = true;
 
     NKPosition.mouse = [0,0];
 
     window.addEventListener('mousemove', function (event) {
-        NKPosition.mouse = [event.clientX, event.clientY];
+        NKPosition.mouse[0] = event.clientX;
+        NKPosition.mouse[1] = event.clientY;
+        if ( dispatch_event ) NKPosition.dispatchEvent('onMousemove', {
+            abs: NKPosition.mouse,
+            rel:  [ (NKPosition.mouse[0]).nksum(window.scrollX), (NKPosition.mouse[1]).nksum(window.scrollY) ]
+        });
     }, true);
 
 };
 
 
-NKPosition.getMouse = function( absolute ) {
-    absolute = absolute || false;
-    if ( absolute === true ) return NKPosition.mouse;
-    return [ NKPosition.mouse[0] + window.scrollX, NKPosition.mouse[1] + window.scrollY ];
+NKPosition.getMouse = function( absolute = false ) {
+    return absolute ? NKPosition.mouse : [ (NKPosition.mouse[0]).nksum(window.scrollX), (NKPosition.mouse[1]).nksum(window.scrollY) ];
 };
 
-NKPosition.getMouseX = function( absolute ) {
-    absolute = absolute || false;
-    if ( absolute === true ) return NKPosition.mouse[0];
-    return NKPosition.mouse[0] + window.scrollX;
+NKPosition.getMouseX = function( absolute = false) {
+    return absolute ? NKPosition.mouse[0] : (NKPosition.mouse[0]).nksum(window.scrollX);
 };
 
-NKPosition.getMouseY = function( absolute ) {
-    absolute = absolute || false;
-    if ( absolute === true ) return NKPosition.mouse[1];
-    return NKPosition.mouse[1] + window.scrollY;
+NKPosition.getMouseY = function( absolute = false ) {
+    return absolute ? NKPosition.mouse[1] : (NKPosition.mouse[1]).nksum(window.scrollY);
 };
 
 NKPosition.getScroll = function() {

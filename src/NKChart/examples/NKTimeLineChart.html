@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKTimeLineChart example</title>
+
+    <script type="text/javascript" src="../../external_libs/big.js"></script>
+    <script type="text/javascript" src="../../NK/NKBase.js"></script>
+    <script type="text/javascript" src="../../NKDate/NKDate.js"></script>
+    <script type="text/javascript" src="../../NKDrawbox/NKDrawbox.js"></script>
+    <script type="text/javascript" src="../NKTimeLineChart.js"></script>
+</head>
+
+<body>
+
+    <div id="my_chart" style="background-color: ghostwhite; position: absolute; top: 50px; left: 50px;">
+        Chart area
+    </div>
+
+    <script>
+
+        let timeline_chart = new NKTimeLineChart('my_chart');
+        timeline_chart.setSize( 800*2 );
+
+        let start = new Date();
+        let end = new Date();
+
+        NKDate.addHours(end, 24);
+
+        let start_timestamp = NKDate.getUnixTimestamp(start);
+        let end_timestamp = NKDate.getUnixTimestamp(end);
+
+
+        timeline_chart.drawValues( start_timestamp, end_timestamp );
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+
