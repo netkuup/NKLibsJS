@@ -5,4 +5,8 @@ Al descargar el archivo big.js eliminar las lineas iniciales y finales:
 
 y
 
+else {
+    GLOBAL.Big = Big;
+}
+
 })(this);

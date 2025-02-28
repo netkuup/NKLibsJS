@@ -1036,7 +1036,5 @@
     module.exports = Big;
 
   //Browser.
-  } else {
-    GLOBAL.Big = Big;
   }
 
