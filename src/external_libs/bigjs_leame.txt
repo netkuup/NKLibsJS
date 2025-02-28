@@ -1,0 +1,8 @@
+Al descargar el archivo big.js eliminar las lineas iniciales y finales:
+
+;(function (GLOBAL) {
+  'use strict';
+
+y
+
+})(this);

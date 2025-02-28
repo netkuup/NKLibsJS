@@ -4,8 +4,7 @@
  *  Copyright (c) 2022 Michael Mclaughlin
  *  https://github.com/MikeMcl/big.js/LICENCE.md
  */
-;(function (GLOBAL) {
-  'use strict';
+
   var Big,
 
 
@@ -1040,4 +1039,4 @@
   } else {
     GLOBAL.Big = Big;
   }
-})(this);
+

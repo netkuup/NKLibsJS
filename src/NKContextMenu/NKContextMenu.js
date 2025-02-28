@@ -23,30 +23,31 @@ NKContextMenu.start = function() {
 
     NKPosition.start();
 
-    if ( $('#NKContextMenu').length < 1 ) {
-        var d = document.createElement("div");
+    if ( !document.getElementById("NKContextMenu") ) {
+        let d = document.createElement("div");
         d.setAttribute("id", "NKContextMenu");
         document.body.appendChild(d);
     }
 
-    $('#NKContextMenu').hide();
+    document.getElementById("NKContextMenu").style.display = "none";
 
-    var lastTarget = null;
+    let lastTarget = null;
 
     document.addEventListener('contextmenu', function (e){
-        var target = e.target;
+        let target = e.target;
         lastTarget = target;
 
         NKContextMenu.dispatchEvent('onOpen', {target: target});
+        let context_menu_element = document.getElementById("NKContextMenu");
 
-        if ( $('#NKContextMenu').children().length === 0 ) {
-            $('#NKContextMenu').hide();
+        if ( context_menu_element?.children.length === 0 ) {
+            context_menu_element.style.display = "none";
 
         } else {
-            $('#NKContextMenu').show();
-            $('#NKContextMenu .NKSubmenu').hide();
-            $("#NKContextMenu").css('left', NKPosition.getMouseX());
-            $("#NKContextMenu").css('top', NKPosition.getMouseY());
+            context_menu_element.style.display = "block";
+            document.querySelectorAll("#NKContextMenu .NKSubmenu").forEach(e => e.style.display = "none");
+            context_menu_element.style.left = NKPosition.getMouseX() + "px";
+            context_menu_element.style.top = NKPosition.getMouseY() + "px";
             e.preventDefault();
         }
 
@@ -54,13 +55,15 @@ NKContextMenu.start = function() {
 
     document.addEventListener('mouseup', function (e){
         if ( e.button === 2 ) return; //Right click
-        if ( !$('#NKContextMenu').is(":visible") ) return;
-        var target = e.target;
+        let menu = document.getElementById("NKContextMenu");
+        if (!menu || getComputedStyle(menu).display === "none") return;
 
-        if ( $(target).hasClass( "NKItem" ) ) {
+        let target = e.target;
+
+        if ( target.classList.contains("NKItem") ) {
             NKContextMenu.dispatchEvent('onClose', {
                 id: target.getAttribute('data-id'),
-                text: $(target).children('.NKTitle').text(),
+                text: target.querySelector(".NKTitle")?.textContent,
                 target: lastTarget,
                 button: target
             });
@@ -70,7 +73,7 @@ NKContextMenu.start = function() {
 
         }
 
-        $('#NKContextMenu').hide();
+        document.getElementById("NKContextMenu").style.display = "none";
 
 
     });
@@ -83,51 +86,55 @@ NKContextMenu.setContent = function( content ) {
     var newContent = [];
 
     function createItem( id, name, icon_data, submenu_items ) {
-        var item = $( document.createElement("div") );
-        var icon = $( document.createElement("div") );
-        var title = $( document.createElement("div") );
-        item.addClass('NKItem');
-        icon.addClass('NKIcon');
-        title.addClass('NKTitle');
+        let item = document.createElement("div");
+        let icon = document.createElement("div");
+        let title = document.createElement("div");
+        item.classList.add('NKItem');
+        icon.classList.add('NKIcon');
+        title.classList.add('NKTitle');
 
-        item.attr('data-id', id);
-        title.text( name );
+        item.setAttribute('data-id', id);
+        title.textContent = name;
 
         if ( !NK.empty(icon_data) ) {
-            icon.append( icon_data );
-            icon.css('margin-right', '5px' );
+            if ( icon_data instanceof Node ) {
+                icon.appendChild(icon_data);
+            } else {
+                icon.innerHTML = icon_data;
+            }
+            icon.style.marginRight = '5px';
         }
 
-        item.append(icon);
-        item.append(title);
+        item.appendChild(icon);
+        item.appendChild(title);
 
         if ( submenu_items !== null ) {
-            var submenu = $( document.createElement("div") );
-            submenu.addClass('NKSubmenu');
-            submenu.append(submenu_items);
-            item.addClass('NKArrow');
-            item.append(submenu);
+            let submenu = document.createElement("div");
+            submenu.classList.add('NKSubmenu');
+            submenu_items.forEach(item => submenu.appendChild(item));
+            item.classList.add('NKArrow');
+            item.appendChild(submenu);
         }
 
         return item;
     }
 
     function fillData( aux ) {
-        var item_list = [];
+        let item_list = [];
 
-        for ( var i = 0; i < aux.length; i++ ) {
-            var it = aux[i];
+        for ( let i = 0; i < aux.length; i++ ) {
+            let it = aux[i];
 
             if ( it.type === "item" ) {
                 item_list.push( createItem(it.id, it.text, it.icon, null) );
 
             } else if ( it.type === "menu" ) {
-                var submenu_items = fillData( it.items );
+                let submenu_items = fillData( it.items );
                 item_list.push( createItem(it.id, it.text, it.icon, submenu_items) );
 
             } else if ( it.type === "divider" ) {
-                var divider = $( document.createElement("div") );
-                divider.addClass('NKDivider');
+                let divider = document.createElement("div");
+                divider.classList.add('NKDivider');
                 item_list.push( divider );
             }
 
@@ -138,29 +145,31 @@ NKContextMenu.setContent = function( content ) {
 
     if ( !NK.empty(content) ) newContent = fillData( content );
 
-    var wrapper = $("#NKContextMenu");
-    wrapper.empty();
-    wrapper.append(newContent);
+    let wrapper = document.getElementById("NKContextMenu");
+    wrapper.innerHTML = '';
+    newContent.forEach(item => wrapper.appendChild(item));
 
     NKContextMenu.refresh();
 }
 
 NKContextMenu.refresh = function() {
-    $('.NKItem').off();
-    $('.NKSubmenu').hide();
 
-    $('.NKItem').on('mouseenter', function () {
-        var element = $(this);
+    function handleMouseEnter(event) {
+        let element = event.currentTarget;
 
-        $(this).parent().find( '.NKSubmenu' ).hide(); //Hide all submenus
+        let submenus = element.parentNode.querySelectorAll('.NKSubmenu');
+        submenus.forEach(submenu => submenu.style.display = 'none'); //Hide all submenus
 
-        var submenu = $(this).children( '.NKSubmenu' );
+        let submenu = element.querySelector('.NKSubmenu');
+        if (!submenu) return; //Es un item normal, no un submenu
 
-        if ( submenu.length !== 1 ) return; //Es un item normal, no un submenu
+        submenu.style.display = 'block';
+        submenu.style.left = (element.offsetWidth - 5) + 'px';
+    }
 
-        submenu.show();
-        submenu.css('left', element.width() + 30 );
-
+    document.querySelectorAll('.NKItem').forEach(item => {
+        item.removeEventListener('mouseenter', handleMouseEnter);
+        item.addEventListener('mouseenter', handleMouseEnter);
     });
 
 }
