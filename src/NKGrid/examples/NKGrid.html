@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKGrid example</title>
+
+    <link rel="stylesheet" href="../NKGrid.css">
+</head>
+
+<body>
+
+
+    Two colums
+    <div class="NKGrid collapse1200" style="--nkgrid-cols: 300px 10px 800px;">
+        <div class="NKifvwGt1200">
+            <div class="item">a</div>
+            <div class="item">a</div>
+            <div class="item">a</div>
+        </div>
+        <div>
+            <div class="item">first</div>
+            <div class="item NKifvwGt1200">PC</div>
+            <div class="item NKIfvwLt1200">MOBILE</div>
+            <div class="item">last</div>
+        </div>
+    </div>
+
+    <br /><br /><br />
+
+    Tree colums
+    <div class="NKGrid collapse1500" style="--nkgrid-cols: 300px 10px 800px 10px 300px;">
+        <div class="NKifvwGt1500">
+            <div class="item">a</div>
+            <div class="item">a</div>
+            <div class="item">a</div>
+        </div>
+        <div>
+            <div class="item">first</div>
+            <div class="item NKifvwGt1500">PC</div>
+            <div class="item NKIfvwLt1500">MOBILE</div>
+            <div class="item">last</div>
+        </div>
+        <div class="NKifvwGt1500">
+            <div class="item">a</div>
+            <div class="item">a</div>
+            <div class="item">a</div>
+            <div class="item">a</div>
+        </div>
+    </div>
+
+</body>
+
+<style>
+    .item {
+        border: 1px solid blue;
+    }
+</style>
+
+
+</html>
+
+
+

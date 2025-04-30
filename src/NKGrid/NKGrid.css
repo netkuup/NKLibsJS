@@ -1,0 +1,51 @@
+
+
+/* Grid con 2 childs */
+/*
+.NKGrid:has(> :nth-child(2)):not(:has(> :nth-child(3))) {
+    color: green;
+}
+
+/* Grid con 3 childs */
+/*
+.NKGrid:has(> :nth-child(3)):not(:has(> :nth-child(4))) {
+    color: red;
+}*/
+
+.NKGrid {
+    display: grid;
+    grid-template-columns: auto var(--nkgrid-cols) auto;
+}
+
+.NKGrid > :nth-child(1) {grid-column: 2;}
+.NKGrid > :nth-child(2) {grid-column: 4;}
+.NKGrid > :nth-child(3) {grid-column: 6;}
+.NKGrid > :nth-child(4) {grid-column: 8;}
+.NKGrid > :nth-child(5) {grid-column: 10;}
+.NKGrid > :nth-child(6) {grid-column: 12;}
+.NKGrid > :nth-child(7) {grid-column: 14;}
+.NKGrid > :nth-child(8) {grid-column: 16;}
+.NKGrid > :nth-child(9) {grid-column: 18;}
+.NKGrid > :nth-child(10) {grid-column: 20;}
+
+
+.NKifvwGt1200 {
+    display: block;
+}
+.NKIfvwLt1200 {
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    .NKGrid.collapse1200 {grid-template-columns: auto [mobile-col] 90% auto !important;}
+    .NKGrid.collapse1200 > * {grid-column: mobile-col !important;}
+    .NKifvwGt1200 {display: none;}
+    .NKIfvwLt1200 {display: block;}
+}
+
+@media (max-width: 1500px) {
+    .NKGrid.collapse1500 {grid-template-columns: auto [mobile-col] 90% auto !important;}
+    .NKGrid.collapse1500 > * {grid-column: mobile-col !important;}
+    .NKifvwGt1500 {display: none;}
+    .NKIfvwLt1500 {display: block;}
+}

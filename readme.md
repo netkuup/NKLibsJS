@@ -35,6 +35,7 @@ Daily use JavaScript function set.
 * [NKSerialize](./src/NKSerialize/NKSerialize.md)
 * [NKStick](./src/NKStick/NKStick.md)
 * [NKStorage](./src/NKStorage/NKStorage.md)
+* [NKString](./src/NKString/NKString.md)
 * [NKVar](./src/NKVar/NKVar.md)
 
 
