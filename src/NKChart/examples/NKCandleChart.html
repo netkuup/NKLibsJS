@@ -8,6 +8,7 @@
     <script type="text/javascript" src="../../NK/NKBase.js"></script>
     <script type="text/javascript" src="../../NKDrawbox/NKDrawbox.js"></script>
     <script type="text/javascript" src="candle_data.js"></script>
+    <script type="text/javascript" src="../NKPixelPerfect.js"></script>
     <script type="text/javascript" src="../NKCandleChart.js"></script>
 </head>
 
@@ -20,7 +21,11 @@
     <script>
 
         let candle_chart = new NKCandleChart('my_chart');
-        candle_chart.setSize(8000, 200);
+        candle_chart.setZoom( 3, 1 );
+
+        candle_chart.setMouseMoveCbk( function( x, y, candle_i ) {
+            console.log( "Mouse move: " + x + ", " + y + ", candle_i: " + candle_i );
+        } );
 
         let candle_array = [];
 

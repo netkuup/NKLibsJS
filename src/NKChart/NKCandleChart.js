@@ -2,53 +2,38 @@
 function NKCandleChart ( wrapper_id, w = 600, h = 300 ) {
     this.wrapper_id = wrapper_id;
     this.drawbox = null;
-    this.px_per_second = -1;
-    this.px_per_value = -1;
-    this.w = w;
-    this.h = h;
+    this.nkpixelperfect = new NKPixelPerfect();
+
     this.data_ref = [];
 
     let is_canvas = ( document.getElementById( wrapper_id ) instanceof HTMLCanvasElement );
 
     this.drawbox = is_canvas ? new NKCanvas( this.wrapper_id ) : new NKDrawbox( this.wrapper_id );
+
+    this.nkpixelperfect.configCandles();
+
 }
 
-NKCandleChart.prototype.setSize = function ( w = 600, h = 300 ) {
-    this.w = w;
-    this.h = h;
+NKCandleChart.prototype.setZoom = function ( zoom_x = 1, zoom_y = 1 ) {
+    this.nkpixelperfect.setCandlesZoom( zoom_x, zoom_y );
 }
 
-NKCandleChart.prototype.setScale = function ( px_per_second = 0.1, px_per_value = 0.1 ) {
-    this.px_per_second = px_per_second;
-    this.px_per_value = px_per_value;
-}
 
-NKCandleChart.prototype.setMouseMoveCbk = function ( cbk ) {
+NKCandleChart.prototype.setMouseMoveCbk = function ( cbk = (x, y, candle_i) => {} ) {
     let self = this;
-
+    
     this.drawbox.onMouseMoveCbk = function (x, y) {
-        let minutes = parseInt( x.nkdiv( self.px_per_second ).nkdiv(60) );
-        try {
-            cbk(x, y, self.data_ref[minutes]);
-        } catch (e){}
+        let gap = self.nkpixelperfect.candles.rectangle_dist - self.nkpixelperfect.candles.rectangle_w;
+        let candle_i = Math.trunc( (x + (gap/2)) /self.nkpixelperfect.candles.rectangle_dist);
 
+        cbk(x, y, candle_i);
     }
 }
 
-/*
-NKCandleChart.prototype.zoomW = function ( x ) {
-    this.px_per_second = (this.px_per_second).nksum(x);
-}
 
-NKCandleChart.prototype.zoomH = function ( y ) {
-    this.px_per_value = (this.px_per_value).nksum(y);
-}*/
 
-NKCandleChart.prototype.drawCandles = function ( candle_array ) {
-    if ( candle_array.length === 0 ) return;
 
-    this.data_ref = candle_array;
-
+NKCandleChart.prototype.getCandleData = function ( candle_array ) {
     let min_price = Infinity;
     let max_price = 0;
     let min_timestamp = Infinity;
@@ -64,62 +49,67 @@ NKCandleChart.prototype.drawCandles = function ( candle_array ) {
     min_timestamp = min_timestamp.nkdiv(1000); //milliseconds to seconds
     max_timestamp = max_timestamp.nkdiv(1000);
 
-    if ( this.px_per_second === -1 ) this.px_per_second = (this.w).nkdiv( max_timestamp.nkminus(min_timestamp) );
-    if ( this.px_per_value === -1 ) this.px_per_value = (this.h).nkdiv( max_price.nkminus(min_price) );
+    return {
+        min_price: min_price,
+        max_price: max_price,
+        min_timestamp: min_timestamp,
+        max_timestamp: max_timestamp,
+    };
+}
 
-    this.h = max_price.nkminus(min_price).nkmul(this.px_per_value);
-    this.w = (candle_array.length).nkmul(60).nkmul(this.px_per_second); //60 seg per candle (1min)
+
+NKCandleChart.prototype.drawCandles = function ( candle_array ) {
+    if ( candle_array.length === 0 ) return;
+
+    this.data_ref = candle_array;
+
+    let cd = this.getCandleData( candle_array );
+
+    let px_per_value = this.nkpixelperfect.calcCandlesPxPerValue( cd.min_price, cd.max_price );
+
+
+    let drawbox_h = this.nkpixelperfect.candles.chart_h;
+    let drawbox_w = this.nkpixelperfect.calcCandlesTotalWidth( candle_array.length );
 
     this.drawbox.clean();
-    this.drawbox.setSize(this.w, this.h);
+    this.drawbox.setSize(drawbox_w, drawbox_h);
 
-
-    let rw = 1;
 
 
     for ( let i = 0; i < candle_array.length; i++ ) {
         let candle = candle_array[i];
 
 
-        let low = this.h - (candle.low-min_price) * this.px_per_value;
-        let high = this.h - (candle.high-min_price) * this.px_per_value;
-        let open = this.h - (candle.open-min_price) * this.px_per_value;
-        let close = this.h - (candle.close-min_price) * this.px_per_value;
+        let low = (candle.low-cd.min_price) * px_per_value;
+        let high =  (candle.high-cd.min_price) * px_per_value;
+        let open =  (candle.open-cd.min_price) * px_per_value;
+        let close =  (candle.close-cd.min_price) * px_per_value;
 
-
-        let x = (candle.timestamp).nkdiv(1000).nkminus(min_timestamp).nkmul(this.px_per_second);
-
-        let y1 = high;
-        let y2 = low;
 
         //Red: #EF5350
         //Green: #26A69A
         let default_color = open < close ? "#EF5350" : "#26A69A";
         let color = candle.color ? candle.color : default_color;
 
-        let w = (50).nkmul(this.px_per_second); //Usar 60 segundos para dibujar cada candle
-
-        //let x_rect = x.nkminus( (35).nkmul(this.px_per_second) )
-        let line_x = x.nkadd( (35).nkmul(this.px_per_second) );
-        let candle_x = x.nksum( (5).nkmul(this.px_per_second) ); //Como el ancho del candle es 50seg en vez de 60, le sumamos 5seg por lado
-
-
+        
+        let candle_x = this.nkpixelperfect.candles.rectangle_dist.nkmul(i);
+        let line_x = candle_x.nksum( this.nkpixelperfect.candles.rectangle_w.nkminus(1).nkdiv(2) );
 
 
         this.drawbox.drawLine({
             x: line_x,
-            y: y1,
+            by: high,
             x2: line_x,
-            y2: y2,
+            by2: low,
             w: 1,
             color: color,
         });
 
         this.drawbox.drawRect({
             x: candle_x,
-            y: Math.min(open, close),
-            w: w,
-            h: Math.abs(open-close),
+            by: Math.max(open, close),
+            w: this.nkpixelperfect.candles.rectangle_w,
+            h: open.nkminus(close).nkabs(),
             color: color,
             border_px: 0
         });

@@ -12,7 +12,7 @@ Convert async code to sync
         setTimeout(function() {
     
             p.resolve("Hello world");
-            //p.reject("Error");
+            //p.reject("Reject content");
     
         }, 5000);
     
@@ -22,14 +22,19 @@ Convert async code to sync
     
     console.log("Waiting 5 seconds...");
     
-    let foo = await wait5seconds();
+    try {
+        let result = await wait5seconds();
+        console.log("Result:", result);
+
+    } catch ( reject_content ) {
+        console.error("Reject called.", reject_content);
+        
+    }
     
-    console.log("Done.");
-    console.log( foo );
 
 
 Output
 
     Waiting 5 seconds...
-    Done.                     // After 5 seconds
-    Hello world
+    Result: Hello world             // After 5 seconds
+    

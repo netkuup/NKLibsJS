@@ -25,12 +25,7 @@ NKDrag.start = function( reactable ) {
             let left = NKPosition.getMouseX() - NKDrag.selection.offset[0];
             let top = NKPosition.getMouseY() - NKDrag.selection.offset[1];
 
-            NKDrag.selection.element.style.transform = `translate(${left}px, ${top}px)`;
-
-            NKDrag.dispatchEvent('onDrag', {
-                e: NKDrag.selection.element,
-                position: {left: left, top: top}
-            });
+            NKDrag.moveElement( NKDrag.selection.element, left, top );
         }
     }
 
@@ -42,6 +37,17 @@ NKDrag.start = function( reactable ) {
 
     NKDom.addEventListener( document, 'mouseup', onMouseUp );
 };
+
+NKDrag.moveElement = function( element, left = 0, top = 0 ) {
+
+    element.style.transform = `translate(${left}px, ${top}px)`;
+
+    NKDrag.dispatchEvent('onDrag', {
+        e: element,
+        position: {left: left, top: top}
+    });
+    
+}
 
 NKDrag.reload = function() {
 

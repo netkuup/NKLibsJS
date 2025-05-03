@@ -2,3 +2,6 @@
     pointer-events: none;
     user-select: none;
 }
+.NKResize_rows div {
+    position: relative;
+}

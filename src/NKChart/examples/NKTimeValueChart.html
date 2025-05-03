@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NKTimeValueChart example</title>
+
+    <script type="text/javascript" src="../../external_libs/big.js"></script>
+    <script type="text/javascript" src="../../NK/NKBase.js"></script>
+    <script type="text/javascript" src="../../NKDate/NKDate.js"></script>
+    <script type="text/javascript" src="../../NKDrawbox/NKDrawbox.js"></script>
+    <script type="text/javascript" src="candle_data.tempjs"></script>
+    
+    <script type="text/javascript" src="../NKTimeValueChart.js"></script>
+</head>
+
+<body>
+        <br /><br />
+
+        <div style="display: grid; grid-template-columns: auto 200px;">
+
+            <div id="my_chart" style="background-color: ghostwhite;">
+                Chart area
+            </div>
+
+            <div id="valueline_chart" style="background-color: whitesmoke;">
+                Values area
+            </div>
+
+        </div>
+        
+        <div id="timeline_chart" style="background-color: whitesmoke;">
+            Timeline area
+        </div>
+
+    
+
+    <script>
+
+        let candle_array = [];
+
+        for ( let i = 0; i < candle_data.length; i++ ) { //candle_data from candle_data.js
+            let data = candle_data[i];
+
+            // Data contents:
+            // 0. timestamp
+            // 1. open
+            // 2. high
+            // 3. low
+            // 4. close
+            // 5. volume
+            // 6. close_timestamp
+            // 7. quote_asset_volume
+            // 8. number_of_trades
+            // 9. taker_buy_base_asset_volume
+            // 10. taker_buy_quote_asset_volume
+            // 11. ignore (deprecated)
+
+
+            let color = data[1] < data[4] ? "#EF5350" : "#26A69A";
+
+            candle_array.push({
+                timestamp: data[0],
+                color: color,
+                open: data[1],
+                high: data[2],
+                low: data[3],
+                close: data[4]
+            });
+        }
+
+
+        function getCandleLimits( candle_array ) {
+            let min_price = Infinity;
+            let max_price = 0;
+            let min_timestamp = Infinity;
+            let max_timestamp = 0;
+
+            for ( let i = 0; i < candle_array.length; i++ ) {
+                if ( candle_array[i].low < min_price ) min_price = candle_array[i].low;
+                if ( candle_array[i].high > max_price ) max_price = candle_array[i].high;
+                if ( candle_array[i].timestamp < min_timestamp ) min_timestamp = candle_array[i].timestamp;
+                if ( candle_array[i].timestamp > max_timestamp ) max_timestamp = candle_array[i].timestamp;
+            }
+
+            min_timestamp = min_timestamp.nkdiv(1000); //milliseconds to seconds
+            max_timestamp = max_timestamp.nkdiv(1000);
+
+            return {
+                min_price: min_price,
+                max_price: max_price,
+                min_timestamp: min_timestamp,
+                max_timestamp: max_timestamp,
+            };
+        }
+
+        let limits = getCandleLimits( candle_array );
+
+
+        let my_chart = new NKTimeValueChart('my_chart');
+        my_chart.setConfig( candle_data.length, limits.min_price, limits.max_price );
+
+        my_chart.configTimeLine( 'timeline_chart', new Date(candle_array[0].timestamp), new Date(candle_array[1].timestamp) );
+        my_chart.configValueLine( 'valueline_chart', 25 );
+
+
+
+        for ( let i = 0; i < candle_array.length; i++ ) {
+            my_chart.addCandle( i, candle_array[i].high, candle_array[i].open, candle_array[i].close, candle_array[i].low );
+        }
+
+        
+        my_chart.setMouseMoveCbk( function( x, y, candle_i, price_value ) {
+            console.log( "Mouse move: " + x + ", " + y + ", candle_i: " + candle_i + ", price_value: " + price_value );
+        } );
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+
