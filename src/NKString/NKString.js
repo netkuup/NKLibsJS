@@ -5,7 +5,7 @@ NKString.capitalize = function ( str ) {
     return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
 }
 
-String.prototype.nkcapitalize = function() {
+String.prototype.nkCapitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
 };
 
@@ -15,7 +15,7 @@ NKString.normalizeSpaces = function ( str ) {
     return str.replace(/\s+/g, ' ').trim();
 }
 
-String.prototype.nknormalizeSpaces = function() {
+String.prototype.nkNormalizeSpaces = function() {
     return this.replace(/\s+/g, ' ').trim();
 };
 
@@ -24,7 +24,7 @@ NKString.deleteAllSpaces = function ( str ) {
     return str.replace(/\s+/g, '');
 }
 
-String.prototype.deleteAllSpaces = function() {
+String.prototype.nkDeleteAllSpaces = function() {
     return this.replace(/\s+/g, '');
 };
 
@@ -64,9 +64,17 @@ NKString.decodeHtmlEntities = function ( str ) {
     return str;
 }
 
-String.prototype.decodeHtmlEntities = function() {
+String.prototype.nkDecodeHtmlEntities = function() {
     try {
         return this.replace(/&[a-zA-Z0-9#]+;/g, match => NKString.htmlEntities[match] || match);
     } catch (e) {}
     return this;
+};
+
+NKString.removeAccents = function ( str ) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+String.prototype.nkRemoveAccents = function() {
+    return this.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };

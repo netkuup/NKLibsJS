@@ -1,0 +1,188 @@
+
+/* Colors */
+
+:root {
+    --nk-gray-light-text: #7D7D7D;
+    --nk-gray-dark-text: #2E2E2E;
+    --nk-gray-light-border: #E2E2E2;
+    --nk-gray-dark-border: #A0A0A0;
+    --nk-gray-light-background: #F5F5F5;
+    --nk-gray-dark-background: #E0E0E0;
+
+    --nk-blue-light-text: #3591CB;
+    --nk-blue-dark-text: #1A4E73;
+    --nk-blue-light-border: #DCEEF9;
+    --nk-blue-dark-border: #6C93CB;
+    --nk-blue-light-background: #F5F9FF;
+    --nk-blue-dark-background: #E1E9F5;
+
+    --nk-green-light-text: #3E9D78;
+    --nk-green-dark-text: #1E4D3B;
+    --nk-green-light-border: #D7F2EB;
+    --nk-green-dark-border: #6AB89B;
+    --nk-green-light-background: #F4FBF9;
+    --nk-green-dark-background: #E0F4EE;
+
+    --nk-orange-light-text: #E07C5D;
+    --nk-orange-dark-text: #7A3A2A;
+    --nk-orange-light-border: #FDE7DF;
+    --nk-orange-dark-border: #F0A17A;
+    --nk-orange-light-background: #FFF6F3;
+    --nk-orange-dark-background: #FDEEE9;
+
+    --nk-font-family1: "Segoe UI", Arial, sans-serif;
+
+
+    --nk-default-light-text: var(--nk-blue-light-text);
+    --nk-default-dark-text: var(--nk-blue-dark-text);
+    --nk-default-light-border: var(--nk-blue-light-border);
+    --nk-default-dark-border: var(--nk-blue-dark-border);
+    --nk-default-light-background: var(--nk-blue-light-background);
+    --nk-default-dark-background: var(--nk-blue-dark-background);
+
+    --nk-default-font-family: var(--nk-font-family1);
+}
+
+
+/* Titles */
+
+.nkgui-title1, .nkgui-title2, .nkgui-title3, .nkgui-title4 {
+    font-weight: bold;
+    display: inline-block;
+    color: var(--nk-default-dark-text);
+}
+.nkgui-title1 {font-size: 24px;}
+.nkgui-title2 {font-size: 20px;}
+.nkgui-title3 {font-size: 16px;}
+.nkgui-title4 {font-size: 14px;}
+
+.nkgui-text1 {
+    font-size: 14px;
+    display: inline-block;
+    color: var(--nk-default-light-text);
+}
+
+/* Dividers */
+
+.nkgui-divider1 {
+    border-bottom: 1px solid var(--nk-default-light-border);
+}
+
+
+
+/* Menu 1 */
+
+.nkgui-menu1 {
+    color: var(--nk-default-light-text);
+    border-bottom: 1px solid var(--nk-default-light-border);
+    font-family: var(--nk-default-font-family);
+    user-select: none
+}
+
+.nkgui-menu1-btn {
+    display: inline-block;
+    padding: 5px 5px 4px 5px;
+    cursor: pointer !important;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nkgui-menu1-btn.nkactive {
+    border-bottom: 2px solid var(--nk-default-dark-border);
+    font-weight: bold;
+}
+
+.nkgui-menu1-btn.nkright {
+    float: right
+}
+
+.nkgui-menu1-btn:hover {
+    font-weight: bold;
+}
+
+
+/* Chip 1 */
+
+.nkgui-chip1 {
+    display: inline-block;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 1px 8px 3px 8px;
+    color: var(--nk-default-dark-text);
+    font-family: var(--nk-default-font-family);
+    border-radius: 5px;
+    background-color: var(--nk-default-light-background);
+}
+
+.nkgui-chip1-icon {
+    cursor: pointer;
+    color: black;
+}
+
+
+
+/* Pill 1 */
+
+
+.nkgui-pill1 {
+    display: inline-block;
+    border-radius: 10px;
+    padding: 0px 5px 1px 5px;
+    font-size: 12px;
+    background-color: var(--nk-default-light-background);
+    font-family: var(--nk-default-font-family);
+    color: var(--nk-default-dark-text);
+    user-select: none;
+}
+
+
+/* Card */
+
+.nkgui-card1, .nkgui-card2, .nkgui-card3, .nkgui-card1-light, .nkgui-card2-light, .nkgui-card3-light, .nkgui-card1-dark, .nkgui-card2-dark, .nkgui-card3-dark {
+    padding: 5px;
+    display: inline-block;
+    font-family: var(--nk-default-font-family);
+}
+
+.nkgui-card1, .nkgui-card2, .nkgui-card3 {
+    border: 1px solid var(--nk-default-light-border);
+}
+
+.nkgui-card1-light, .nkgui-card2-light, .nkgui-card3-light {
+    border: 1px solid var(--nk-default-light-background);
+    background-color: var(--nk-default-light-background);
+}
+
+.nkgui-card1-dark, .nkgui-card2-dark, .nkgui-card3-dark {
+    border: 1px solid var(--nk-default-dark-background);
+    background-color: var(--nk-default-dark-background);
+}
+
+.nkgui-card2, .nkgui-card2-light, .nkgui-card2-dark {border-radius: 3px;}
+.nkgui-card3, .nkgui-card3-light, .nkgui-card3-dark {border-radius: 5px;}
+
+
+/* Input */
+
+.nkgui-input1 {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 10px 10px 10px 10px;
+}
+
+/* Table */
+
+.nkgui-table1 {
+    color: black;
+    border-collapse: collapse;
+}
+
+.nkgui-table1 th, .nkgui-table1 td {
+    border: 1px solid var(--nk-blue-light-border);
+    padding: 0 5px 0 5px;
+    vertical-align: text-top;
+}
+
+

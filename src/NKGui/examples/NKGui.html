@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKGui examples</title>
+
+        <link rel="stylesheet" href="../../NK/NKBase.css">
+        <link rel="stylesheet" href="../NKGui.css">
+
+        <style>
+            :root {
+                --nk-default-light-text: var(--nk-blue-light-text);
+                --nk-default-dark-text: var(--nk-blue-dark-text);
+                --nk-default-light-border: var(--nk-blue-light-border);
+                --nk-default-dark-border: var(--nk-blue-dark-border);
+                --nk-default-light-background: var(--nk-blue-light-background);
+                --nk-default-dark-background: var(--nk-blue-dark-background);
+                --nk-default-font-family: var(--nk-font-family1);
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <a href="https://github.com/netkuup/NKLibsJS">NKLibsJS Github project</a>
+        <br /><br />
+
+        <!-- MENU -->
+        <div class="nkgui-title1">Menu</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <div class="nkgui-menu1">
+            <div class="nkgui-menu1-btn nkactive">HOME</div>
+            <div class="nkgui-menu1-btn">PROJECTS</div>
+            <div class="nkgui-menu1-btn">ABOUT</div>
+            
+            <div class="nkgui-menu1-btn nkright">CONFIG</div>
+        </div>
+
+
+
+        <!-- CHIP -->
+        <br /><br /><br />
+        <div class="nkgui-title1">Chip</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <div class="nkgui-chip1">Title <span class="nkgui-chip1-icon">x</span></div>
+
+
+        <!-- PILL -->
+        <br /><br /><br />
+        <div class="nkgui-title1">Pill</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <div class="nkgui-pill1">Title</div>
+        <div class="nkgui-pill1" style="background-color: red; color: white;">Title</div>
+        <div class="nkgui-pill1" style="background-color: blue; color: white;">Title</div>
+
+        <!-- CARD -->
+        <br /><br /><br />
+        <div class="nkgui-title1">Card</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <div class="nkgui-card1">Card 1<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="nkgui-card2">Card 2<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="nkgui-card3">Card 3<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+
+        <br /><br />
+
+        <div class="nkgui-card1-light">Card 1 light<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="nkgui-card2-light">Card 2 light<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="nkgui-card3-light">Card 3 light<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+
+        <br /><br />
+
+        <div class="nkgui-card1-dark">Card 1 dark<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="nkgui-card2-dark">Card 2 dark<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="nkgui-card3-dark">Card 3 dark<br />text text text text text text text<br />text text text text text text text<br />text text text text text text text</div>
+
+
+
+        <!-- NO IMAGE -->
+        <br /><br /><br />
+        <div class="nkgui-title1">No image</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <div class="nkgui-card3-light" style="width: 100px; height: 80px; text-align: center;">
+            <svg style="margin-top: 25px;" width="40" viewBox="0 0 15.875 10.583333" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                <style>
+                    path { stroke: var(--nk-default-dark-background); }
+                    path { fill: none; }
+                    rect { stroke: var(--nk-default-dark-background); }
+                    circle { fill: var(--nk-default-dark-background); }
+                </style>
+                <path
+                    style="stroke-width:0.665001;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+                    d="m 0.3324626,10.098631 c 0,0 3.3075118,-3.939349 3.7656744,-3.9165173 0.3876647,0.019319 1.8852712,1.6675545 2.2277528,1.6675545 0.3424815,0 3.8332342,-4.5901464 4.2177272,-4.6065442 0.384493,-0.016398 4.81237,6.2618722 4.81237,6.2618722 l 0.09133,0.6392988 z"
+                    />
+                <rect
+                    style="fill:none;stroke-width:0.675191;stroke-linecap:round;stroke-linejoin:round"
+                    width="15.199809"
+                    height="9.9081421"
+                    x="0.33759549"
+                    y="0.33759549"
+                />
+                <circle
+                    style="fill-opacity:1;stroke:none;stroke-width:1.48565;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+                    cy="2.9104166"
+                    cx="5.5562501"
+                    r="1.0583333" 
+                />
+            </svg>
+        </div>
+
+
+
+        <!-- SEARCHER -->
+        <br /><br /><br />
+        <div class="nkgui-title1">Searcher</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <div class="nkgui-card2">
+            <input type="text" class="nkgui-input1" placeholder="Search..." style="width: 90vw;" />
+            <div style="padding: 5px;">
+                <div class="nkgui-chip1">Filter 1 <span class="nkgui-chip1-icon">x</span></div>
+                <div class="nkgui-chip1">Filter 2 <span class="nkgui-chip1-icon">x</span></div>
+            </div>
+            
+        </div>
+
+
+        <!-- UNICODE ICONS -->
+        <br /><br /><br />
+        <div class="nkgui-title1">Unicode icons</div>
+        <div class="nkgui-divider1"></div>
+        <br />
+
+        <table class="nkgui-table1">
+            <tr>
+                <td>Arrow</td>
+                <td>
+                    🠀 🠁 🠂 🠃 🠄 🠅 🠆 🠇 🠈 🠉 🠊 🠋 🠐 🠑 🠒 🠓 🠔 🠕 🠖 🠗 🠘 🠙 🠚 🠛 🠜 🠝 🠞 🠟 🠠 🠡 🠢 🠣 🠤 🠥 🠦 🠧 🠨 🠩 🠪 🠫 🠬 🠭 🠮 🠯 🠰 🠱 🠲 🠳 🠴 🠵 🠶 🠷 🠸 🠹 🠺 🠻 🠼 🠽 🠾 🠿 🡀 🡁 🡂 🡃 🡄 🡅 🡆 🡇 🡐 🡑 🡒 🡓 🡔 🡕 🡖 🡗 🡘 🡙 🡠 🡡 🡢 🡣 🡤 🡥 🡦 🡧 🡨 🡩 🡪 🡫 🡬 🡭 🡮 🡯 🡰 🡱 🡲 🡳 🡴 🡵 🡶 🡷 🡸 🡹 🡺 🡻 🡼 🡽 🡾 🡿 🢀 🢁 🢂 🢃 🢄 🢅 🢆 🢇 🢘 🢙 🢚 🢛 🢜 🢝 🢞 🢟 🢠 🢡 🢢 🢣 🢤 🢥 🢦 🢧 🢨 🢩 🢪 🢫 🢬 🢭 🢰 🢱 🔙 🔚 🔛 🔜 🔝 🔀 🔁 🔂 🔃 🔄 🔺 🔻 🔼 🔽 ← ↑ → ↓ ↔ ↕ ↖ ↗ ↘ ↙ ↚ ↛ ↜ ↝ ↞ ↟ ↠ ↡ ↢ ↣ ↤ ↥ ↦ ↧ ↨ ↩ ↪ ↫ ↬ ↭ ↮ ↯ ↰ ↱ ↲ ↳ ↴ ↵ ↶ ↷ ↸ ↹ ↺ ↻ ↼ ↽ ↾ ↿ ⇀ ⇁ ⇂ ⇃ ⇄ ⇅ ⇆ ⇇ ⇈ ⇉ ⇊ ⇋ ⇌ ⇍ ⇎ ⇏ ⇐ ⇑ ⇒ ⇓ ⇔ ⇕ ⇖ ⇗ ⇘ ⇙ ⇚ ⇛ ⇜ ⇝ ⇞ ⇟ ⇠ ⇡ ⇢ ⇣ ⇤ ⇥ ⇦ ⇧ ⇨ ⇩ ⇪ ⇫ ⇬ ⇭ ⇮ ⇯ ⇰ ⇱ ⇲ ⇳ ⇴ ⇵ ⇶ ⇷ ⇸ ⇹ ⇺ ⇻ ⇼ ⇽ ⇾ ⇿ ⬰ ⬱ ⬲ ⬳ ⬴ ⬵ ⬶ ⬷ ⬸ ⬹ ⬺ ⬻ ⬼ ⬽ ⬾ ⬿ ⭀ ⭁ ⭂ ⭃ ⭄ ⭅ ⭆ ⭇ ⭈ ⭉ ⭊ ⭋ ⟰ ⟱ ⟲ ⟳ ⟴ ⟵ ⟶ ⟷ ⟸ ⟹ ⟺ ⟻ ⟼ ⟽ ⟾ ⟿ ⠀  ⤀ ⤁ ⤂ ⤃ ⤄ ⤅ ⤆ ⤇ ⤈ ⤉ ⤊ ⤋ ⤌ ⤍ ⤎ ⤏ ⤐ ⤑ ⤒ ⤓ ⤔ ⤕ ⤖ ⤗ ⤘ ⤙ ⤚ ⤛ ⤜ ⤝ ⤞ ⤟ ⤠ ⤡ ⤢ ⤣ ⤤ ⤥ ⤦ ⤧ ⤨ ⤩ ⤪ ⤫ ⤬ ⤭ ⤮ ⤯ ⤰ ⤱ ⤲ ⤳ ⤴ ⤵ ⤶ ⤷ ⤸ ⤹ ⤺ ⤻ ⤼ ⤽ ⤾ ⤿ ⥀ ⥁ ⥂ ⥃ ⥄ ⥅ ⥆ ⥇ ⥈ ⥉ ⥊ ⥋ ⥌ ⥍ ⥎ ⥏ ⥐ ⥑ ⥒ ⥓ ⥔ ⥕ ⥖ ⥗ ⥘ ⥙ ⥚ ⥛ ⥜ ⥝ ⥞ ⥟ ⥠ ⥡ ⥢ ⥣ ⥤ ⥥ ⥦ ⥧ ⥨ ⥩ ⥪ ⥫ ⥬ ⥭ ⥮ ⥯ ⥰ ⥱ ⥲ ⥳ ⥴ ⥵ ⥶ ⥷ ⥸ ⥹ ⥺ ⥻ ⭌ ⭍ ⭎ ⭏ ⏎ ⭚ ⭛ ⭜ ⭝ ⭞ ⭟ ⭠ ⭡ ⭢ ⭣ ⭤ ⭥ ⭦ ⭧ ⭨ ⭩ ⭪ ⭫ ⭬ ⭭ ⭮ ⭯ ⭰ ⭱ ⭲ ⭳ ⭶ ⭷ ⭸ ⭹ ⭺ ⭻ ⭼ ⭽ ⭾ ⭿ ⮀ ⮁ ⮂ ⮃ ⮄ ⮅ ⮆ ⮇ ⮈ ⮉ ⮊ ⮋ ⮌ ⮍ ⮎ ⮏ ⮐ ⮑ ⮒ ⮓ ⮔ ⮕ ⮗ ⮘ ⮙ ⮚ ⮛ ⮜ ⮝ ⮞ ⮟ ⮠ ⮡ ⮢ ⮣ ⮤ ⮥ ⮦ ⮧ ⮨ ⮩ ⮪ ⮫ ⮬ ⮭ ⮮ ⮯ ⮰ ⮱ ⮲ ⮳ ⮴ ⮵ ⮶ ⮷ ⮸ ➘ ➙ ➚ ➛ ➜ ➝ ➞ ➟ ➠ ➡ ➢ ➣ ➤ ➥ ➦ ➧ ➨ ➩ ➪ ➫ ➬ ➭ ➮ ➯  ➱ ➲ ➳ ➴ ➵ ➶ ➷ ➸ ➹ ➺ ➻ ➼ ➽ ➾ ⬀ ⬁ ⬂ ⬃ ⬄ ⬅ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋ ⬌ ⬍ ⬎ ⬏ ⬐ ⬑ ⯬ ⯭ ⯮ ⯯ ⋘ ⋙ ➔
+                    ⟀ ⍅ ⍆ ⍖ ⍏ ⍇ ⍈ ⍐ ⍗ ⍌ ⍓ ⍃ ⍄ ⍍ ⍔ ⟎ ⟏
+                </td>
+            </tr>
+            <tr>
+                <td>Triangle</td>
+                <td>
+                    ▲ △ ▴ ▵ ▶ ▷ ▸ ▹ ► ▻ ▼ ▽ ▾ ▿ ◀ ◁ ◂ ◃ ◄ ◅
+                    ⏴ ⏵ ⏶ ⏷
+                    🞀 🞁 🞂 🞃
+                    🢐 🢑 🢒 🢓 
+                    🢔 🢕 🢖 🢗
+                    ⯅ ⯆ ⯇ ⯈
+                    ⊲ ⊳ ⊴ ⊵
+                    ⊻ ⊼ ⊽ ⊾ ⊿ ⋀ ⋁
+                    ◸ ◹ ◺ ◿ ◬ ◭ ◮ ◢ ◣ ◤ ◥ ⟁ ⎖ 🛆 ⧨ ⧩ ⛛
+                </td>
+            </tr>
+            <tr>
+                <td>Play/Pause</td>
+                <td>⏩ ⏪ ⏫ ⏬ ⏭ ⏮ ⏯</td>
+            </tr>
+            <tr>
+                <td>Plus</td>
+                <td>+ 🞡 🞢 🞣 🞤 🞥 🞦 🞧</td>
+            </tr>
+            <tr>
+                <td>Cross</td>
+                <td>
+                    🞨 🞩 🞪 🞫 🞬 🞭 🞮 
+                    ✕ ✖ ✗ ✘ ✙ ✚ ✛ ✜ ❌
+                    🗙
+                </td>
+            </tr>
+            <tr>
+                <td>OK</td>
+                <td>✓ ✔ ✅ ❎ ☓</td>
+            </tr>
+            <tr>
+                <td>Star/Asterisk</td>
+                <td>
+                    🞯 🞰 🞱 🞲 🞳 🞴 🞵 🞶 🞷 🞸 🞹 🞺 🞻 🞼 🞽 🞾 🞿 🟀 🟁 🟂 🟃 🟄 🟅 🟆 🟇 🟈 🟉 🟊 🟋 🟌 🟍 🟎 🟏 🟐 🟑 🟒 🟓 🟔 
+                    ⭐ ⭑ ⭒ 🌟  ✦ ✧ ✨ ✩ ✪ ✫ ✬ ✭ ✮ ✯ ✰ ✱ ✲ ⁂ ★ ☆ ⚝ ⯨ ⯩ ⯪ ⯫
+                    ✢ ✣ ✤ ✥ ✳ ✴ ✵ ✶ ✷ ✸ ✹ ✺ ✻ ✼ ✽ ✾ ✿ ❀ ❁ ❂ ❃ ❄ ❅ ❆ ❇ ❈ ❉ ❊ ❋ ⁎ ⋆ ⋇
+                    ⍟ ⚹ ☸ ☼ ⛭ ⛮ ⛯
+                </td>
+            </tr>
+            <tr>
+                <td>Diamond</td>
+                <td>🞗 🞘 🞙 🞚 🞛 🞜 🞝 🞞 🞟 🞠 🔶 🔷 🔸 🔹⋄ ◆ ◇ ◈ ◊ ⬗ ⬘ ⬙ ⬖ ⬥ ⬦ ⬧ ⬨ ⬩ ⬪ ⬫ ⟐ ⯁ ⬟ ⬠ ⬡ ⬢ ⬣ ⭓ ⭔ ⯂ ⯃ ⯄ ⯌ ⯍ ⯎ </td>
+            </tr>
+            <tr>
+                <td>Circle</td>
+                <td>
+                    ○ ◌ ◍ ◎ ● ◐ ◑ ◒ ◓ ◔ ◕ ◖ ◗ ◘ ◙ ◚ ◛ ◜ ◝ ◞ ◟ ◠ ◡  ⯊ ⯋
+                    🞄 🞅 🞆 🞇 🞈 🞉 🞊 🞋 ⊕ ⊖ ⊗ ⊘ ⊙ ⊚ ⊛ ⊜ ⊝ ◴ ◵ ◶ ◷
+                    🔴 🔵 🟠 🟡 🟢 🟣 🟤 ⚪ ⚫ ⭕
+                    ⦰ ⦱ ⦲ ⦳ ⦴ ⦵ ⦶ ⦷ ⦸ ⦹ ⦺ ⦻ ⦼ ⦽ ⦾ ⦿ ⧀ ⧁ ⧂ ⧃ ⌽ ⌾
+                    ◯ ◉ ☉ ⬤ ⬬ ⬭ ⬮ ⬯ ⭖ ⭗ ⭘ ⭙ ⨀ ⨁ ⨂ 🜔 🜕 🜖 🛇 🛈 🔾 🔿 🜗 🟕 🟖 🟗 🟘 ⵙ ⴱ ⴲ ⮾ ⮿ ⚆ ⚇ ⚈ ⚉
+                </td>
+            </tr>
+            <tr>
+                <td>Point</td>
+                <td>
+                    ⠁ ⠂ ⠄⠈ ⠐ ⠠ ⡀⢀  
+                    ⋮ ⋯ ⋰ ⋱
+                    • ․ ‥ … ‧ ⁝ ⁞
+                    ◦ ⵗ ⵘ ⵆ ⵈ ⴾ ⴰ ⫶ ⛬ ⦁ ⦂ ⦙
+                </td>
+            </tr>
+            <tr>
+                <td>Square/Checkbox</td>
+                <td>
+                    ■ □ ▢ ▣ 🗴 🗵 🗶 🗷 🗸 🗹 🞌 🞍 🞎 🞏 🞐 🞑 🞒 🞓 🞔 🞕 🞖 🗆 ☑ ☒
+                    ◧ ◨ ◩ ◪  ◰ ◱ ◲ ◳ 
+                    ▤ ▥ ▦ ▧ ▨ ▩
+                    ⌦ ⌧ ⌫
+                    ◻ ◼ ◽ ◾
+                    ⊞ ⊟ ⊠ ⊡
+                    ▪ ▫ ▬ ▭ ▮ ▯ ▰ ▱ ❏ ❐ ❑ ❒ ⬒ ⬓ ⬔ ⬕ ⮹ ⮽ ⯀ ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ ⛝ ⛞ ⛋ ⌷ ⌸ ⌹ ⌺ ⌻ ⌼ ⍁ ⍂ ☐ ⧄ ⧅ ⧆ ⧇ ⧈ 
+                    🟥 🟦 🟧 🟨 🟩 🟪 🟫 🔲 🔳 ⬚ ⬛ ⬜
+                </td>
+            </tr>
+            <tr>
+                <td>Position</td>
+                <td>
+                    ⿰ ⿱ ⿲ ⿳ ⿴ ⿵ ⿶ ⿷ ⿸ ⿹ ⿺ ⿻
+                    ⮺ ⮻ ⮼ ⧉
+                    ⛶ 🖵
+                    🗕 🗖🗗
+                    ☰ ☱ ☲ ☳ ☴ ☵ ☶ ☷ ⚊ ⚋ ⚌ ⚍ ⚎ ⚏
+                </td>
+            </tr>
+            <tr>
+                <td>File/Folder</td>
+                <td>
+                    🗈 🗉 🗊 🗋 🗌 🗍 🗎 🗏 🗐
+                    💽 💾 💿 📀 📁 📂 📃 📄 📑 📒 📓 📔 📕 📖 📗 📘 📙 📚 📜 📝
+                    🖹 🖺 🖻 🖼 🖽 🖾 🖿 🗀 🗁 🗂 🗃 🗄 🧾 🗒
+                </td>
+            </tr>
+            <tr>
+                <td>Sound</td>
+                <td>🔇 🔈 🔉 🔊 🕨 🕩 🕪 🕫 🕬 🕭 🎙 🎜 🎝 🔔 🔕 📢 📣 🗢 🗣 🗤 🗥 🗦 🗧 🗨 🗩 🗪 🗫 🗬 🗭 🗮 🗯 🗰 🗱 ♩ ♪ ♫ ♬</td>
+            </tr>
+            <tr>
+                <td>Mail/Telf</td>
+                <td>🕻 🕼 🕽 🕾 🕿 🖀 🖁 🖂 🖃 ✉ 🖄 🖅 🖆 📩 📤 📥 📧 📨 ☎ ☏ ✆</td>
+            </tr>
+            <tr>
+                <td>Calendar</td>
+                <td>🗓 📅 📆</td>
+            </tr>
+            <tr>
+                <td>Save</td>
+                <td>🖪 🖫 🖬</td>
+            </tr>
+            <tr>
+                <td>Scisors</td>
+                <td>✀ ✁ ✂ ✃ ✄</td>
+            </tr>
+            <tr>
+                <td>Pin/Clip</td>
+                <td>📌 📍 📎</td>
+            </tr>
+            <tr>
+                <td>ON/OFF</td>
+                <td>⏻ ⏼ ⏽ ⏾</td>
+            </tr>
+            <tr>
+                <td>Time</td>
+                <td>🕐 🕑 🕒 🕓 🕔 🕕 🕖 🕗 🕘 🕙 🕚 🕛 🕜 🕝 🕞 🕟 🕠 🕡 🕢 🕣 🕤 🕥 🕦 🕧 ⌚ ⏰ ⏱ ⏲ ⏳⌛ 🕰</td>
+            </tr>
+            <tr>
+                <td>Edit</td>
+                <td>✍ ✎ ✏ ✐ ✑ ✒ 🖉 🖊 🖋 🖌 🖍</td>
+            </tr>
+            <tr>
+                <td>Cog</td>
+                <td>🌣 ⚙ 🔧 🎚 🎛 🛠</td>
+            </tr>
+            <tr>
+                <td>Key/Lock</td>
+                <td>🗝 🔏 🔐 🔑 🔒 🔓 ⚿</td>
+            </tr>
+            <tr>
+                <td>Hand</td>
+                <td>
+                    🖘 🖙 🖚 🖛 🖜 🖝 🖞 🖟 🖠 🖡 🖢 🖣 ☚ ☛ ☜ ☝ ☞ ☟
+                    ✊ ✋ ✌ 👆 👇 👈 👉 👊 👋 👌 👍 👎 👏 👐 🫰 🫱 🫲 🫳 🫴 🫵 🫶 🫷 🫸 🖕 🖖 🖐
+                    🖒 🖓 🖗  🖎 🖏 🖑 🖔
+                </td>
+            </tr>
+            <tr>
+                <td>Sync, Recicle</td>
+                <td>🗘 🄎 ♲ ♳ ♴ ♵ ♶ ♷ ♸ ♹ ♺ ♻ ♼ ♽ ♾</td>
+            </tr>
+            <tr>
+                <td>Delete</td>
+                <td>🗑</td>
+            </tr>
+            <tr>
+                <td>Find</td>
+                <td>🔍 🔎 ⌕</td>
+            </tr>
+            <tr>
+                <td>Alerts</td>
+                <td>⚠ ⚡ ❓❔❕❗⚐ ⚑ ‼ ⁇ ⁈ ⁉</td>
+            </tr>
+            <tr>
+                <td>Link</td>
+                <td>⊶ ⊷ ⧟ ⚯ ⊸ ☍ 🝯 🝰 🝢 🜛 🜙 🜺 🔗 ⟚ ⟛ ⟜ ⟝ ⟞ ⟟ ⫯ ⫰ ⫱ ⯺ ⯻ ⯼ ♆ ⊢ ⊣ ⊤ ⊥ ⊦ ⧮ ⧯ ⧰ ⧱ ⧲ ⧳</td>
+            </tr>
+            <tr>
+                <td>Unclassified app icons</td>
+                <td>
+                    🧲 🧷 🧹 🪄 🪪 🪫 🌐 🏱 🏲 🏳 🏴 💬 💰 💱 ⛔ ♿💲 💳 💴 💵 💶 💷 💡🔅 🔆 🔋 🔌 🔦 🕮 🖇 🖈  🖧 🖨 🖩 🖭 🖮 🖯 🖰 🖱 🖲 🖳 🖴  🖶 🖷 🖸 🗅 
+                     🗇 🗔  🗚 🗛 🗟 🗠🛒 ℹ ⏸ ⏹ ⏺ ⏏⛿ ⌖ ⌗ ⌘ 💻 💼  📇 📈 📉 📊 📋 📏 📐  📦  📰 📷 
+                    ⎀ ⎁ ⎂ ⎃ 🝛 🝜
+                </td>
+            </tr>
+            <tr>
+                <td>Numbers</td>
+                <td>
+                    ₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉ 
+                    ❶ ❷ ❸ ❹ ❺ ❻ ❼ ❽ ❾ ❿ ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴ ⓿
+                    ➀ ➁ ➂ ➃ ➄ ➅ ➆ ➇ ➈ ➉
+                    ➊ ➋ ➌ ➍ ➎ ➏ ➐ ➑ ➒ ➓
+                    🄀 🄁 🄂 🄃 🄄 🄅 🄆 🄇 🄈 🄉 🄊 
+                    🄋 🄌 🄍 ⓪
+                    ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳ 
+                    ⑴ ⑵ ⑶ ⑷ ⑸ ⑹ ⑺ ⑻ ⑼ ⑽ ⑾ ⑿ ⒀ ⒁ ⒂ ⒃ ⒄ ⒅ ⒆ ⒇ 
+                    ⒈ ⒉ ⒊ ⒋ ⒌ ⒍ ⒎ ⒏ ⒐ ⒑ ⒒ ⒓ ⒔ ⒕ ⒖ ⒗ ⒘ ⒙ ⒚ ⒛ 
+                    ⓵ ⓶ ⓷ ⓸ ⓹ ⓺ ⓻ ⓼ ⓽ ⓾ 
+                </td>
+            </tr>
+            <tr>
+                <td>Letters</td>
+                <td>
+                    🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿
+                    🅐 🅑 🅒 🅓 🅔 🅕 🅖 🅗 🅘 🅙 🅚 🅛 🅜 🅝 🅞 🅟 🅠 🅡 🅢 🅣 🅤 🅥 🅦 🅧 🅨 🅩
+                    Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ
+                    ⓐ ⓑ ⓒ ⓓ ⓔ ⓕ ⓖ ⓗ ⓘ ⓙ ⓚ ⓛ ⓜ ⓝ ⓞ ⓟ ⓠ ⓡ ⓢ ⓣ ⓤ ⓥ ⓦ ⓧ ⓨ ⓩ
+                    🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉
+                    🄰 🄱 🄲 🄳 🄴 🄵 🄶 🄷 🄸 🄹 🄺 🄻 🄼 🄽 🄾 🄿 🅀 🅁 🅂 🅃 🅄 🅅 🅆 🅇 🅈 🅉
+                    🄐 🄑 🄒 🄓 🄔 🄕 🄖 🄗 🄘 🄙 🄚 🄛 🄜 🄝 🄞 🄟 🄠 🄡 🄢 🄣 🄤 🄥 🄦 🄧 🄨 🄩
+                    ⒜ ⒝ ⒞ ⒟ ⒠ ⒡ ⒢ ⒣ ⒤ ⒥ ⒦ ⒧ ⒨ ⒩ ⒪ ⒫ ⒬ ⒭ ⒮ ⒯ ⒰ ⒱ ⒲ ⒳ ⒴ ⒵  
+                    🅪 🅫 🅬 🅭 🅮 🅯 🆊 🆋 🆌 🆍  🆏 🆐  🆭 
+                </td>
+            </tr>
+            <tr>
+                <td>Emoji</td>
+                <td>
+                    😀 😁 😂 😃 😄 😅 😆 😇 😈 😉 😊 😋 😌 😍 😎 😏 😐 😑 😒 😓 😔 😕 😖 😗 😘 😙 😚 😛 😜 😝 😞 😟 😠 😡 😢 😣 😤 😥 😦 😧 😨 😩 😪 😫 😬 😭 😮 😯 😰 😱 😲 😳 😴 😵 😶 😷 ☹ 🙁 🙂 🙃 🙄 🤐 🤑 🤒 🤓 🤔 🤕 🤖 🤗 🤠 🤡 🤢 🤣 🤤 🤥 🤦 🤧 🤨 🤩 🤪 🤫 🤬 🤭 🤮 🤯 🫨 🫠 🫡 🫢 🫣 🫤 🫥 👿 🥰 🥱 🥲 🥳 🥴 🥵 🥶 🥸 🥹 🥺 🧐
+                    😸 😹 😺 😻 😼 😽 😾 😿 🙀 
+                    🙅 🙆 🙇 🙈 🙉 🙊 🙋 🙌 🙍 🙎 🙏 
+                    🤍 🤎 🖤 🧡 💓 💔 💕 💖 💗 💘 💙 💚 💛 💜 💝 💞 💟 ❣ ❤
+                    🤘 🤙 🤚 🤛 🤜 🤝 🤞 🤟 🤌 🤏
+                    🌍 🌎 🌏 🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌙 🌚 🌛 🌜 🌝 🌞 🌠 🌡 🌢 🌤 🌥 🌦 🌧 🌨 🌩 💦 💧 ⛄ ⛅ ⛆ ⛇ ⛈
+                    🤰 🤱 🤲 🤳 🤴 🤵 🤶 🤷 🤸 🤹 🤺 🤻 🤼 🤽 🤾 🤿 🥀 🥁 🥂 🥃 🥄 🥅 🥆 🥇 🥈 🥉 🥊 🥋 🥌 🥍 🥎 🥏 🥐 🥑 🥒 🥓 🥔 🥕 🥖 🥗 🥘 🥙 🥚 🥛 🥜 🥝 🥞 🥟 🥠 🥡 🥢 🥣 🥤 🥥 🥦 🥧 🥨 🥩 🥪 🥫 🥬 🥭 🥮 🥯 🥷 🥻 🥼 🥽 🥾 🥿 🦀 🦁 🦂 🦃 🦄 🦅 🦆 🦇 🦈 🦉 🦊 🦋 🦌 🦍 🦎 🦏 🦐 🦑 🦒 🦓 🦔 🦕 🦖 🦗 🦘 🦙 🦚 🦛 🦜 🦝 🦞 🦟 🦠 🦡 🦢 🦣 🦤 🦥 🦦 🦧 🦨 🦩 🦪 🦫 🦬 🦭 🦮 🦯 🦰 🦱 🦲 🦳 🦴 🦵 🦶 🦷 🦸 🦹 🦺 🦻 🦼 🦽 🦾 🦿 🧀 🧁 🧂 🧃 🧄 🧅 🧆 🧇 🧈 🧉 🧊 🧋 🧌 🧍 🧎 🧏 🧑 🧒 🧓 🧔 🧕 🧖 🧗 🧘 🧙 🧚 🧛 🧜 🧝 🧞 🧟 🧠 🧢 🧣 🧤 🧥 🧦 🧧 🧨 🧩 🧪 🧫 🧬 🧭 🧮 🧯 🧰 🧱 🧳 🧴 🧵 🧶 🧸 🧺 🧻 🧼 🧽 🧿 🩰 🩱 🩲 🩳 🩴 🩵 🩶 🩷 🩸 🩹 🩺 🩻 🩼 🪀 🪁 🪂 🪃 🪅 🪆 🪇 🪈 🪐 🪑 🪒 🪓 🪔 🪕 🪖 🪗 🪘 🪙 🪚 🪛 🪜 🪝 🪞 🪟 🪠 🪡 🪢 🪣 🪤 🪥 🪦 🪧 🪨 🪩  🪬 🪭 🪮 🪯 🪰 🪱 🪲 🪳 🪴 🪵 🪶 🪷 🪸 🪹 🪺 🪻 🪼 🪽 🪿 🫀 🫁 🫂 🫃 🫄 🫅 🫎 🫏 🫐 🫑 🫒 🫓 🫔 🫕 🫖 🫗 🫘 🫙 🫚 🫛 🫦 🫧 
+                    🌀 🌁 🌂 🌃 🌄 🌅 🌆 🌇 🌈 🌉 🌊 🌋 🌌 🌪 🌫 🌬 🌭 🌮 🌯 🌰 🌱 🌲 🌳 🌴 🌵 🌶 🌷 🌸 🌹 🌺 🌻 🌼 🌽 🌾 🌿 🍀 🍁 🍂 🍃 🍄 🍅 🍆 🍇 🍈 🍉 🍊 🍋 🍌 🍍 🍎 🍏 🍐 🍑 🍒 🍓 🍔 🍕 🍖 🍗 🍘 🍙 🍚 🍛 🍜 🍝 🍞 🍟 🍠 🍡 🍢 🍣 🍤 🍥 🍦 🍧 🍨 🍩 🍪 🍫 🍬 🍭 🍮 🍯 🍰 🍱 🍲 🍳 🍴 🍵 🍶 🍷 🍸 🍹 🍺 🍻 🍼 🍽 🍾 🍿 🎀 🎁 🎂 🎃 🎄 🎅 🎆 🎇 🎈 🎉 🎊 🎋 🎌 🎍 🎎 🎏 🎐 🎑 🎒 🎓 🎔 🎕 🎖 🎗 🎘 🎞 🎟 🎠 🎡 🎢 🎣 🎤 🎥 🎦 🎧 🎨 🎩 🎪 🎫 🎬 🎭 🎮 🎯 🎰 🎱 🎲 🎳 🎴 🎵 🎶 🎷 🎸 🎹 🎺 🎻 🎼 🎽 🎾 🎿 🏀 🏁 🏂 🏃 🏄 🏅 🏆 🏇 🏈 🏉 🏊 🏋 🏌 🏍 🏎 🏏 🏐 🏑 🏒 🏓 🏔 🏕 🏖 🏗 🏘 🏙 🏚 🏛 🏜 🏝 🏞 🏟 🏠 🏡 🏢 🏣 🏤 🏥 🏦 🏧 🏨 🏩 🏪 🏫 🏬 🏭 🏮 🏯 🏰 🏵 🏶 🏷 🏸 🏹 🏺  🐀 🐁 🐂 🐃 🐄 🐅 🐆 🐇 🐈 🐉 🐊 🐋 🐌 🐍 🐎 🐏 🐐 🐑 🐒 🐓 🐔 🐕 🐖 🐗 🐘 🐙 🐚 🐛 🐜 🐝 🐞 🐟 🐠 🐡 🐢 🐣 🐤 🐥 🐦 🐧 🐨 🐩 🐪 🐫 🐬 🐭 🐮 🐯 🐰 🐱 🐲 🐳 🐴 🐵 🐶 🐷 🐸 🐹 🐺 🐻 🐼 🐽 🐾 🐿 👀 👁 👂 👃 👄 👅👑 👒 👓 👔 👕 👖 👗 👘 👙 👚 👛 👜 👝 👞 👟 👠 👡 👢 👣 👤 👥 👦 👧 👨 👩 👪 👫 👬 👭 👮 👯 👰 👱 👲 👳 👴 👵 👶 👷 👸 👹 👺 👻 👼 👽 👾 💀 💁 💂 💃 💄 💅 💆 💇 💈 💉 💊 💋 💌 💍 💎 💏 💐 💑 💒 💠 💢 💣 💤 💥 💨 💩 💪 💫 💭 💮 💯💸 💹 💺 📛 📞 📟 📠 📡 📪 📫 📬 📭 📮 📯 📱 📲 📳 📴 📵 📶 📸 📹 📺 📻 📼 📽 📾 📿 🔖 🔘 🔞 🔟 🔠 🔡 🔢 🔣 🔤 🔥 🔨 🔩 🔪 🔫 🔬 🔭 🔮 🔯 🔰 🔱 🚀 🚁 🚂 🚃 🚄 🚅 🚆 🚇 🚈 🚉 🚊 🚋 🚌 🚍 🚎 🚏 🚐 🚑 🚒 🚓 🚔 🚕 🚖 🚗 🚘 🚙 🚚 🚛 🚜 🚝 🚞 🚟 🚠 🚡 🚢 🚣 🚤 🚥 🚦 🚧 🚨 🚩 🚪 🚫 🚬 🚭 🚮 🚯 🚰 🚱 🚲 🚳 🚴 🚵 🚶 🚷 🚸 🚹 🚺 🚻 🚼 🚽 🚾 🚿 🛀 🛁 🛂 🛃 🛄 🛅 🛋 🛌 🛍 🛎 🛏 🛐 ⛰ ⛱ ⛲ ⛳ ⛴ ⛵ ♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓ ☀ ☁ ☂ ☃ ☄ ⚰ ⚱ 🕴 🕵 🕶 🕷 🕸 🕹 🕺 🗜 🗞 🗡 🛕 🛖 🛗 🛜 🛝 🛞 🛟 🛡 🛢 🛣 🛤 🛥 🛩 🛪 ✈ 🛫 🛬 🛰 🛱 🛲 🛳 🛴 🛵 🛶 🛷 🛸 🛹 🛺 🛻 🛼 🗳 🗺 🗻 🗼 🗽 🗾 🗿 ⚽ ⚾ ⛏ ⛑ ☠ ☕ ⚒ ⚓ ⚔ ⚕ ⚖ ⚗ ♨ ⛷ ⛸ ⛹ ⛺ 🕉 🕊 🕋 🕌 🕍 🕎🕯 🕱 ⛩ ⛪
+                    ☔ 🆑 🆒 🆓 🆔 🆕 🆖 🆗 🆘 🆙 🆚 🆎 ⛎ ⛽ ➕ ➖ ➗ ➿ ➰ 🟰 🛑
+                </td>
+            </tr>
+            <tr>
+                <td>Games</td>
+                <td>♔ ♕ ♖ ♗ ♘ ♙ ♚ ♛ ♜ ♝ ♞ ♟ ♠ ♡ ♢ ♣ ♤ ♥ ♦ ♧</td>
+            </tr>
+            <tr>
+                <td>Angle</td>
+                <td>⦢ ⦣ ⦤ ⦥ ⌜ ⌝ ⌞ ⌟  ⏿  ⧡ ⦞ ⦟ ⦠ ⦡ ⟓ ⟔ ⦛ ⦜ ⦝</td>
+            </tr>
+        </table>
+
+
+
+    </body>
+
+
+
+</html>
+
+
+

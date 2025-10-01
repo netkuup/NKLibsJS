@@ -61,9 +61,10 @@ NKDrawbox.prototype._drawDiv = function ( args ) {
         style.textContent = `
         div {
             position: absolute;
+            transform-origin: left top;
         }
         `;
-        //transform-origin: left top;
+        //transform-origin: left top; //Sin esto las drawLine no funciona
         this.shadow.appendChild(style);
     }
     

@@ -14,6 +14,13 @@ NK.isset = function( variable ) {
     return true;
 };
 
+NK.issetAll = function( variable_arr ) {
+    for ( var i = 0; i < variable_arr.length; i++ ) {
+        if ( !NK.isset(variable_arr[i]) ) return false;
+    }
+    return true;
+};
+
 NK.empty = function( variable ) {
     if ( !NK.isset(variable) ) return true;
     return ( typeof variable === 'function' ) ? variable().length === 0 : variable.length === 0;
@@ -176,6 +183,12 @@ Number.prototype.nkprec = function(value) {
 Number.prototype.nkround = function(value) {
     return new Big(this).round(value).toNumber();
 };
+Number.prototype.nkfixed = Number.prototype.nkround;
+
+Number.prototype.nktruncate = function(value) {
+    return Number( (this+"").slice(0, (this+"").indexOf('.') + value + 1) );
+};
+
 Number.prototype.nksqrt = function() {
     return new Big(this).sqrt().toNumber();
 };

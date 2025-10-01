@@ -59,8 +59,10 @@ Special thanks to the developers of `big.js` for their incredible library, which
     number_1.nkdiv(number_2);
     number_1.nkmul(number_2);
     number_1.nkpow(number_2);
-    number_1.nkprec(2);  //(123.123456).nkprec(2) => 12
-    number_1.nkround(2); //(123.123456).nkround(2) => 123.12
+    number_1.nkprec(2);  //(123.456).nkprec(2) => 12
+    number_1.nkround(2); //(123.456).nkround(2) => 123.46
+    number_1.nkfixed(2); //Same as nkround
+    number_1.nktruncate(2); //(123.456).nktruncate(2) => 123.45
     number_1.nksqrt();
 
     (-1.7).nkabs(); //1.7
