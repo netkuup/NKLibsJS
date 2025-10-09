@@ -3,7 +3,6 @@ Daily use JavaScript function set.
 
 ## Usage
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://rawgithub.com/netkuup/NKLibsJS/master/nklibsjs.min.js" ></script>
     <link rel="stylesheet" type="text/css" href="https://rawgithub.com/netkuup/NKLibsJS/master/nklibsjs.min.css"/>
 

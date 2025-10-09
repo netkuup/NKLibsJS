@@ -1,6 +1,13 @@
-.NKDrag_dst {
+.NKDrag_dst:not(.NKDrag_wrapper .NKDrag_dst) {
     position: absolute;
 }
 .NKDrag_src {
     cursor: move;
+}
+
+.NKDrag_wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 5px;
 }

@@ -5,7 +5,9 @@ Demo & Examples
 ----------------------------------------------------------------------------
 [See the ./examples directory](./examples)
 
-[Live demo](https://codepen.io/Netkuup/pen/OxBVWw)
+[Live demo (Drag Window)](https://codepen.io/Netkuup/pen/OxBVWw)
+
+[Live demo (Drag List)](https://codepen.io/Netkuup/pen/dPGWawJ)
 
 
 Initialization
@@ -19,7 +21,7 @@ If the HTML document content changes dinamically (Creates new divs with NKDrag c
     NKDrag.start(true);
     
     
-.NKDrag_src .NKDrag_dst
+Drag window
 ----------------------------------------------------------------------------
 
 - __.NKDrag_src:__ Part you can click to drag.
@@ -27,15 +29,102 @@ If the HTML document content changes dinamically (Creates new divs with NKDrag c
 
 **Example:**
 
+    <div class="NKDrag_dst">
+        <div class="NKDrag_src">Draggable window title</div>
+        <div>Window content<br>Window content</div>
+    </div>
+
+    <script>
+        NKDrag.start();
+    
+        NKDrag.addEventListener('onDrag', function( data ) {
+            console.log( "Dragged", data );
+        });
+    </script>
+
+
+Drag vertical list item
+----------------------------------------------------------------------------
+
+- __.NKDrag_wrapper:__ List container (flex)
+- __.NKDrag_src:__ Part you can click to drag.
+- __.NKDrag_dst:__ Container to be dragged.
+
+**Example:**
+
+    <div class="NKDrag_wrapper" style="flex-direction: column; gap: 5px;">
+
         <div class="NKDrag_dst">
-            <div class="NKDrag_src">Draggable window title</div>
-            <div>Window content<br>Window content</div>
+            <div class="NKDrag_src">Drag me 1</div>
+            Lorem Ipsum<br />Lorem Ipsum
         </div>
 
-        <script>
-            NKDrag.start();
-        
-            NKDrag.addEventListener('onDrag', function( data ) {
-                console.log( "Dragged", data );
-            });
-        </script>
+        <div class="NKDrag_dst">
+            <div class="NKDrag_src">Drag me 2</div>
+            Lorem Ipsum<br />Lorem Ipsum
+        </div>
+
+        <div class="NKDrag_dst">
+            <div class="NKDrag_src">Drag me 3</div>
+            Lorem Ipsum<br />Lorem Ipsum
+        </div>
+
+        <div class="NKDrag_dst">
+            <div class="NKDrag_src">Drag me 4</div>
+            Lorem Ipsum<br />Lorem Ipsum
+        </div>
+    </div>
+
+    <script>
+        NKDrag.start();
+
+        NKDrag.addEventListener('onDrag', function( data ) {
+            //console.log( "onDrag", data );
+        });
+
+            NKDrag.addEventListener('onDragEnd', function( data ) {
+            console.log( "onDragEnd", data );
+        });
+    </script>
+
+
+Drag horizontal list item
+----------------------------------------------------------------------------
+
+- __.NKDrag_wrapper:__ List container (flex)
+- __.NKDrag_src:__ Part you can click to drag.
+- __.NKDrag_dst:__ Container to be dragged.
+
+
+**Example:**
+
+    <div class="NKDrag_wrapper foo_list" style="flex-direction: row; gap: 5px;">
+
+        <div class="NKDrag_dst">
+            <div class="NKDrag_src">Drag 1</div>
+            Lorem Ipsum<br />Lorem Ipsum
+        </div>
+
+        <div class="NKDrag_dst">
+            <div class="NKDrag_src">Drag 2</div>
+            Lorem Ipsum<br />Lorem Ipsum
+        </div>
+
+        <div class="NKDrag_dst">
+            <div class="NKDrag_src">Drag 3</div>
+            Lorem Ipsum<br />Lorem Ipsum
+        </div>
+
+    </div>
+
+    <script>
+        NKDrag.start();
+
+        NKDrag.addEventListener('onDrag', function( data ) {
+            //console.log( "onDrag", data );
+        });
+
+            NKDrag.addEventListener('onDragEnd', function( data ) {
+            console.log( "onDragEnd", data );
+        });
+    </script>

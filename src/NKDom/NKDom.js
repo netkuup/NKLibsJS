@@ -114,9 +114,11 @@ NKDom.getClosest = function ( element, id_or_class ) {
     id_or_class = NKDom.parseIdOrClass(id_or_class);
 
     if ( id_or_class.is_class ) {
-        while (element && !element.classList.contains(id_or_class.name)) element = element.parentNode;
+        while (element && element.classList && !element.classList.contains(id_or_class.name)) element = element.parentNode;
+        if ( !element.classList || !element.classList.contains(id_or_class.name) ) element = null;
     } else if ( id_or_class.is_id ) {
         while (element && element.id !== id_or_class.name) element = element.parentNode;
+        if ( element.id !== id_or_class.name ) element = null;
     }
 
     return element;

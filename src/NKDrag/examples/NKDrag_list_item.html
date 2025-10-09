@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>NKDrag list item example</title>
+        <script type="text/javascript" src="../../external_libs/big.js"></script>
+        <script src="../../NK/NKBase.js"></script>
+        <script src="../../NKPosition/NKPosition.js"></script>
+        <script src="../../NKDom/NKDom.js"></script>
+        <script type="text/javascript" src="../NKDrag.js" ></script>
+        <link rel="stylesheet" type="text/css" href="../NKDrag.css"/>
+    </head>
+
+    <body>
+
+
+        <div class="NKDrag_wrapper foo_list" style="flex-direction: column; gap: 5px;">
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag me 1</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag me 2</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag me 3</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag me 4</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+        </div>
+
+        <br /><br /><br />
+
+        <div class="NKDrag_wrapper foo_list" style="flex-direction: row; gap: 5px;">
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag 1</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag 2</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+
+            <div class="NKDrag_dst foo_btn">
+                <div class="NKDrag_src foo_btn_header">Drag 3</div>
+                Lorem Ipsum<br />Lorem Ipsum
+            </div>
+
+        </div>
+
+        <script>
+            NKDrag.start();
+
+            NKDrag.addEventListener('onDrag', function( data ) {
+                //console.log( "onDrag", data );
+            });
+
+             NKDrag.addEventListener('onDragEnd', function( data ) {
+                console.log( "onDragEnd", data );
+            });
+        </script>
+
+        <style>
+            .foo_list {
+                border: 1px solid gray; 
+                padding: 10px; 
+                width: 200px;
+            }
+            .foo_btn {
+                border: 1px solid black;
+                user-select: none;
+            }
+            .foo_btn_header {
+                background-color: lightblue;
+            }
+        </style>
+
+
+
+    </body>
+
+</html>
+
+
+

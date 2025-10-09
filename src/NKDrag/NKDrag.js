@@ -3,7 +3,7 @@ let NKDrag = {};
 let nkdrag_event_listener = new NKEventListener();
 NKDrag = { ...nkdrag_event_listener };
 
-NKDrag.selection = { element: null };
+NKDrag.selection = { element: null, wrapper: null };
 
 NKDrag.start = function( reactable ) {
     if ( NK.isset(NKDrag.loaded) && NKDrag.loaded === true ) return;
@@ -32,26 +32,94 @@ NKDrag.start = function( reactable ) {
     NKDom.addEventListener( document, 'mousemove', onMouseMove );
 
     function onMouseUp( e ) {
+        
+        // Si es lista (flex) vuelve a su sitio, sino se queda donde lo arrastramos.
+        if ( NKDrag.selection.wrapper !== null ) {
+            NKDrag.selection.element.style.transition = "transform 0.5s ease";
+            NKDrag.selection.element.style.transform = "";
+
+            NKDrag.dispatchEvent('onDragEnd', {
+                e: NKDrag.selection.element,
+                items: Array.from(NKDrag.selection.wrapper.querySelectorAll('.NKDrag_dst'))
+            });
+        }
+
         NKDrag.selection.element = null;
+        NKDrag.selection.wrapper = null;
     }
 
     NKDom.addEventListener( document, 'mouseup', onMouseUp );
 };
 
+
+
 NKDrag.moveElement = function( element, left = 0, top = 0 ) {
 
+    if ( NKDrag.selection.wrapper_direction === "column" ) { //Es un listado/flex
+        let wrapper = NKDrag.selection.wrapper;
+        let items = Array.from(wrapper.querySelectorAll('.NKDrag_dst'));
+
+        let igual = true;
+        items.sort( function(a, b) {
+            let r = a.getBoundingClientRect().y - b.getBoundingClientRect().y;
+            if ( r <= 0 ) igual = false;
+            return r;
+        });
+
+        let original_top = element.getBoundingClientRect().y;
+    
+        items.forEach(item => wrapper.appendChild(item));
+   
+        if ( !igual ) {
+            let new_top = element.getBoundingClientRect().y;
+            let diff_top = new_top - original_top;
+
+            top -= diff_top;
+            NKDrag.selection.offset[1] += diff_top;
+        }
+    }
+
+    if ( NKDrag.selection.wrapper_direction === "row" ) { //Es un listado/flex
+        let wrapper = NKDrag.selection.wrapper;
+        let items = Array.from(wrapper.querySelectorAll('.NKDrag_dst'));
+
+        let igual = true;
+        items.sort( function(a, b) {
+            let r = a.getBoundingClientRect().x - b.getBoundingClientRect().x;
+            if ( r <= 0 ) igual = false;
+            return r;
+        });
+
+        let original_left = element.getBoundingClientRect().x;
+    
+        items.forEach(item => wrapper.appendChild(item));
+   
+        if ( !igual ) {
+            let new_left = element.getBoundingClientRect().x;
+            let diff_left = new_left - original_left;
+
+            left -= diff_left;
+            NKDrag.selection.offset[0] += diff_left;
+        }
+    }
+
+
+    NKDrag.selection.element.style.transition = "";
     element.style.transform = `translate(${left}px, ${top}px)`;
 
     NKDrag.dispatchEvent('onDrag', {
         e: element,
         position: {left: left, top: top}
     });
-    
 }
 
 NKDrag.reload = function() {
 
     function onMouseDown( e ) {
+        let wrapper = NKDom.getClosest(this, '.NKDrag_wrapper');
+        NKDrag.selection.wrapper = wrapper
+        NKDrag.selection.wrapper_direction = (wrapper === null) ? null : getComputedStyle(NKDrag.selection.wrapper).flexDirection;
+        
         NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 
