@@ -78,3 +78,7 @@ NKString.removeAccents = function ( str ) {
 String.prototype.nkRemoveAccents = function() {
     return this.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKString });

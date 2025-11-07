@@ -70,3 +70,39 @@ NKHttp.asyncGET = function( url, params = {}, json = false ) {
 
     return p;
 }
+
+
+if ( NK.node ) NKHttp.asyncGET = function( url, params = {}, json = false ) {
+    let get_url = NKHttp.mountGETUrl( url, params );
+
+    let p = new Promise(async function(resolve, reject) {
+
+        const puppeteer = require('puppeteer');
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+
+        await page.goto(get_url);
+
+        let content = await page.evaluate(() => document.body.textContent);
+
+        await browser.close();
+
+        if ( json ) {
+            try {
+                content = JSON.parse(content);
+            } catch (e){
+                resolve( {success: false, data: content, err: "Error converting to json." });
+                return;
+            }
+        }
+
+        resolve( {success: true, data: content} );
+    });
+
+    return p;
+}
+
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKHttp });

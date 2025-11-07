@@ -1,6 +1,11 @@
-.NKDrag_dst:not(.NKDrag_wrapper .NKDrag_dst) {
+.NKDrag_dst {
     position: absolute;
 }
+
+.NKDrag_wrapper .NKDrag_dst {
+    position: static;
+}
+
 .NKDrag_src {
     cursor: move;
 }

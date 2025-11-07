@@ -124,9 +124,14 @@
     box-shadow: 3px -3px 0px #888888;
     pointer-events: none;
 }
-.NKDrag_dst:not(.NKDrag_wrapper .NKDrag_dst) {
+.NKDrag_dst {
     position: absolute;
 }
+
+.NKDrag_wrapper .NKDrag_dst {
+    position: static;
+}
+
 .NKDrag_src {
     cursor: move;
 }

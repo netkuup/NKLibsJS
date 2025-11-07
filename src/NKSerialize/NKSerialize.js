@@ -440,5 +440,33 @@ NKUnserialize.object = function ( serialized_obj ) {
     return {value: result.value, len: result.len + index};
 }
 
+//Temporal fix
+NKSerialize.toUtf8 = function ( serialized_str ) {
+    const arr = [""];
+
+    for ( let i = 0; i < serialized_str.length; i++ ) {
+        const code = serialized_str.charCodeAt(i);
+        // Detecta sustitutos altos o bajos sin pareja válida
+        if ( code >= 0xD800 && code <= 0xDFFF ) {
+            arr.push(code);
+            arr.push("");
+        } else {
+            arr[arr.length-1] += serialized_str[i];
+        }
+    }
+
+    return JSON.stringify(arr);
+}
+
+//Temporal fix
+NKUnserialize.fromUtf8 = function ( arr, json = false ) {
+    if ( json ) arr = JSON.parse(arr);
+
+    return arr.map(el => {
+        return (typeof el === 'number') ? String.fromCharCode(el) : el;
+    }).join('');
+}
 
 
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKSerialize, NKUnserialize });

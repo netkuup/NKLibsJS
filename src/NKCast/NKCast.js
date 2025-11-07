@@ -74,3 +74,6 @@ NKCast.utf8String = {
     }
 };
 
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKCast });

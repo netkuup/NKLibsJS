@@ -44,3 +44,7 @@ NKObject.getTypeName = function ( value ) {
 NKObject.isType = function ( value, type_str ) {
     return (NKObject.getTypeName(value) === type_str);
 }
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKObject });

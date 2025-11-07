@@ -1,10 +1,16 @@
 # NKLibs JS
 Daily use JavaScript function set.
 
-## Usage
+## Usage HTML
 
     <script type="text/javascript" src="https://rawgithub.com/netkuup/NKLibsJS/master/nklibsjs.min.js" ></script>
     <link rel="stylesheet" type="text/css" href="https://rawgithub.com/netkuup/NKLibsJS/master/nklibsjs.min.css"/>
+
+
+## Usage NodeJS
+
+    const { NKSerialize } = require('./nklibsjs.js'); //Example serialization
+    let serialized = NKSerialize.object( my_object ); 
 
 
 ## Index

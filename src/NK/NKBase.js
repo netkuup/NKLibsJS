@@ -1,5 +1,7 @@
 var NK = {};
 
+NK.node = ( typeof module !== 'undefined' );
+
 NK.isset = function( variable ) {
     if ( typeof variable === 'undefined' ) return false;
     if ( variable == null ) return false;
@@ -132,12 +134,15 @@ NK.core.ignoreMutations = function( numMutations ) {
 };
 
 
-window.addEventListener("load", function () {
-    if ( !NK.isset(() => window.$) ) {
-        throw "Error, you must include jquery before using NKLibsJS";
-    }
-    window.loaded = true;
-});
+if ( typeof window !== 'undefined' ) {
+    window.addEventListener("load", function () {
+        if ( !NK.isset(() => window.$) ) {
+            throw "Error, you must include jquery before using NKLibsJS";
+        }
+        window.loaded = true;
+    });
+}
+
 
 /*
 NK.autoload = function( modules ) {
@@ -197,3 +202,5 @@ Number.prototype.nkabs = function() {
 };
 
 
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NK });

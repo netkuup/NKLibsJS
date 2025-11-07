@@ -22,3 +22,6 @@ NKVar.empty = function( variable ) {
 };
 
 
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKVar });
+

@@ -3,7 +3,7 @@ let NKDrag = {};
 let nkdrag_event_listener = new NKEventListener();
 NKDrag = { ...nkdrag_event_listener };
 
-NKDrag.selection = { element: null, wrapper: null };
+NKDrag.selection = { element: null, wrapper: null, original_list: [] };
 
 NKDrag.start = function( reactable ) {
     if ( NK.isset(NKDrag.loaded) && NKDrag.loaded === true ) return;
@@ -38,10 +38,18 @@ NKDrag.start = function( reactable ) {
             NKDrag.selection.element.style.transition = "transform 0.5s ease";
             NKDrag.selection.element.style.transform = "";
 
-            NKDrag.dispatchEvent('onDragEnd', {
-                e: NKDrag.selection.element,
-                items: Array.from(NKDrag.selection.wrapper.querySelectorAll('.NKDrag_dst'))
-            });
+            let original_list = NKDrag.selection.original_list;
+            let new_list = Array.from(NKDrag.selection.wrapper.querySelectorAll('.NKDrag_dst'));
+
+            const igual = new_list.every((el, index) => el === original_list[index]);
+
+            if ( !igual ) {
+                NKDrag.dispatchEvent('onDragEnd', {
+                    e: NKDrag.selection.element,
+                    items: new_list
+                });
+            }
+            
         }
 
         NKDrag.selection.element = null;
@@ -117,9 +125,11 @@ NKDrag.reload = function() {
 
     function onMouseDown( e ) {
         let wrapper = NKDom.getClosest(this, '.NKDrag_wrapper');
+        let original_list = (wrapper === null) ? [] : Array.from(wrapper.querySelectorAll('.NKDrag_dst'));
         NKDrag.selection.wrapper = wrapper
         NKDrag.selection.wrapper_direction = (wrapper === null) ? null : getComputedStyle(NKDrag.selection.wrapper).flexDirection;
-        
+        NKDrag.selection.original_list = [...original_list];
+
         NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 

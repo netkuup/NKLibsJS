@@ -1040,6 +1040,8 @@
 
 ;var NK = {};
 
+NK.node = ( typeof module !== 'undefined' );
+
 NK.isset = function( variable ) {
     if ( typeof variable === 'undefined' ) return false;
     if ( variable == null ) return false;
@@ -1172,12 +1174,15 @@ NK.core.ignoreMutations = function( numMutations ) {
 };
 
 
-window.addEventListener("load", function () {
-    if ( !NK.isset(() => window.$) ) {
-        throw "Error, you must include jquery before using NKLibsJS";
-    }
-    window.loaded = true;
-});
+if ( typeof window !== 'undefined' ) {
+    window.addEventListener("load", function () {
+        if ( !NK.isset(() => window.$) ) {
+            throw "Error, you must include jquery before using NKLibsJS";
+        }
+        window.loaded = true;
+    });
+}
+
 
 /*
 NK.autoload = function( modules ) {
@@ -1237,7 +1242,8 @@ Number.prototype.nkabs = function() {
 };
 
 
-;var NKActions = {};
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NK });;var NKActions = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before actions.js";
@@ -1389,7 +1395,10 @@ NKArray.mountTree = function ( data, id_name, parent_id_name, child_arr_name ) {
 
     return result;
 };
-;
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKArray });;
 function NKCanvas( canvas_element_or_id = null ) {
     this.canvas = null;
     this.ctx = null;
@@ -1425,6 +1434,29 @@ NKCanvas.prototype.setSize = function ( w = 400, h = 200 ) {
     this.canvas.height = h;
     this.w = w;
     this.h = h;
+}
+
+NKCanvas.prototype.drawBase64Img = function ( base64_img, adjust_canvas_size = true ) {
+    let p = new NKPromise();
+
+    if ( !base64_img.startsWith("data:image/png;base64") ) {
+        base64_img = "data:image/png;base64," + base64_img;
+    }
+
+    const img = new Image();
+    img.src = base64_img;
+
+    img.onload = () => {
+        if ( adjust_canvas_size ) {
+            this.canvas.width  = img.width;
+            this.canvas.height = img.height;
+        }
+        
+        this.ctx.drawImage(img, 0, 0);
+        p.resolve();
+    };
+
+    return p;
 }
 
 NKCanvas.prototype.clean = function () {
@@ -1687,7 +1719,9 @@ NKCast.utf8String = {
     }
 };
 
-;
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKCast });;
 function NKBarChart ( wrapper_id, w = 600, h = 300) {
     this.wrapper_id = wrapper_id;
     this.drawbox = null;
@@ -3125,7 +3159,10 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
         }
     }
 };
-;let NKDebounce = {
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKDate });;let NKDebounce = {
     timeoutId: {}
 };
 
@@ -3154,6 +3191,36 @@ NKDebounce.getCallLine = function () {
     call_line = call_line.split("/");
     return call_line[call_line.length - 1];
 }
+;let NKDir = {};
+
+
+if ( NK.node ) NKDir.getContents = function ( dir ) {
+    let contents = fs.readdirSync( dir );
+    let result = [];
+
+    for ( let i = 0; i < contents.length; i++ ) {
+        result.push({
+            name: contents[i],
+            dir: dir,
+            path: dir + "/" + contents[i],
+            is_dir: fs.statSync(dir + "/" + contents[i]).isDirectory()
+        });
+    }
+
+    return result;
+}
+
+if ( NK.node ) NKDir.create = function( dir ) {
+    const path = require('path');
+    const fs = require('fs');
+    if ( path.basename(dir).includes(".") ) dir = path.dirname(dir); //Si le pasamos un path a un archivo, lo convierte al directorio.
+    if ( !fs.existsSync(dir) ) fs.mkdirSync(dir, { recursive: true });
+}
+
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKDir });
 ;NKDomTemplate = {};
 NKDom = {};
 
@@ -3360,7 +3427,7 @@ NKDom.addEventListener = function ( element, event_name, event_listener_function
 let nkdrag_event_listener = new NKEventListener();
 NKDrag = { ...nkdrag_event_listener };
 
-NKDrag.selection = { element: null, wrapper: null };
+NKDrag.selection = { element: null, wrapper: null, original_list: [] };
 
 NKDrag.start = function( reactable ) {
     if ( NK.isset(NKDrag.loaded) && NKDrag.loaded === true ) return;
@@ -3395,10 +3462,18 @@ NKDrag.start = function( reactable ) {
             NKDrag.selection.element.style.transition = "transform 0.5s ease";
             NKDrag.selection.element.style.transform = "";
 
-            NKDrag.dispatchEvent('onDragEnd', {
-                e: NKDrag.selection.element,
-                items: Array.from(NKDrag.selection.wrapper.querySelectorAll('.NKDrag_dst'))
-            });
+            let original_list = NKDrag.selection.original_list;
+            let new_list = Array.from(NKDrag.selection.wrapper.querySelectorAll('.NKDrag_dst'));
+
+            const igual = new_list.every((el, index) => el === original_list[index]);
+
+            if ( !igual ) {
+                NKDrag.dispatchEvent('onDragEnd', {
+                    e: NKDrag.selection.element,
+                    items: new_list
+                });
+            }
+            
         }
 
         NKDrag.selection.element = null;
@@ -3474,9 +3549,11 @@ NKDrag.reload = function() {
 
     function onMouseDown( e ) {
         let wrapper = NKDom.getClosest(this, '.NKDrag_wrapper');
+        let original_list = (wrapper === null) ? [] : Array.from(wrapper.querySelectorAll('.NKDrag_dst'));
         NKDrag.selection.wrapper = wrapper
         NKDrag.selection.wrapper_direction = (wrapper === null) ? null : getComputedStyle(NKDrag.selection.wrapper).flexDirection;
-        
+        NKDrag.selection.original_list = [...original_list];
+
         NKDrag.selection.element = NKDom.getClosest(this, '.NKDrag_dst');
         NKDrag.selection.offset = NKPosition.getMouse();
 
@@ -3738,7 +3815,91 @@ NKDrawbox.prototype.drawText = function( args ) {
     if ( args.font_weight ) props.font_weight = args.font_weight;
 
     this._drawDiv(props);
-};;var NKForm = {};
+};;let NKFile = {};
+
+//If default_content !== null, create the file
+if ( NK.node ) NKFile.readSync = function( file_path, default_content = null ) {
+    const fs = require('fs');
+
+    if ( default_content !== null && !fs.existsSync(file_path) ) {
+        NKDir.create( file_path );
+        fs.writeFileSync( file_path, default_content, 'utf8' );
+    }
+
+    return fs.readFileSync(file_path, 'utf8');
+}
+
+if ( NK.node ) NKFile.writeSync = function( file_path, data ) {
+    const fs = require('fs');
+
+    NKDir.create( file_path );
+
+    fs.writeFileSync( file_path, data, 'utf8' );
+}
+
+
+
+
+if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip = false ) {
+    let p = new NKPromise();
+
+    let dst_file_path = download_dir + "/" + file_name;
+    let dst_uncompressed_path = download_dir + "/uncompressed";
+
+    const options = {
+        headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                        "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                        "Chrome/128.0.0.0 Safari/537.36",
+            "Accept": "*/*",
+            "Accept-Language": "es-ES,es;q=0.9",
+            "Connection": "keep-alive",
+        },
+        rejectUnauthorized: false, // Desactiva la validación SSL (no recomendado, pero sino a veces falla)
+    };
+
+    const https = require('https');
+    const fs = require('fs');
+
+    https.get(url, options, async (response) => {
+
+        if ( [301, 302, 303, 307, 308].includes(response.statusCode) ) {
+            return p.reject({status: "redirect", err: response.headers.location});
+
+        } else if ( response.statusCode !== 200 ) {
+            return p.reject({status: "error", err: "Status code: " + response.statusCode});
+
+        }
+
+        await NKDir.create( dst_file_path );
+
+        const file_stream = fs.createWriteStream(dst_file_path);
+
+        response.pipe(file_stream);
+
+        file_stream.on('finish', () => {
+            if ( !unzip ) return p.resolve({status: "success"});
+                
+            fs.createReadStream(dst_file_path)
+                .pipe(unzipper.Extract({ path: dst_uncompressed_path }))
+                .on('close', () => { p.resolve({status: "success"}); })
+                .on('error', (err) => { return p.reject({status: "error", err: "Unzip error: " + err}); });
+        });
+
+        file_stream.on('error', (error) => { p.reject({status: "error", err: "Download error: " . error}); });
+        
+    }).on('error', (error) => { 
+        fs.unlink(dst_file_path, () => {}); // Elimina el archivo parcialmente descargado
+        p.reject({status: "error", err: "Download url error: " . error}); 
+    });
+
+
+    return p;
+}
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKFile });;var NKForm = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before form.js";
@@ -4013,7 +4174,43 @@ NKHttp.asyncGET = function( url, params = {}, json = false ) {
     });
 
     return p;
-};let NKLoader = {};
+}
+
+
+if ( NK.node ) NKHttp.asyncGET = function( url, params = {}, json = false ) {
+    let get_url = NKHttp.mountGETUrl( url, params );
+
+    let p = new Promise(async function(resolve, reject) {
+
+        const puppeteer = require('puppeteer');
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+
+        await page.goto(get_url);
+
+        let content = await page.evaluate(() => document.body.textContent);
+
+        await browser.close();
+
+        if ( json ) {
+            try {
+                content = JSON.parse(content);
+            } catch (e){
+                resolve( {success: false, data: content, err: "Error converting to json." });
+                return;
+            }
+        }
+
+        resolve( {success: true, data: content} );
+    });
+
+    return p;
+}
+
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKHttp });;let NKLoader = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include NKBase.js before loader.js";
@@ -4136,7 +4333,53 @@ NKModal.toggle = function ( div_id ) {
     }
 
 }
-;var NKNotification = {};
+;let NKMysql = {};
+
+if ( NK.node ) NKMysql.connect = function( db_name, host = "localhost", user = "root", pass = "" ) {
+    
+    return new Promise((resolve, reject) => {
+
+        const mysql = require('mysql2');
+        let conn = mysql.createConnection({host: host, user: user, password: pass, database: db_name});
+
+        conn.connect((err) => {
+            if (err) return reject('Error al conectar con la base de datos: ' + err);
+            resolve(conn);
+        });
+
+    });
+
+}
+
+if ( NK.node ) NKMysql.query = function( conn, sql, params = [] ) {
+    return new Promise((resolve, reject) => {
+        conn.query(sql, params, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+}
+
+
+if ( NK.node ) NKMysql.insert = function( conn, table_name, data ) {
+    return NKMysql.query( conn, `INSERT INTO ?? SET ?`, [table_name, data] );
+};
+
+
+if ( NK.node ) NKMysql.update = function( conn, table_name, data_where, data_set ) {
+    const mysql = require('mysql2');
+    
+    const sql = "UPDATE " + table_name +
+    " SET " + Object.keys(data_set).map(k => k + "=" + mysql.escape(data_set[k])).join(", ") +
+    " WHERE " + Object.keys(data_where).map(k => k + "=" + mysql.escape(data_where[k])).join(" AND ");
+
+    return NKMysql.query( conn, sql );
+};
+
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKMysql });;var NKNotification = {};
 NKNotification.timeout = null;
 
 if ( typeof NK === 'undefined' ) {
@@ -4243,6 +4486,10 @@ NKObject.getTypeName = function ( value ) {
 NKObject.isType = function ( value, type_str ) {
     return (NKObject.getTypeName(value) === type_str);
 }
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKObject });
 ;var NKPopup = {};
 
 if ( typeof NK === 'undefined' ) {
@@ -5427,9 +5674,36 @@ NKUnserialize.object = function ( serialized_obj ) {
     return {value: result.value, len: result.len + index};
 }
 
+//Temporal fix
+NKSerialize.toUtf8 = function ( serialized_str ) {
+    const arr = [""];
+
+    for ( let i = 0; i < serialized_str.length; i++ ) {
+        const code = serialized_str.charCodeAt(i);
+        // Detecta sustitutos altos o bajos sin pareja válida
+        if ( code >= 0xD800 && code <= 0xDFFF ) {
+            arr.push(code);
+            arr.push("");
+        } else {
+            arr[arr.length-1] += serialized_str[i];
+        }
+    }
+
+    return JSON.stringify(arr);
+}
+
+//Temporal fix
+NKUnserialize.fromUtf8 = function ( arr, json = false ) {
+    if ( json ) arr = JSON.parse(arr);
+
+    return arr.map(el => {
+        return (typeof el === 'number') ? String.fromCharCode(el) : el;
+    }).join('');
+}
 
 
-;let NKStick = {};
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKSerialize, NKUnserialize });;let NKStick = {};
 
 if ( typeof NK === 'undefined' ) {
     throw "You must include base.js before stick.js";
@@ -5573,16 +5847,17 @@ NKStorage.listen = function ( path, cbk ) {
 }
 
 
-// On page leave
-NKStorage.oldLeaveHandler = window.onbeforeunload;
-window.onbeforeunload = function (e) {
-    if (NKStorage.oldLeaveHandler) NKStorage.oldLeaveHandler(e);
+if ( typeof window !== 'undefined' ) {
+    // On page leave
+    NKStorage.oldLeaveHandler = window.onbeforeunload;
+    window.onbeforeunload = function (e) {
+        if (NKStorage.oldLeaveHandler) NKStorage.oldLeaveHandler(e);
 
-    if ( NKStorage.saveOnLeave === true) {
-        NKStorage.save( true );
-    }
-};
-
+        if ( NKStorage.saveOnLeave === true) {
+            NKStorage.save( true );
+        }
+    };
+}
 ;let NKString = {};
 
 // hello world -> Hello world
@@ -5662,7 +5937,11 @@ NKString.removeAccents = function ( str ) {
 
 String.prototype.nkRemoveAccents = function() {
     return this.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-};;let NKVar = {};
+};
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKString });;let NKVar = {};
 
 NKVar.isset = function( variable ) {
         if ( typeof variable === 'undefined' ) return false;
@@ -5685,6 +5964,9 @@ NKVar.empty = function( variable ) {
     return false;
 };
 
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKVar });
 
 ;
 

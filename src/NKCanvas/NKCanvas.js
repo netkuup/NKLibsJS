@@ -36,6 +36,29 @@ NKCanvas.prototype.setSize = function ( w = 400, h = 200 ) {
     this.h = h;
 }
 
+NKCanvas.prototype.drawBase64Img = function ( base64_img, adjust_canvas_size = true ) {
+    let p = new NKPromise();
+
+    if ( !base64_img.startsWith("data:image/png;base64") ) {
+        base64_img = "data:image/png;base64," + base64_img;
+    }
+
+    const img = new Image();
+    img.src = base64_img;
+
+    img.onload = () => {
+        if ( adjust_canvas_size ) {
+            this.canvas.width  = img.width;
+            this.canvas.height = img.height;
+        }
+        
+        this.ctx.drawImage(img, 0, 0);
+        p.resolve();
+    };
+
+    return p;
+}
+
 NKCanvas.prototype.clean = function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }

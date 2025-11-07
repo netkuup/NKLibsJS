@@ -252,3 +252,7 @@ NKDate.setCalendarTasks = function ( calendar, tasks, cal_date_name, cal_tasklis
         }
     }
 };
+
+
+//Node integration
+if ( NK.node ) Object.assign(module.exports, { NKDate });
