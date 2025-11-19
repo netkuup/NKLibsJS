@@ -3840,12 +3840,11 @@ if ( NK.node ) NKFile.writeSync = function( file_path, data ) {
 
 
 
-if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip = false ) {
+if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip_dir_name = null ) {
     let p = new NKPromise();
 
     let dst_file_path = download_dir + "/" + file_name;
-    let dst_uncompressed_path = download_dir + "/uncompressed";
-
+    
     const options = {
         headers: {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
@@ -3878,8 +3877,11 @@ if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip =
         response.pipe(file_stream);
 
         file_stream.on('finish', () => {
-            if ( !unzip ) return p.resolve({status: "success"});
-                
+            if ( unzip_dir_name === null ) return p.resolve({status: "success"});
+            
+            const unzipper = require('unzipper');
+            let dst_uncompressed_path = download_dir + "/" + unzip_dir_name;
+
             fs.createReadStream(dst_file_path)
                 .pipe(unzipper.Extract({ path: dst_uncompressed_path }))
                 .on('close', () => { p.resolve({status: "success"}); })
@@ -4376,6 +4378,10 @@ if ( NK.node ) NKMysql.update = function( conn, table_name, data_where, data_set
     return NKMysql.query( conn, sql );
 };
 
+
+if ( NK.node ) NKMysql.truncate = function( conn, table_name ) {
+    return NKMysql.query( conn, `TRUNCATE TABLE ??`, [table_name] );
+};
 
 
 //Node integration
@@ -5861,18 +5867,29 @@ if ( typeof window !== 'undefined' ) {
 ;let NKString = {};
 
 // hello world -> Hello world
-NKString.capitalize = function ( str ) {
-    return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+// "apples|oranges/chocolate" ["|", "/"] -> Apples|Oranges/Chocolate
+NKString.capitalize = function (str, delimiters = null) {
+    if (delimiters === null) return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+
+    let result = "";
+    let capitalize_next = true;
+
+    for ( let i = 0; i < str.length; i++ ) {
+        result += capitalize_next ? str[i].toUpperCase() : str[i].toLowerCase();
+        capitalize_next = delimiters.includes( str[i] );
+    }
+
+    return result;
 }
 
-String.prototype.nkCapitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+String.prototype.nkCapitalize = function( delimiters = null ) {
+    return NKString.capitalize(this, delimiters);
 };
 
 
 
 NKString.normalizeSpaces = function ( str ) {
-    return str.replace(/\s+/g, ' ').trim();
+    return (str+"").replace(/\s+/g, ' ').trim();
 }
 
 String.prototype.nkNormalizeSpaces = function() {

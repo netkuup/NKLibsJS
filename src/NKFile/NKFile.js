@@ -23,12 +23,11 @@ if ( NK.node ) NKFile.writeSync = function( file_path, data ) {
 
 
 
-if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip = false ) {
+if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip_dir_name = null ) {
     let p = new NKPromise();
 
     let dst_file_path = download_dir + "/" + file_name;
-    let dst_uncompressed_path = download_dir + "/uncompressed";
-
+    
     const options = {
         headers: {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
@@ -61,8 +60,11 @@ if ( NK.node ) NKFile.download = function( url, download_dir, file_name, unzip =
         response.pipe(file_stream);
 
         file_stream.on('finish', () => {
-            if ( !unzip ) return p.resolve({status: "success"});
-                
+            if ( unzip_dir_name === null ) return p.resolve({status: "success"});
+            
+            const unzipper = require('unzipper');
+            let dst_uncompressed_path = download_dir + "/" + unzip_dir_name;
+
             fs.createReadStream(dst_file_path)
                 .pipe(unzipper.Extract({ path: dst_uncompressed_path }))
                 .on('close', () => { p.resolve({status: "success"}); })

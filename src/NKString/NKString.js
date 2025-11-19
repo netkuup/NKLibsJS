@@ -1,18 +1,29 @@
 let NKString = {};
 
 // hello world -> Hello world
-NKString.capitalize = function ( str ) {
-    return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+// "apples|oranges/chocolate" ["|", "/"] -> Apples|Oranges/Chocolate
+NKString.capitalize = function (str, delimiters = null) {
+    if (delimiters === null) return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
+
+    let result = "";
+    let capitalize_next = true;
+
+    for ( let i = 0; i < str.length; i++ ) {
+        result += capitalize_next ? str[i].toUpperCase() : str[i].toLowerCase();
+        capitalize_next = delimiters.includes( str[i] );
+    }
+
+    return result;
 }
 
-String.prototype.nkCapitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+String.prototype.nkCapitalize = function( delimiters = null ) {
+    return NKString.capitalize(this, delimiters);
 };
 
 
 
 NKString.normalizeSpaces = function ( str ) {
-    return str.replace(/\s+/g, ' ').trim();
+    return (str+"").replace(/\s+/g, ' ').trim();
 }
 
 String.prototype.nkNormalizeSpaces = function() {

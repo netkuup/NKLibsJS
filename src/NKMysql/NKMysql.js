@@ -42,6 +42,10 @@ if ( NK.node ) NKMysql.update = function( conn, table_name, data_where, data_set
 };
 
 
+if ( NK.node ) NKMysql.truncate = function( conn, table_name ) {
+    return NKMysql.query( conn, `TRUNCATE TABLE ??`, [table_name] );
+};
+
 
 //Node integration
 if ( NK.node ) Object.assign(module.exports, { NKMysql });
